@@ -9,35 +9,53 @@ import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 
 public class FloatingField extends StackPane {
-    private final Label label;
-    private final TextField field;
+    private Label label;
+    private TextField field;
     private boolean floated = false;
 
-    public FloatingField(String labelText) {
-        this.label = new Label(labelText);
-        this.field = new TextField();
+    public FloatingField() {
+        label = new Label();
+        field = new TextField();
 
         label.setStyle("-fx-text-fill: #999; -fx-background-color: white; -fx-padding: 0 5px;");
-        field.setStyle("-fx-border-color: #0078ff; -fx-border-width: 1px; -fx-background-color: transparent; -fx-padding: 10 5 5 5; -fx-border-radius : 5px; ");
+        field.getStyleClass().add("field") ;
         field.setPrefHeight(40);
 
-        // Position du label initialement sur le champ
         label.setTranslateY(10);
         label.setTranslateX(5);
-        label.setMouseTransparent(true); // pour ne pas bloquer le clic
+        label.setMouseTransparent(true);
 
         this.setAlignment(Pos.TOP_LEFT);
         this.getChildren().addAll(field, label);
         this.setPadding(new Insets(5));
 
-        // Animation quand le focus change
         field.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal) {
+            if (newVal){
                 floatLabel(true);
-            } else if (field.getText().isEmpty()) {
-                floatLabel(false);
+                field.setStyle(field.getStyle().replace("#d0d0d0", "#2196f3"));
             }
+
+            else if (field.getText().isEmpty()){
+                floatLabel(false);
+                field.setStyle(field.getStyle().replace("#2196f3", "#d0d0d0"));
+            }
+
+            else {
+                field.setStyle(field.getStyle().replace("#2196f3", "#d0d0d0"));
+
+            }
+
         });
+
+    }
+
+    // Getter et setter pour FXML
+    public void setLabelText(String text) {
+        label.setText(text);
+    }
+
+    public String getLabelText() {
+        return label.getText();
     }
 
     private void floatLabel(boolean up) {
