@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import utils.Globals;
+import database.tables.User;
     
 public class OracleDB {
     private static final String URL = Globals.URL_DB;
@@ -26,4 +27,12 @@ public class OracleDB {
         }
         return null;
     }
+
+    public static void createTables(){
+
+        User.createTable();
+
+    }
+
+
 }

@@ -1,0 +1,131 @@
+.text-field {
+    -fx-border-color: #0078ff;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+.label {
+    -fx-font-size: 12px;
+    -fx-transition: all 0.2s ease;
+}
+
+#Header {
+    -fx-font-size: 25px;
+    -fx-font-weight: bold ;
+    -fx-text-fill: #333333;
+}
+
+#uploadButton {
+    -fx-background-color: transparent; 
+    -fx-border-color: transparent;  
+    -fx-text-fill: #393333ff;
+}
+
+#uploadButton:hover {
+    -fx-underline : true ; 
+    -fx-cursor: hand; 
+}
+
+#imageContainer {
+    -fx-border-color: #765e54;
+    -fx-border-width:2;
+    -fx-border-radius:50%;
+    -fx-background-radius:50%;
+    -fx-padding:2;
+}
+
+#profileHBox {
+    -fx-padding:10px;
+    -fx-border-style:dashed; 
+    -fx-border-width:2; 
+    -fx-border-radius:5px;
+}
+
+#rootVBox {
+    -fx-background-color: white;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding : 10px ;
+}
+
+
+#okButton {
+    -fx-background-color: #ee9e85;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 15px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, gray, 10, 0.5, -1, 1);
+}
+
+#okButton:hover {
+    -fx-background-color: #ffb69e; 
+    -fx-cursor: hand; 
+}
+
+#okButton:pressed {
+    -fx-background-color: #d9735c; 
+    -fx-effect: none;
+}
+
+
+.field{
+    -fx-border-color: #d0d0d0;
+    -fx-border-width: 1px; 
+    -fx-background-color: transparent; 
+    -fx-padding: 10 5 5 5; 
+    -fx-border-radius: 5px;
+}
+
+.field_invalid{
+    -fx-border-color: #e32727;
+    -fx-border-width: 1px; 
+    -fx-background-color: transparent; 
+    -fx-padding: 10 5 5 5; 
+    -fx-border-radius: 5px;
+}
+
+.error-tooltip {
+    -fx-background-color: #e95e4e; 
+    -fx-text-fill: white;          
+    -fx-font-size: 12px;
+    -fx-padding: 8px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 0.5, 0, 2);
+}
+
+
+#msgPopUp{
+    -fx-background-color: rgba(255,80,80,0.9); 
+    -fx-text-fill: white;
+    -fx-padding: 8; 
+    -fx-background-radius: 6;
+}
+
+
+#login{
+    -fx-background-color: #4a7bec;
+}
+
+#rootStackPane{
+    -fx-background-color : white ;
+}
+
+#welcomeLabel{
+    -fx-font-size : 30px ;
+    -fx-font-weight : bold ;
+    -fx-text-fill : white ;
+}
+
+#enterDetailsLabel{
+    -fx-font-size : 15px ;
+    -fx-text-fill : white ;
+}
+
+#loginButton{
+    -fx-pref-width: 70;
+    -fx-pref-height: 30;
+    -fx-border-radius : 15px ;
+    -fx-background-color : #cdc6c0 ;
+    -fx-background-radius : 15px ;
+}
