@@ -1,25 +1,31 @@
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import java.io.IOException;
 import java.sql.Connection;
-import database.OracleDB; 
+import database.OracleDB;
+import javafx.fxml.FXMLLoader;
 
-import views.signUp ;
 
 public class App extends Application {
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
         Connection conn = OracleDB.getConnection();
         if (conn != null) {
             System.out.println("Connexion OK !");
+            OracleDB.createTables();
         }
-        
-        StackPane root = new StackPane(new signUp());
-        Scene scene = new Scene(root);
 
-        stage.setTitle("Test JavaFX");
+        //Parent root = FXMLLoader.load(getClass().getResource("/views/signUp.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/views/signUpLoginView.fxml"));
+        StackPane rooth = new StackPane(root);
+        Scene scene = new Scene(rooth,700,600);
+        scene.getStylesheets().addAll(getClass().getResource("/styles/main.css").toExternalForm(),
+                getClass().getResource("/styles/signUp.css").toExternalForm());
+
         stage.setScene(scene);
         stage.show();
     }
