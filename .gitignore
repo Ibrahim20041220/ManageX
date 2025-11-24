@@ -1,3 +1,6 @@
 .vscode/
 bin/
 utils/Globals.java
+out/
+.idea/
+ManageX.iml

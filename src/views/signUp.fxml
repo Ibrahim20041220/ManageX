@@ -35,11 +35,11 @@
     </HBox>
 
     <!-- Champs flottants -->
-    <FloatingField fx:id="firstName" labelText="First Name"/>
-    <FloatingField fx:id="lastName" labelText="Last Name"/>
+    <HBox spacing="0" >
+        <FloatingField fx:id="firstName" labelText="First Name"/>
+        <FloatingField fx:id="lastName" labelText="Last Name"/>
+    </HBox>
     <FloatingField fx:id="email" labelText="Email"/>
-    <FloatingField fx:id="phone" labelText="Phone Number"/>
-    <FloatingField fx:id="profession" labelText="Profession"/>
     <FloatingField fx:id="password" labelText="Password"/>
     <FloatingField fx:id="confirm" labelText="Confirm Password"/>
 
