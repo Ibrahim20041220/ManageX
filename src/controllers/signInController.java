@@ -1,34 +1,38 @@
-package utils;
-
+package controllers;
+import utils.UserDAO;
+import database.OracleDB;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import utils.FloatingField;
+
 
 public class signInController {
 
     @FXML private ImageView bgImage;
-    @FXML private TextField tfUsername;
-    @FXML private PasswordField pfPassword;
+    @FXML private FloatingField Username;
+    @FXML private FloatingField Password;
     @FXML private Label lblMessage;
 
     @FXML
     public void initialize() {
 
-        Image img = new Image(getClass().getResourceAsStream("../icons/background.jpg"));
-        bgImage.setImage(img);
     }
 
     @FXML
     private void handleLogin() {
-        String username = tfUsername.getText().trim();
-        String password = pfPassword.getText();
+        String username = Username.getText().trim();
+        String password = Password.getText();
 
+        boolean isValid = UserDAO.checkLogin(username, password);
+        
         if (username.isEmpty() || password.isEmpty()) {
             lblMessage.setText("Remplir les champs !");
-        } else {
+        } else if (isValid) {
             lblMessage.setText("Bienvenue, " + username + " !");
-            // TODO: Switch scene to main dashboard
+        }else {
+            lblMessage.setText("username oU password est incorrect !!");
         }
     }
 }

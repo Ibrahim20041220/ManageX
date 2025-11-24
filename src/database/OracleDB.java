@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import utils.Globals;
+import database.tables.Project;
 import database.tables.User;
     
 public class OracleDB {
@@ -31,6 +32,7 @@ public class OracleDB {
     public static void createTables(){
 
         User.createTable();
+        Project.createTable();
 
     }
 

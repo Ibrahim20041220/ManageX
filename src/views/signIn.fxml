@@ -2,20 +2,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import utils.FloatingField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
-<AnchorPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="utils.signInController">
+
+<VBox fx:id="rootPane" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.signInController" alignment="CENTER">
     <children>
-        <!-- Background image -->
-        <ImageView fx:id="bgImage" fitWidth="400" fitHeight="300" pickOnBounds="true" preserveRatio="false" />
-
         <VBox alignment="CENTER" spacing="10.0" AnchorPane.topAnchor="50" AnchorPane.leftAnchor="50"
               AnchorPane.rightAnchor="50">
+            <ImageView fitWidth="170" fitHeight="170">
+                <image>
+                    <Image url="@../icons/connexion (2).png" />
+                </image>
+            </ImageView>
             <Label text="Bienvenue ManageX" style="-fx-font-size:18px; -fx-text-fill: white;" />
-            <TextField fx:id="tfUsername" promptText="Nom d'utilisateur"/>
-            <PasswordField fx:id="pfPassword" promptText="Mot de passe"/>
+            <FloatingField fx:id="Username" labelText="Nom d'utilisateur" />
+            <FloatingField fx:id="Password" labelText="Mot de passe" />
             <Button text="Se connecter" onAction="#handleLogin"/>
             <Label fx:id="lblMessage" textFill="red"/>
         </VBox>
     </children>
-</AnchorPane>
+</VBox>
