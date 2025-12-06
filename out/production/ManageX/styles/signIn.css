@@ -1,0 +1,115 @@
+
+
+.vbox {
+    -fx-background-color: rgba(255, 255, 255, 0.95);
+    -fx-background-radius: 25px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 30, 0, 0, 10);
+    -fx-spacing: 20px;
+    -fx-max-width: 450px;
+}
+
+#rootPane {
+    -fx-padding: 20px;
+    -fx-background-color: white;
+
+}
+
+.label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(to right, #cc0000, #001a33);
+    -fx-padding: 10px 0;
+}
+
+.floating-field {
+    -fx-background-color: white;
+    -fx-border-color: linear-gradient(to right, rgba(204, 0, 0, 0.3), rgba(0, 26, 51, 0.3));
+    -fx-border-width: 2px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 5, 0, 0, 2);
+}
+
+.floating-field:focused {
+    -fx-border-color: linear-gradient(to right, #cc0000, #001a33);
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(204, 0, 0, 0.2), 10, 0, 0, 3);
+}
+
+.floating-field .text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 15px;
+    -fx-prompt-text-fill: rgba(44, 62, 80, 0.5);
+}
+
+.floating-field .label {
+    -fx-text-fill: #6c757d;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.button {
+    -fx-background-color: linear-gradient(to right, #cc0000, #001a33);
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 15px 40px;
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(204, 0, 0, 0.4), 15, 0, 0, 5);
+    -fx-min-width: 200px;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to right, #e60000, #002d5c);
+    -fx-effect: dropshadow(gaussian, rgba(204, 0, 0, 0.6), 20, 0, 0, 7);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.button:pressed {
+    -fx-background-color: linear-gradient(to right, #b30000, #00152b);
+    -fx-effect: dropshadow(gaussian, rgba(204, 0, 0, 0.3), 10, 0, 0, 3);
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+
+#lblMessage {
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #e32727;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-border-radius: 10px;
+}
+
+/* Specific styling for when message is visible */
+#lblMessage:filled {
+    -fx-effect: dropshadow(gaussian, rgba(227, 39, 39, 0.2), 8, 0, 0, 2);
+}
+
+#Username, #Password {
+    -fx-min-width: 220px;
+    -fx-pref-width: 220px;
+}
+
+#Username:focused, #Password:focused {
+    -fx-border-color: linear-gradient(to right, #cc0000, #001a33);
+}
+
+.fade-in {
+    -fx-opacity: 0;
+}
+
+.fade-in-active {
+    -fx-opacity: 1;
+}
+

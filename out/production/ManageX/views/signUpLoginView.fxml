@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <?import javafx.scene.layout.* ?>
 <?import javafx.scene.control.* ?>
 <?import javafx.geometry.Insets?>
@@ -40,7 +39,7 @@
         </VBox>
 
         <fx:include fx:id="signUp" source="signUp.fxml" GridPane.halignment="CENTER" GridPane.valignment="CENTER"  GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-        <fx:include fx:id="signIn" source="signIn.fxml" GridPane.halignment="CENTER" GridPane.valignment="CENTER"  GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        <fx:include fx:id="signIn" source="signIn.fxml" GridPane.halignment="CENTER" GridPane.valignment="CENTER"  GridPane.rowIndex="1" GridPane.columnIndex="0"/>
 
     </GridPane>
 

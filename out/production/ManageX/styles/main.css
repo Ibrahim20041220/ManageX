@@ -24,3 +24,12 @@
     -fx-underline : true ; 
     -fx-cursor: hand; 
 }
+#login {
+    -fx-background-image: url("../icons/background.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+#rootStackPane {
+  -fx-background-color: white;
+}
+

@@ -7,7 +7,7 @@
 <?import javafx.geometry.Insets?>
 
 
-<VBox fx:id="rootVBox" spacing="7" alignment="CENTER"
+<VBox fx:id="rootVBox" spacing="8" alignment="CENTER"
     xmlns="http://javafx.com/javafx/21"
     xmlns:fx="http://javafx.com/fxml"
     fx:controller="controllers.SignUpController"
@@ -38,8 +38,6 @@
     <FloatingField fx:id="firstName" labelText="First Name"/>
     <FloatingField fx:id="lastName" labelText="Last Name"/>
     <FloatingField fx:id="email" labelText="Email"/>
-    <FloatingField fx:id="phone" labelText="Phone Number"/>
-    <FloatingField fx:id="profession" labelText="Profession"/>
     <FloatingField fx:id="password" labelText="Password"/>
     <FloatingField fx:id="confirm" labelText="Confirm Password"/>
 
