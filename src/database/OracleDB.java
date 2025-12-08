@@ -4,7 +4,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import utils.Globals;
+import database.tables.Attachment;
+import database.tables.Comment;
+import database.tables.MemberPermission;
+import database.tables.Notification;
+import database.tables.Permission;
 import database.tables.Project;
+import database.tables.ProjectMember;
+import database.tables.Role;
+import database.tables.RolePermission;
+import database.tables.Task;
 import database.tables.User;
     
 public class OracleDB {
@@ -33,7 +42,15 @@ public class OracleDB {
 
         User.createTable();
         Project.createTable();
-
+        Task.createTable();
+        Notification.createTable();
+        Role.createTable();
+        ProjectMember.createTable();
+        Permission.createTable();
+        RolePermission.createTable();
+        MemberPermission.createTable();
+        Comment.createTable();
+        Attachment.createTable();
     }
 
 
