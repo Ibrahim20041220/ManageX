@@ -22,7 +22,7 @@
             <padding>
                 <Insets left="20"/>
             </padding>
-            <ImageView fitHeight="70" fitWidth="80" preserveRatio="true">
+            <ImageView fitHeight="80" fitWidth="100" preserveRatio="true">
                 <image>
                     <Image url="@../icons/ManageX.png"/>
                 </image>
