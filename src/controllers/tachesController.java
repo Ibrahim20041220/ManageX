@@ -1,5 +1,9 @@
 package controllers;
 
+import dao.ProjectDAO;
+import dao.TaskDAO;
+import models.Project;
+import models.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,6 +18,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class tachesController implements Initializable {
@@ -31,8 +37,16 @@ public class tachesController implements Initializable {
     @FXML private Label lblCompletedCount;
     @FXML private VBox vboxTasks;
 
+    private TaskDAO taskDAO;
+    private ProjectDAO projectDAO;
+    private String currentStatusFilter = "Tous"; // Tous, ToDo, InProgress, Done
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Initialiser les DAOs
+        taskDAO = new TaskDAO();
+        projectDAO = new ProjectDAO();
+
         lblUsername.setText("Amine Lamaizi");
 
         if (profileCircle != null) {
@@ -44,33 +58,99 @@ public class tachesController implements Initializable {
         cboPriorite.getItems().addAll("Toutes", "Haute", "Moyenne", "Basse");
         cboPriorite.setValue("Toutes");
 
-        cboProjet.getItems().addAll("Tous les projets", "Application Mobile", "Site Web", "Base de Données");
-        cboProjet.setValue("Tous les projets");
+        // Charger les projets dans le ComboBox
+        loadProjectsComboBox();
 
+        // Listeners pour les filtres
+        cboPriorite.setOnAction(e -> applyFilters());
+        cboProjet.setOnAction(e -> applyFilters());
+
+        // Charger les statistiques
+        loadStatistics();
+
+        // Charger les tâches
         loadTasks();
+    }
+
+    private void loadProjectsComboBox() {
+        cboProjet.getItems().clear();
+        cboProjet.getItems().add("Tous les projets");
+
+        List<Project> projects = projectDAO.getAllProjects();
+        for (Project project : projects) {
+            cboProjet.getItems().add(project.getName());
+        }
+
+        cboProjet.setValue("Tous les projets");
+    }
+
+    private void loadStatistics() {
+        // Compter les tâches par statut
+        int todoCount = taskDAO.countTasksByStatus("ToDo");
+        int inProgressCount = taskDAO.countTasksByStatus("InProgress");
+        int completedCount = taskDAO.countTasksByStatus("Done");
+
+        lblTodoCount.setText(String.valueOf(todoCount));
+        lblInProgressCount.setText(String.valueOf(inProgressCount));
+        lblCompletedCount.setText(String.valueOf(completedCount));
     }
 
     private void loadTasks() {
         vboxTasks.getChildren().clear();
 
-        // Données factices - TODO: récupérer de la base de données
-        String[][] tasks = {
-                {"Conception de l'interface utilisateur", "Application Mobile", "Haute", "À faire", "2024-01-15"},
-                {"Développement API REST", "Application Mobile", "Haute", "En cours", "2024-01-20"},
-                {"Tests unitaires", "Application Mobile", "Moyenne", "À faire", "2024-01-18"},
-                {"Refonte page d'accueil", "Site Web", "Moyenne", "En cours", "2024-01-16"},
-                {"Optimisation des requêtes", "Base de Données", "Haute", "En cours", "2024-01-14"},
-                {"Documentation technique", "Application Mobile", "Basse", "À faire", "2024-01-25"},
-                {"Migration des données", "Base de Données", "Haute", "Terminée", "2024-01-10"},
-                {"Design système", "Application Mobile", "Moyenne", "Terminée", "2024-01-08"}
-        };
+        // Récupérer les tâches selon le filtre actuel
+        List<Task> tasks;
 
-        for (String[] task : tasks) {
-            vboxTasks.getChildren().add(createTaskCard(task[0], task[1], task[2], task[3], task[4]));
+        if (currentStatusFilter.equals("Tous")) {
+            tasks = taskDAO.getAllTasks();
+        } else {
+            tasks = taskDAO.getTasksByStatus(currentStatusFilter);
+        }
+
+        if (tasks.isEmpty()) {
+            Label noTasks = new Label("Aucune tâche trouvée");
+            noTasks.getStyleClass().add("no-tasks-label");
+            vboxTasks.getChildren().add(noTasks);
+        } else {
+            for (Task task : tasks) {
+                vboxTasks.getChildren().add(createTaskCard(task));
+            }
         }
     }
 
-    private HBox createTaskCard(String title, String project, String priority, String status, String date) {
+    private void applyFilters() {
+        vboxTasks.getChildren().clear();
+
+        String priority = cboPriorite.getValue();
+        String projectName = cboProjet.getValue();
+
+        // Convertir le nom du projet en ID (si ce n'est pas "Tous les projets")
+        Integer projectId = null;
+        if (!projectName.equals("Tous les projets")) {
+            List<Project> projects = projectDAO.getAllProjects();
+            for (Project p : projects) {
+                if (p.getName().equals(projectName)) {
+                    projectId = p.getId();
+                    break;
+                }
+            }
+        }
+
+        // Appliquer les filtres
+        List<Task> tasks = taskDAO.filterTasks(currentStatusFilter, priority, projectId);
+
+        if (tasks.isEmpty()) {
+            Label noTasks = new Label("Aucune tâche trouvée avec ces filtres");
+            noTasks.getStyleClass().add("no-tasks-label");
+            vboxTasks.getChildren().add(noTasks);
+        } else {
+            for (Task task : tasks) {
+                vboxTasks.getChildren().add(createTaskCard(task));
+            }
+        }
+    }
+
+    private HBox createTaskCard(Task task) {
         HBox card = new HBox(15);
         card.getStyleClass().add("task-card");
         card.setAlignment(Pos.CENTER_LEFT);
@@ -79,17 +159,17 @@ public class tachesController implements Initializable {
         // Checkbox
         CheckBox checkBox = new CheckBox();
         checkBox.getStyleClass().add("task-checkbox");
-        checkBox.setSelected(status.equals("Terminée"));
-        checkBox.setOnAction(e -> toggleTaskStatus(title, checkBox.isSelected()));
+        checkBox.setSelected(task.isCompleted());
+        checkBox.setOnAction(e -> toggleTaskStatus(task.getId(), checkBox.isSelected()));
 
         // Info principale
         VBox mainInfo = new VBox(8);
         HBox.setHgrow(mainInfo, Priority.ALWAYS);
 
         // Titre
-        Label titleLabel = new Label(title);
+        Label titleLabel = new Label(task.getTitle());
         titleLabel.getStyleClass().add("task-title");
-        if (status.equals("Terminée")) {
+        if (task.isCompleted()) {
             titleLabel.getStyleClass().add("task-completed");
         }
 
@@ -97,91 +177,220 @@ public class tachesController implements Initializable {
         HBox details = new HBox(15);
         details.setAlignment(Pos.CENTER_LEFT);
 
-        Label projectLabel = new Label("📁 " + project);
+        String projectName = task.getProjectName() != null ? task.getProjectName() : "Sans projet";
+        Label projectLabel = new Label("📁 " + projectName);
         projectLabel.getStyleClass().add("task-project");
 
-        Label dateLabel = new Label("📅 " + date);
+        String dateStr = formatDate(task.getCreatedAt());
+        Label dateLabel = new Label("📅 " + dateStr);
         dateLabel.getStyleClass().add("task-date");
 
         details.getChildren().addAll(projectLabel, dateLabel);
         mainInfo.getChildren().addAll(titleLabel, details);
 
         // Badge priorité
-        Label priorityBadge = new Label(priority);
+        Label priorityBadge = new Label(task.getPriorityDisplay());
         priorityBadge.getStyleClass().add("priority-badge");
-        priorityBadge.getStyleClass().add(getPriorityClass(priority));
+        priorityBadge.getStyleClass().add(getPriorityClass(task.getPriority()));
         priorityBadge.setPadding(new Insets(5, 12, 5, 12));
 
         // Badge statut
-        Label statusBadge = new Label(status);
+        Label statusBadge = new Label(task.getStatusDisplay());
         statusBadge.getStyleClass().add("status-badge");
-        statusBadge.getStyleClass().add(getStatusBadgeClass(status));
+        statusBadge.getStyleClass().add(getStatusBadgeClass(task.getStatus()));
         statusBadge.setPadding(new Insets(5, 12, 5, 12));
 
         // Bouton actions
         Button btnAction = new Button("•••");
         btnAction.getStyleClass().add("btn-action");
-        btnAction.setOnAction(e -> showTaskMenu(title));
+        btnAction.setOnAction(e -> showTaskMenu(task));
 
         card.getChildren().addAll(checkBox, mainInfo, priorityBadge, statusBadge, btnAction);
 
         return card;
     }
 
-    private String getPriorityClass(String priority) {
-        switch (priority.toLowerCase()) {
-            case "haute": return "priority-high";
-            case "moyenne": return "priority-medium";
-            case "basse": return "priority-low";
-            default: return "priority-medium";
+    private String getPriorityClass(int priority) {
+        if (priority >= 4) {
+            return "priority-high";
+        } else if (priority >= 2) {
+            return "priority-medium";
+        } else {
+            return "priority-low";
         }
     }
 
     private String getStatusBadgeClass(String status) {
-        switch (status.toLowerCase()) {
-            case "à faire": return "status-todo";
-            case "en cours": return "status-inprogress";
-            case "terminée": return "status-done";
+        switch (status) {
+            case "ToDo": return "status-todo";
+            case "InProgress": return "status-inprogress";
+            case "Done": return "status-done";
+            case "Canceled": return "status-canceled";
             default: return "status-todo";
         }
     }
 
-    private void toggleTaskStatus(String taskTitle, boolean completed) {
-        System.out.println("Tâche " + taskTitle + " - Terminée: " + completed);
-        // TODO: Mettre à jour dans la base de données
-        loadTasks(); // Recharger pour mettre à jour l'affichage
+    private String formatDate(java.util.Date date) {
+        if (date == null) {
+            return "Date inconnue";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(date);
     }
 
-    private void showTaskMenu(String taskTitle) {
-        System.out.println("Menu pour: " + taskTitle);
-        // TODO: Afficher un menu contextuel (éditer, supprimer, etc.)
+    private void toggleTaskStatus(int taskId, boolean completed) {
+        if (taskDAO.toggleTaskCompletion(taskId, completed)) {
+            loadStatistics();
+            applyFilters();
+            showSuccessMessage("Statut de la tâche mis à jour !");
+        } else {
+            showErrorAlert("Erreur", "Impossible de mettre à jour le statut de la tâche.");
+        }
+    }
+
+    private void showTaskMenu(Task task) {
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem editItem = new MenuItem("Modifier");
+        editItem.setOnAction(e -> editTask(task));
+
+        MenuItem deleteItem = new MenuItem("Supprimer");
+        deleteItem.setOnAction(e -> deleteTask(task));
+
+        contextMenu.getItems().addAll(editItem, deleteItem);
+        contextMenu.show(vboxTasks.getScene().getWindow());
+    }
+
+    private void editTask(Task task) {
+        System.out.println("Modifier la tâche: " + task.getTitle());
+        // TODO: Ouvrir un dialogue d'édition
+    }
+
+    private void deleteTask(Task task) {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirmation");
+        confirmation.setHeaderText("Supprimer la tâche");
+        confirmation.setContentText("Êtes-vous sûr de vouloir supprimer cette tâche ?");
+
+        confirmation.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                if (taskDAO.deleteTask(task.getId())) {
+                    showSuccessMessage("Tâche supprimée avec succès !");
+                    loadStatistics();
+                    applyFilters();
+                } else {
+                    showErrorAlert("Erreur", "Impossible de supprimer la tâche.");
+                }
+            }
+        });
     }
 
     @FXML
     private void handleAddTask() {
-        System.out.println("Ajouter une nouvelle tâche");
-        // TODO: Ouvrir un dialogue
+        // Dialogue simple pour ajouter une tâche
+        Dialog<Task> dialog = new Dialog<>();
+        dialog.setTitle("Nouvelle Tâche");
+        dialog.setHeaderText("Créer une nouvelle tâche");
+
+        ButtonType addButtonType = new ButtonType("Ajouter", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(addButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField titleField = new TextField();
+        titleField.setPromptText("Titre");
+
+        TextArea descField = new TextArea();
+        descField.setPromptText("Description");
+        descField.setPrefRowCount(3);
+
+        ComboBox<String> projectCombo = new ComboBox<>();
+        List<Project> projects = projectDAO.getAllProjects();
+        for (Project p : projects) {
+            projectCombo.getItems().add(p.getName());
+        }
+        if (!projects.isEmpty()) {
+            projectCombo.setValue(projects.get(0).getName());
+        }
+
+        ComboBox<String> priorityCombo = new ComboBox<>();
+        priorityCombo.getItems().addAll("Basse (1)", "Moyenne (3)", "Haute (5)");
+        priorityCombo.setValue("Moyenne (3)");
+
+        grid.add(new Label("Titre:"), 0, 0);
+        grid.add(titleField, 1, 0);
+        grid.add(new Label("Description:"), 0, 1);
+        grid.add(descField, 1, 1);
+        grid.add(new Label("Projet:"), 0, 2);
+        grid.add(projectCombo, 1, 2);
+        grid.add(new Label("Priorité:"), 0, 3);
+        grid.add(priorityCombo, 1, 3);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == addButtonType) {
+                Task newTask = new Task();
+                newTask.setTitle(titleField.getText());
+                newTask.setDescription(descField.getText());
+                newTask.setStatus("ToDo");
+
+                // Trouver l'ID du projet
+                String selectedProject = projectCombo.getValue();
+                for (Project p : projects) {
+                    if (p.getName().equals(selectedProject)) {
+                        newTask.setProjectId(p.getId());
+                        break;
+                    }
+                }
+
+                // Convertir la priorité
+                String priorityStr = priorityCombo.getValue();
+                if (priorityStr.contains("5")) newTask.setPriority(5);
+                else if (priorityStr.contains("3")) newTask.setPriority(3);
+                else newTask.setPriority(1);
+
+                return newTask;
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(task -> {
+            if (taskDAO.addTask(task)) {
+                showSuccessMessage("Tâche créée avec succès !");
+                loadStatistics();
+                applyFilters();
+            } else {
+                showErrorAlert("Erreur", "Impossible de créer la tâche.");
+            }
+        });
     }
 
     @FXML
     private void showAllTasks() {
-        System.out.println("Afficher toutes les tâches");
-        loadTasks();
+        currentStatusFilter = "Tous";
+        applyFilters();
     }
 
     @FXML
     private void showTodoTasks() {
-        System.out.println("Afficher tâches à faire");
+        currentStatusFilter = "ToDo";
+        applyFilters();
     }
 
     @FXML
     private void showInProgressTasks() {
-        System.out.println("Afficher tâches en cours");
+        currentStatusFilter = "InProgress";
+        applyFilters();
     }
 
     @FXML
     private void showCompletedTasks() {
-        System.out.println("Afficher tâches terminées");
+        currentStatusFilter = "Done";
+        applyFilters();
     }
 
     @FXML
@@ -224,5 +433,14 @@ public class tachesController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void showSuccessMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Succès");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.setHeaderText(message);
+        alert.show();
     }
 }

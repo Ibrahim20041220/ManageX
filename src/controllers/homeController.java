@@ -87,8 +87,9 @@ public class homeController implements Initializable {
         int projectCount = projectDAO.countProjects();
         lblProjetsCount.setText(String.valueOf(projectCount));
 
-        // TODO: Récupérer le nombre de tâches depuis la base de données
-        lblTachesCount.setText("0");
+        // Récupérer le nombre de tâches depuis la base de données
+        int taskCount = database.tables.Task.count();
+        lblTachesCount.setText(String.valueOf(taskCount));
 
         // TODO: Récupérer le nombre de membres depuis la base de données
         lblMembresCount.setText("0");
