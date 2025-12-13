@@ -209,3 +209,19 @@
 .project-card {
     -fx-transition: all 0.3s ease;
 }
+
+/* Style pour le cercle de profil cliquable */
+.profile-circle.clickable {
+    -fx-cursor: hand;
+}
+
+.profile-circle.clickable:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+/* Animation de transition pour le hover */
+.profile-circle {
+    -fx-transition: all 0.3s ease;
+}

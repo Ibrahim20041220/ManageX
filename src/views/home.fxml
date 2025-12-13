@@ -34,7 +34,7 @@
             </Label>
         </HBox>
 
-        <!-- Menu au centre -->
+        <!-- Menu au centre (sans Profile) -->
         <HBox alignment="CENTER" spacing="30" HBox.hgrow="ALWAYS">
             <Button fx:id="btnHome" text="Home" styleClass="menu-button, active"
                     onAction="#handleHomeClick">
@@ -56,16 +56,9 @@
                     <Font size="14.0"/>
                 </font>
             </Button>
-
-            <Button fx:id="btnProfile" text="Profile" styleClass="menu-button"
-                    onAction="#handleProfileClick">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </Button>
         </HBox>
 
-        <!-- Profile à droite -->
+        <!-- Profile à droite (cliquable via le controller) -->
         <HBox alignment="CENTER_RIGHT" spacing="10" styleClass="profile-container">
             <padding>
                 <Insets right="20"/>
@@ -75,7 +68,8 @@
                     <Font size="14.0"/>
                 </font>
             </Label>
-            <Circle radius="20" styleClass="profile-circle"/>
+            <!-- Le clic est géré dans le controller avec setOnMouseClicked -->
+            <Circle fx:id="profileCircle" radius="20" styleClass="profile-circle"/>
         </HBox>
     </HBox>
 
