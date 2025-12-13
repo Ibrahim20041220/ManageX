@@ -1,0 +1,230 @@
+/* Importation des styles communs */
+@import "home.css";
+
+/* ComboBox */
+.filter-combo {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 8 12;
+}
+
+.filter-combo:focused {
+    -fx-border-color: #667eea;
+}
+
+/* Bouton ajouter tâche */
+.btn-add-task {
+    -fx-background-color: linear-gradient(to right, #10b981 0%, #059669 100%);
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-padding: 12 25;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.4), 10, 0, 0, 3);
+}
+
+.btn-add-task:hover {
+    -fx-background-color: linear-gradient(to right, #059669 0%, #047857 100%);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+/* Statistiques rapides */
+.quick-stat {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 15 25;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 5, 0, 0, 2);
+}
+
+.stat-label-small {
+    -fx-text-fill: #9ca3af;
+    -fx-font-weight: 600;
+    -fx-font-size: 11px;
+}
+
+.stat-value-small {
+    -fx-font-weight: bold;
+}
+
+.stat-todo {
+    -fx-text-fill: #f59e0b;
+}
+
+.stat-progress {
+    -fx-text-fill: #3b82f6;
+}
+
+.stat-completed {
+    -fx-text-fill: #10b981;
+}
+
+/* Onglets */
+.tabs-container {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 5, 0, 0, 2);
+}
+
+.tab-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6b7280;
+    -fx-background-radius: 6;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-font-weight: 600;
+}
+
+.tab-btn:hover {
+    -fx-background-color: #f3f4f6;
+}
+
+.tab-btn.tab-active {
+    -fx-background-color: #667eea;
+    -fx-text-fill: white;
+}
+
+/* Liste de tâches */
+.tasks-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.tasks-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.tasks-list {
+    -fx-background-color: transparent;
+}
+
+/* Carte de tâche */
+.task-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 8, 0, 0, 2);
+    -fx-cursor: pointer;
+}
+
+.task-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 12, 0, 0, 4);
+    -fx-translate-y: -2;
+}
+
+/* Checkbox */
+.task-checkbox {
+    -fx-pref-width: 22;
+    -fx-pref-height: 22;
+}
+
+.task-checkbox > .box {
+    -fx-background-color: white;
+    -fx-border-color: #d1d5db;
+    -fx-border-width: 2;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+.task-checkbox:selected > .box {
+    -fx-background-color: #10b981;
+    -fx-border-color: #10b981;
+}
+
+.task-checkbox:selected > .box > .mark {
+    -fx-background-color: white;
+}
+
+/* Titre de tâche */
+.task-title {
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+}
+
+.task-title.task-completed {
+    -fx-text-fill: #9ca3af;
+    -fx-strikethrough: true;
+}
+
+/* Projet et date */
+.task-project {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 12px;
+}
+
+.task-date {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 12px;
+}
+
+/* Badges priorité */
+.priority-badge {
+    -fx-background-radius: 6;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.priority-high {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #dc2626;
+}
+
+.priority-medium {
+    -fx-background-color: #fef3c7;
+    -fx-text-fill: #d97706;
+}
+
+.priority-low {
+    -fx-background-color: #dbeafe;
+    -fx-text-fill: #2563eb;
+}
+
+/* Badges statut */
+.status-badge {
+    -fx-background-radius: 6;
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+}
+
+.status-todo {
+    -fx-background-color: #fef3c7;
+    -fx-text-fill: #92400e;
+}
+
+.status-inprogress {
+    -fx-background-color: #dbeafe;
+    -fx-text-fill: #1e3a8a;
+}
+
+.status-done {
+    -fx-background-color: #d1fae5;
+    -fx-text-fill: #065f46;
+}
+
+/* Bouton action */
+.btn-action {
+    -fx-background-color: transparent;
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 5 10;
+}
+
+.btn-action:hover {
+    -fx-background-color: #f3f4f6;
+    -fx-background-radius: 6;
+    -fx-text-fill: #4b5563;
+}
+
+/* Profil cliquable */
+.profile-circle.clickable {
+    -fx-cursor: hand;
+}
+
+.profile-circle.clickable:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
+}
