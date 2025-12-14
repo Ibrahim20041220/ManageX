@@ -1,0 +1,121 @@
+
+.profile-card {
+    -fx-background-color: #d1cccc11;
+    -fx-background-radius: 15px;
+    -fx-border-color: #4a90e2; 
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 2);
+}
+
+
+
+.avatar-container{
+    -fx-border-color: #4a90e2;
+    -fx-border-width: 3;
+    -fx-border-radius: 50;
+}
+
+.camera-icon {
+   
+}
+
+.camera-wrapper{
+    -fx-background-color : white ;
+    -fx-translate-x: -2;
+    -fx-translate-y: -2;
+    -fx-background-radius:50 ;
+
+}
+
+.user-name {
+    -fx-font-family: "Arial Bold", sans-serif;
+    -fx-font-size: 26px;
+    -fx-text-fill: -theme-text-primary;
+}
+
+.user-role {
+    -fx-font-family: "Arial", sans-serif;
+    -fx-font-size: 16px;
+    -fx-text-fill: -theme-text-secondary;
+    -fx-padding: 0 0 10 0;
+}
+
+/* Style pour les informations de contact */
+.contact-info .label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -theme-text-secondary;
+}
+
+.contact-info {
+    -fx-padding: 10 0 15 0;
+}
+
+/* Style commun à tous les boutons */
+.button {
+    -fx-background-radius: 8px;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-padding: 8 15 8 15;
+    -fx-font-weight: bold;
+}
+
+/* Bouton d'action principal */
+.button-primary {
+    -fx-background-color: -theme-primary-blue;
+    -fx-text-fill: -theme-text-primary;
+}
+
+.button-primary:hover {
+    -fx-background-color: -theme-primary-blue-hover;
+}
+
+.editButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: -theme-primary-blue;
+    -fx-border-color: #4a90e2;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-font-size: 13px;
+}
+
+/* .editButton:hover {
+    -fx-background-color: -theme-primary-blue;
+    -fx-text-fill: -theme-text-primary;
+} */
+
+.editOverview{
+    -fx-border-color: #4a90e2;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-font-size: 13px;
+}
+
+.OverviewLabel{
+    -fx-font-size : 20px ;
+    -fx-color-fit : #9b7f4f ;
+    -fx-font-weight : bold ;
+}
+
+
+.overview-card{
+    -fx-background-color: #d1cccc11;
+    -fx-background-radius: 15px;
+    -fx-border-color: #4a90e2; 
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+}
+
+.ButtonSwitch{
+    -fx-background-color : transparent ;
+    -fx-border-width : 0 ;
+}
+
+.Switch-Buttons{
+    -fx-border-color: #1111 ; 
+    -fx-border-width: 1px ;
+    -fx-border-radius: 10 10 0 0 ;
+    -fx-padding : 7px ;
+}
+
+

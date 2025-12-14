@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox spacing="20" xmlns:fx="http://javafx.com/fxml"
+        fx:controller="controllers.ProfileController" stylesheets="@../styles/profile.css">
+
+    <!-- carte  profile -->
+    <HBox alignment="TOP_LEFT" spacing="20" styleClass="profile-card" >
+        
+        <padding>
+            <Insets bottom="10" left="10" right="10" top="10"/>
+        </padding>
+
+        <StackPane fx:id="avatarStackPane" styleClass="avatar-container" minWidth="80" minHeight="80" maxWidth="80" maxHeight="80">
+            <ImageView fx:id="avatarImage" fitHeight="70" fitWidth="70"/>
+
+            <StackPane styleClass="camera-wrapper" minWidth="25" minHeight="25" maxWidth="25" maxHeight="25" StackPane.alignment="BOTTOM_RIGHT">
+                <ImageView fx:id="cameraImage" fitHeight="15" fitWidth="15" styleClass="camera-icon" />
+            </StackPane>
+        </StackPane>
+        
+
+        <VBox spacing="8" styleClass="info-container">
+            <Label fx:id="name" styleClass="user-name" text="Michael Smith"/>
+            
+            <Label fx:id="profession" styleClass="user-role" text="Senior Frontend Developer"/>
+
+            <HBox alignment="CENTER_LEFT" spacing="5">
+                <ImageView fx:id="mapImage" fitHeight="16" fitWidth="16"/>
+                <Label fx:id="localisation" text="San Francisco, CA"/>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="5">
+                <ImageView fx:id="emailImage" fitHeight="16" fitWidth="16"/>
+                <Label fx:id="email" text="michael.smith@email.com"/>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="5">
+                <ImageView fx:id="phoneImage" fitHeight="16" fitWidth="16"/>
+                <Label fx:id="phone" text="+1 (555) 123-4567"/>
+            </HBox>
+
+        </VBox>
+
+        <!-- "Spacer" pour pousser le bouton suivant tout à droite -->
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button fx:id="editButton"  styleClass="editButton" text="Edit Profile">
+            <graphic>
+                <ImageView fx:id="editImage" fitHeight="16" fitWidth="16"/>
+            </graphic>
+        </Button>
+
+    </HBox>
+
+    <!-- other infos -->
+    <VBox spacing="0">
+
+        <HBox spacing="5" styleClass="Switch-Buttons">
+            <Button fx:id="OverviewButton" styleClass="ButtonSwitch" text="Overview" />
+            <Button fx:id="SkillsButton" styleClass="ButtonSwitch" text="Skills" />
+            <Button fx:id="ProjetsButton" styleClass="ButtonSwitch" text="Projets" />
+            <Button fx:id="SettingsButton" styleClass="ButtonSwitch" text="Settings" />
+        </HBox>
+
+        <StackPane fx:id="scene"/>
+
+    </VBox>
+
+
+</VBox>

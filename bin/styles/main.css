@@ -24,3 +24,28 @@
     -fx-underline : true ; 
     -fx-cursor: hand; 
 }
+#login {
+    -fx-background-image: url("../icons/background.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    /* -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, 
+        black 0%, 
+
+     rgb(11, 11, 122) 80%,
+     red 100%) ; */
+   
+        /* radial-gradient(
+            focus-angle 45deg, 
+            focus-distance 0%, 
+            center 0% 0%, 
+            radius 50%, 
+            red 0%, 
+            black 50%, 
+            #1e089b 100%
+        ); */
+}
+
+#rootStackPane {
+  -fx-background-color: white;
+}
+

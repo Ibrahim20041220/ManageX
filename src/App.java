@@ -20,11 +20,14 @@ public class App extends Application {
         }
 
         //Parent root = FXMLLoader.load(getClass().getResource("/views/signUp.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/views/signUpLoginView.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/views/profile.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/views/MainView.fxml"));
+
         StackPane rooth = new StackPane(root);
         Scene scene = new Scene(rooth,800,600);
         scene.getStylesheets().addAll(getClass().getResource("/styles/main.css").toExternalForm(),
-                getClass().getResource("/styles/signUp.css").toExternalForm());
+                getClass().getResource("/styles/signUp.css").toExternalForm(),
+                getClass().getResource("/styles/profile.css").toExternalForm()) ;
 
         stage.setScene(scene);
         stage.show();

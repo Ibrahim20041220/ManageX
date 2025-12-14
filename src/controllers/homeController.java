@@ -15,19 +15,6 @@ import java.util.ResourceBundle;
 
 public class homeController implements Initializable {
 
-    @FXML
-    private Button btnHome;
-
-    @FXML
-    private Button btnProjets;
-
-    @FXML
-    private Button btnTaches;
-
-    @FXML
-    private Button btnProfile;
-
-    @FXML
     private Label lblUsername;
 
     @FXML
@@ -44,6 +31,7 @@ public class homeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        lblUsername = new Label() ;
         // Charger les données de l'utilisateur
         loadUserData();
 
@@ -123,50 +111,6 @@ public class homeController implements Initializable {
         card.getChildren().addAll(statusIndicator, projectInfo, btnView);
 
         return card;
-    }
-
-
-    @FXML
-    private void handleHomeClick() {
-        setActiveButton(btnHome);
-        // TODO: Navigation vers la page Home (déjà sur cette page)
-        System.out.println("Navigation: Home");
-    }
-
-
-    @FXML
-    private void handleProjetsClick() {
-        setActiveButton(btnProjets);
-        // TODO: Navigation vers la page Projets
-        System.out.println("Navigation: Projets");
-    }
-
-
-    @FXML
-    private void handleTachesClick() {
-        setActiveButton(btnTaches);
-        // TODO: Navigation vers la page Tâches
-        System.out.println("Navigation: Tâches");
-    }
-
-
-    @FXML
-    private void handleProfileClick() {
-        setActiveButton(btnProfile);
-        // TODO: Navigation vers la page Profile
-        System.out.println("Navigation: Profile");
-    }
-
-
-    private void setActiveButton(Button activeBtn) {
-        // Retirer la classe active de tous les boutons
-        btnHome.getStyleClass().remove("active");
-        btnProjets.getStyleClass().remove("active");
-        btnTaches.getStyleClass().remove("active");
-        btnProfile.getStyleClass().remove("active");
-
-        // Ajouter la classe active au bouton sélectionné
-        activeBtn.getStyleClass().add("active");
     }
 
 

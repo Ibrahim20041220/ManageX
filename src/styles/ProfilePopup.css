@@ -1,0 +1,30 @@
+.popup-box {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-padding: 15;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.25) , 15, 0, 0, 4 );
+}
+
+/* Style de tous les boutons */
+.popup-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 8 12;
+    -fx-background-radius: 8;
+}
+
+.popup-btn:hover {
+    -fx-background-color: #f2f2f2;
+}
+
+/* Bouton Déconnexion en rouge */
+.logout-btn {
+    -fx-text-fill: #d9534f;
+    -fx-font-weight: bold;
+}
+
+.logout-btn:hover {
+    -fx-background-color: #ffe6e6;
+}

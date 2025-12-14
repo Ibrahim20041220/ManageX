@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      spacing="20" stylesheets="@/styles/Settings.css" styleClass="root">
+    
+    <padding >
+        <Insets top="10" bottom="10" left ="10" right="10" />
+    </padding>
+
+    <!-- SECTION : Changer mot de passe -->
+    <VBox styleClass="section-box">
+        <Label text="Changer le mot passase" styleClass="section-title"/>
+        <Label text="Mettez à jour votre de pasase régulièrement pour plus de sécurité."
+               styleClass="section-description"/>
+
+        <Button text="Changer le passase" styleClass="primary-button"/>
+    </VBox>
+
+
+    <!-- SECTION : Visibilité du profil -->
+    <VBox styleClass="section-box">
+
+        <Label text="Visibilité du profil" styleClass="section-title"/>
+        <Label text="Gérez qui peut consulter le informations de voure profil."
+               styleClass="section-description"/>
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label text="👁 Public" styleClass="toggle-label"/>
+            <ToggleButton selected="true" styleClass="toggle-switch"/>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label text="👥 Connexions selelment" styleClass="toggle-label"/>
+            <ToggleButton selected="true" styleClass="toggle-switch"/>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label text="👁 Privé" styleClass="toggle-label"/>
+            <ToggleButton styleClass="toggle-switch"/>
+        </HBox>
+
+    </VBox>
+
+
+    <!-- SECTION : Supprimer compte -->
+    <VBox styleClass="section-box">
+        <Label text="Supprimer le comnte" styleClass="section-title"/>
+        <Label text="Cela frinpurirper toutes vous dourées et accès à l'application."
+               styleClass="section-description"/>
+
+        <Button text="🗑  Supprimer le comunte" styleClass="danger-button"/>
+    </VBox>
+
+</VBox>
