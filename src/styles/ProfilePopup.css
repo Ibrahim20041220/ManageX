@@ -1,11 +1,10 @@
-.popup-box {
+/* .popup-box {
     -fx-background-color: #ffffff;
     -fx-background-radius: 12;
     -fx-padding: 15;
     -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.25) , 15, 0, 0, 4 );
 }
 
-/* Style de tous les boutons */
 .popup-btn {
     -fx-background-color: transparent;
     -fx-text-fill: #333;
@@ -19,7 +18,6 @@
     -fx-background-color: #f2f2f2;
 }
 
-/* Bouton Déconnexion en rouge */
 .logout-btn {
     -fx-text-fill: #d9534f;
     -fx-font-weight: bold;
@@ -27,4 +25,45 @@
 
 .logout-btn:hover {
     -fx-background-color: #ffe6e6;
+} */
+
+/* Conteneur principal */
+.popup-box {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 1;
+    /* Effet d'ombre portée pour le relief */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 10, 0, 0, 5);
+}
+
+/* Style commun pour les lignes (HBox) */
+.popup-btn {
+    -fx-cursor: hand;
+    -fx-padding: 5 8 5 8;
+    -fx-background-radius: 8;
+    -fx-transition: all 0.2s;
+}
+
+.popup-btn:hover {
+    -fx-background-color: #F5F7FA;
+}
+
+/* Style des boutons (on enlève le style par défaut de JavaFX) */
+.button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333333;
+    -fx-font-family: "Segoe UI", system-ui;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+}
+
+/* Style spécifique pour le bouton Logout */
+.logout-btn:hover {
+    -fx-background-color: #FFF0F0; /* Rouge très léger */
+}
+
+.logout-btn .button {
+    -fx-text-fill: #E53935; /* Rouge pour l'alerte logout */
 }

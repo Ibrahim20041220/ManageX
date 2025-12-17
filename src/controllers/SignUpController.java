@@ -16,7 +16,7 @@ import utils.FloatingField;
 import javafx.scene.control.Tooltip;
 import javafx.util.Duration;
 import javafx.stage.Popup;
-import database.tables.User;
+import database.tables.UserTable;
 
 import java.io.File;
 
@@ -90,7 +90,7 @@ public class SignUpController {
                     @Override
                     protected Boolean call() {
 
-                        return User.create(
+                        return UserTable.create(
                                 firstName.getText(),
                                 lastName.getText(),
                                 email.getText(),

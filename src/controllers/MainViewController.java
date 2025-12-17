@@ -47,6 +47,8 @@ public class MainViewController {
     public void initialize(){
         profileImage.setImage(new Image(getClass().getResource("/icons/user.png").toExternalForm()));
 
+        handleHomeClick() ;
+
 
 
 
@@ -56,31 +58,22 @@ public class MainViewController {
 
     @FXML
     private void handleHomeClick() {
-        try{
-            scene.getChildren().clear(); 
-            scene.getChildren().add(FXMLLoader.load(getClass().getResource("../views/home.fxml"))) ;
-            setActiveButton(btnHome);
-            // TODO: Navigation vers la page Home (déjà sur cette page)
-            System.out.println("Navigation: Home");
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+       navigateToPage("../views/home.fxml");
+       setActiveButton(btnHome);
     }
 
 
     @FXML
     private void handleProjetsClick() {
-        setActiveButton(btnProjets);
-        // TODO: Navigation vers la page Projets
-        System.out.println("Navigation: Projets");
+       navigateToPage("../views/projets.fxml");
+       setActiveButton(btnProjets);
     }
 
 
     @FXML
     private void handleTachesClick() {
-        setActiveButton(btnTaches);
-        // TODO: Navigation vers la page Tâches
-        System.out.println("Navigation: Tâches");
+       navigateToPage("../views/taches.fxml") ;
+       setActiveButton(btnTaches);
     }
 
 
@@ -90,9 +83,11 @@ public class MainViewController {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/components/ProfilePopup.fxml"));
         VBox popupContent = loader.load();
+        
     
         profilePopup = new Popup();
         profilePopup.getContent().add(popupContent) ;
+
         profilePopup.setAutoHide(true);
         profilePopup.setHideOnEscape(true);
 
@@ -116,6 +111,26 @@ public class MainViewController {
 
         // Ajouter la classe active au bouton sélectionné
         activeBtn.getStyleClass().add("active");
+    }
+
+
+    
+    private void navigateToPage(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
+            scene.getChildren().clear(); 
+            scene.getChildren().add(root) ;
+
+
+            System.out.println("Navigation réussie vers: " + fxmlPath);
+
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la navigation vers " + fxmlPath);
+            e.printStackTrace();
+
+        }
     }
 
 

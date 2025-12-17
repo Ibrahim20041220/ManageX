@@ -4,17 +4,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import utils.Globals;
-import database.tables.Attachment;
-import database.tables.Comment;
-import database.tables.MemberPermission;
-import database.tables.Notification;
-import database.tables.Permission;
-import database.tables.Project;
-import database.tables.ProjectMember;
-import database.tables.Role;
-import database.tables.RolePermission;
-import database.tables.Task;
-import database.tables.User;
+import database.tables.AttachmentTable;
+import database.tables.CommentTable;
+import database.tables.MemberPermissionTable;
+import database.tables.NotificationTable;
+import database.tables.PermissionTable;
+import database.tables.ProjectMemberTable;
+import database.tables.RoleTable;
+import database.tables.RolePermissionTable;
+import database.tables.TaskTable;
+import database.tables.UserTable;
+import database.tables.ProjectTable;
     
 public class OracleDB {
     private static final String URL = Globals.URL_DB;
@@ -40,17 +40,17 @@ public class OracleDB {
 
     public static void createTables(){
 
-        User.createTable();
-        Project.createTable();
-        Task.createTable();
-        Notification.createTable();
-        Role.createTable();
-        ProjectMember.createTable();
-        Permission.createTable();
-        RolePermission.createTable();
-        MemberPermission.createTable();
-        Comment.createTable();
-        Attachment.createTable();
+        UserTable.createTable();
+        ProjectTable.createTable();
+        TaskTable.createTable();
+        NotificationTable.createTable();
+        RoleTable.createTable();
+        ProjectMemberTable.createTable();
+        PermissionTable.createTable();
+        RolePermissionTable.createTable();
+        MemberPermissionTable.createTable();
+        CommentTable.createTable();
+        AttachmentTable.createTable();
     }
 
 

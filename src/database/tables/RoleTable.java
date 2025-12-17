@@ -8,7 +8,7 @@ import database.OracleDB;
 import java.sql.Statement;
 
 
-public class Role {
+public class RoleTable {
  
     public static void createTable() {
 

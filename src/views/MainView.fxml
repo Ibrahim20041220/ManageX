@@ -62,7 +62,7 @@
         <!-- Profile à droite -->
         <HBox alignment="CENTER_RIGHT" spacing="10" styleClass="profile-container">
             <padding>
-                <Insets right="20"/>
+                <Insets right="10"/>
             </padding>
 
             <Label fx:id="lblUsername" text="Utilisateur" styleClass="username-label">
