@@ -8,7 +8,7 @@ import database.OracleDB;
 import java.sql.Statement;
 
 
-public class Permission {
+public class PermissionTable {
  
     public static void createTable() {
 

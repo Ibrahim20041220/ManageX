@@ -7,8 +7,10 @@ import java.sql.SQLException;
 import database.OracleDB;
 import java.sql.Statement;
 
+import models.User;
 
-public class User {
+
+public class UserTable {
  
     public static void createTable() {
 
@@ -86,5 +88,42 @@ public class User {
         }
     }
 
+
+    public static User login(String email,String password){
+
+        String sql = """
+                    SELECT id,firstName,lastName,email,profession,phone,profilePic
+                    FROM USERS
+                    WHERE email = ? AND password = ?
+                    """ ;
+
+        try (Connection conn = OracleDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+
+            // Exécuter la requête
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("id") ;
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                String profession = rs.getString("profession") ;
+                String phone = rs.getString("phone") ;
+                String profilePic = rs.getString("profilePic") ;
+
+                return new User(id,firstName,lastName,email,phone,profession,profilePic) ;
+            }
+
+            return null ;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null ;
+        }
+ 
+    }
 
 }

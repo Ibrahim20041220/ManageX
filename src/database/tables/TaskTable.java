@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import database.OracleDB;
 
-public class Task {
+public class TaskTable {
 
     public static void createTable() {
         try (Connection conn = OracleDB.getConnection()) {

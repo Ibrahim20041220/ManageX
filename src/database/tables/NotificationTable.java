@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 import database.OracleDB;
 
-public class Notification {
+public class NotificationTable {
     
     public static void createTable(){
         try(Connection conn = OracleDB.getConnection()){

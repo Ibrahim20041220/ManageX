@@ -1,15 +1,16 @@
 package controllers;
 import utils.UserDAO;
-import database.OracleDB;
+import database.tables.UserTable;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utils.FloatingField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import models.User;
+import models.UserSession;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import java.io.IOException;
@@ -39,17 +40,25 @@ public class signInController {
         }else if (isValid) {
         lblMessage.setText("Bienvenue, " + username + " !");
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/home.fxml"));
-            Parent root = loader.load();
+        User user = UserTable.login(username, password) ;
 
-            Stage stage = (Stage) Username.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+        if(user != null){
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            UserSession.startSession(user);
+
+            try {
+                
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainView.fxml"));
+                Parent root = loader.load();
+
+                Stage stage = (Stage) Username.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }   
     } else {
             lblMessage.setText("username oU password est incorrect !!");
         }

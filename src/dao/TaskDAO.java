@@ -2,6 +2,7 @@ package dao;
 
 import models.Task;
 import database.OracleDB;
+import database.tables.TaskTable;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -210,17 +211,17 @@ public class TaskDAO {
 
     // Compter les tâches
     public int countTasks() {
-        return database.tables.Task.count();
+        return database.tables.TaskTable.count();
     }
 
     // Compter les tâches par statut
     public int countTasksByStatus(String status) {
-        return database.tables.Task.countByStatus(status);
+        return database.tables.TaskTable.countByStatus(status);
     }
 
     // Ajouter une nouvelle tâche
     public boolean addTask(Task task) {
-        return database.tables.Task.create(
+        return TaskTable.create(
                 task.getProjectId(),
                 task.getTitle(),
                 task.getDescription(),
@@ -231,7 +232,7 @@ public class TaskDAO {
 
     // Mettre à jour une tâche
     public boolean updateTask(Task task) {
-        return database.tables.Task.update(
+        return TaskTable.update(
                 task.getId(),
                 task.getTitle(),
                 task.getDescription(),
@@ -242,18 +243,18 @@ public class TaskDAO {
 
     // Mettre à jour le statut d'une tâche
     public boolean updateTaskStatus(int id, String status) {
-        return database.tables.Task.updateStatus(id, status);
+        return TaskTable.updateStatus(id, status);
     }
 
     // Basculer le statut d'une tâche (terminée/non terminée)
     public boolean toggleTaskCompletion(int id, boolean completed) {
         String newStatus = completed ? "Done" : "ToDo";
-        return database.tables.Task.updateStatus(id, newStatus);
+        return TaskTable.updateStatus(id, newStatus);
     }
 
     // Supprimer une tâche
     public boolean deleteTask(int id) {
-        return database.tables.Task.delete(id);
+        return TaskTable.delete(id);
     }
 
     // Méthode utilitaire pour extraire une tâche du ResultSet

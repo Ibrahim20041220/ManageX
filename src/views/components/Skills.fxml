@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      spacing="20"  stylesheets="@../../styles/skills.css" styleClass="root">
+      
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
+
+    <!-- Skills & Langues titre -->
+    <HBox spacing="10" >
+        <Label text="Skills et les langues" styleClass="title" />
+        <Label text="+ Add Skill" styleClass="add-skill" />
+    </HBox>
+
+    <HBox spacing="30">
+        <!-- Skills & Soft Skills gauche -->
+        <VBox spacing="20" styleClass="section-box">
+
+            <!-- Skills -->
+            <Label text="Skills" styleClass="section-title"/>
+            <VBox spacing="10">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="React" styleClass="skill-label" />
+                    <StackPane prefWidth="200" prefHeight="10" styleClass="progress-bar-bg">
+                        <StackPane styleClass="progress-bar-fill" prefWidth="190" />
+                    </StackPane>
+                    <Label text="95%" styleClass="skill-percent" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="TypeScript" styleClass="skill-label" />
+                    <StackPane prefWidth="200" prefHeight="10" styleClass="progress-bar-bg">
+                        <StackPane styleClass="progress-bar-fill" prefWidth="180" />
+                    </StackPane>
+                    <Label text="90%" styleClass="skill-percent" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="JavaScript" styleClass="skill-label" />
+                    <StackPane prefWidth="200" prefHeight="10" styleClass="progress-bar-bg">
+                        <StackPane styleClass="progress-bar-fill" prefWidth="190" />
+                    </StackPane>
+                    <Label text="95%" styleClass="skill-percent" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Next.js" styleClass="skill-label" />
+                    <StackPane prefWidth="200" prefHeight="10" styleClass="progress-bar-bg">
+                        <StackPane styleClass="progress-bar-fill" prefWidth="170" />
+                    </StackPane>
+                    <Label text="85%" styleClass="skill-percent" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Tailwind CSS" styleClass="skill-label" />
+                    <StackPane prefWidth="200" prefHeight="10" styleClass="progress-bar-bg">
+                        <StackPane styleClass="progress-bar-fill" prefWidth="180" />
+                    </StackPane>
+                    <Label text="90%" styleClass="skill-percent" />
+                </HBox>
+            </VBox>
+
+            <!-- Soft Skills -->
+            <Label text="Soft Skills" styleClass="section-title"/>
+            <VBox spacing="10">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Communication" styleClass="skill-label" />
+                    <StackPane prefWidth="200" prefHeight="10" styleClass="progress-bar-bg">
+                        <StackPane styleClass="progress-bar-fill" prefWidth="160" />
+                    </StackPane>
+                    <Label text="80%" styleClass="skill-percent" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Teamwork" styleClass="skill-label" />
+                    <StackPane prefWidth="200" prefHeight="10" styleClass="progress-bar-bg">
+                        <StackPane styleClass="progress-bar-fill" prefWidth="150" />
+                    </StackPane>
+                    <Label text="75%" styleClass="skill-percent" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Problem-solving" styleClass="skill-label" />
+                    <StackPane prefWidth="200" prefHeight="10" styleClass="progress-bar-bg">
+                        <StackPane styleClass="progress-bar-fill" prefWidth="150" />
+                    </StackPane>
+                    <Label text="75%" styleClass="skill-percent" />
+                </HBox>
+            </VBox>
+        </VBox>
+
+        <!-- Langues droite -->
+        <VBox spacing="20" styleClass="section-box">
+            <Label text="les langues" styleClass="section-title"/>
+            <VBox spacing="10">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="arabic" styleClass="skill-label" />
+                    <StackPane prefWidth="200" prefHeight="10" styleClass="progress-bar-bg">
+                        <StackPane styleClass="progress-bar-fill" prefWidth="160" />
+                    </StackPane>
+                    <Label text="80%" styleClass="skill-percent" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="french" styleClass="skill-label" />
+                    <StackPane prefWidth="200" prefHeight="10" styleClass="progress-bar-bg">
+                        <StackPane styleClass="progress-bar-fill" prefWidth="150" />
+                    </StackPane>
+                    <Label text="75%" styleClass="skill-percent" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="english" styleClass="skill-label" />
+                    <StackPane prefWidth="200" prefHeight="10" styleClass="progress-bar-bg">
+                        <StackPane styleClass="progress-bar-fill" prefWidth="150" />
+                    </StackPane>
+                    <Label text="75%" styleClass="skill-percent" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </HBox>
+</VBox>

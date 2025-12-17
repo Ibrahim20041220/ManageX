@@ -1,199 +1,208 @@
 package controllers;
 
+import java.io.IOException;
+import java.util.stream.Stream;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
+import javafx.stage.Popup;
+import models.User;
+import models.UserSession;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+public class ProfileController{
 
-public class profileController implements Initializable {
+    @FXML private ImageView avatarImage;
+    
+    @FXML private ImageView mapImage;
+    @FXML private ImageView emailImage;
+    @FXML private ImageView phoneImage;
+    @FXML private ImageView cameraImage ;
+    @FXML private ImageView editImage ;
 
-    @FXML private Button btnHome;
-    @FXML private Button btnProjets;
-    @FXML private Button btnTaches;
-    @FXML private Label lblUsername;
-    @FXML private Circle profileCircle;
-    @FXML private Label lblFullName;
-    @FXML private Label lblEmail;
-    @FXML private Label lblRole;
-    @FXML private TextField txtFullName;
-    @FXML private TextField txtEmail;
-    @FXML private TextField txtPhone;
-    @FXML private TextField txtDepartment;
-    @FXML private VBox vboxInfoTab;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Charger les données du profil
-        loadProfileData();
-    }
+    @FXML private Button OverviewButton ;
+    @FXML private Button SkillsButton ;
+    @FXML private Button ProjetsButton ;
+    @FXML private Button SettingsButton ;
 
-    private void loadProfileData() {
-        // TODO: Récupérer les vraies données depuis la session/base de données
-        String fullName = "Amine Lamaizi";
-        String email = "amine.lamaizi@example.com";
-        String role = "Chef de Projet";
+    @FXML private Button editButton ;
 
-        lblUsername.setText(fullName);
-        lblFullName.setText(fullName);
-        lblEmail.setText(email);
-        lblRole.setText(role);
+    @FXML private StackPane scene ;
 
-        txtFullName.setText(fullName);
-        txtEmail.setText(email);
-        txtPhone.setText("+212 6 12 34 56 78");
-        txtDepartment.setText("Développement");
-    }
+    @FXML private HBox viewMode;
+    @FXML private HBox editMode;
+    @FXML private TextField editName;
+
+
+    @FXML private Label name;
+    @FXML private Label profession ;
+    @FXML private Label localisation ;
+    @FXML private Label email ;
+    @FXML private Label phone ;
 
     @FXML
-    private void handleChangePhoto() {
-        System.out.println("Changer la photo de profil");
-        // TODO: Ouvrir un FileChooser pour sélectionner une image
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Changer la photo");
-        alert.setHeaderText(null);
-        alert.setContentText("Fonctionnalité en cours de développement");
-        alert.showAndWait();
-    }
+    public void initialize()  throws IOException{
 
-    @FXML
-    private void handleEditProfile() {
-        System.out.println("Modifier le profil");
+        avatarImage.setImage(new Image(getClass().getResource("/icons/user.png").toExternalForm())) ;
+        cameraImage.setImage(new Image(getClass().getResource("/icons/camera.png").toExternalForm())) ;
+        mapImage.setImage(new Image(getClass().getResource("/icons/localisateur.png").toExternalForm())) ;
+        emailImage.setImage(new Image(getClass().getResource("/icons/email.png").toExternalForm())) ;
+        phoneImage.setImage(new Image(getClass().getResource("/icons/telephone.png").toExternalForm())) ;
+        editImage.setImage(new Image(getClass().getResource("/icons/edit.png").toExternalForm())) ;
 
-        // Activer l'édition des champs
-        boolean isEditable = !txtFullName.isEditable();
+        //Initialize scene to overview
+        loadOverview(); 
 
-        txtFullName.setEditable(isEditable);
-        txtEmail.setEditable(isEditable);
-        txtPhone.setEditable(isEditable);
-        txtDepartment.setEditable(isEditable);
+        OverviewButton.setOnAction(e->{
+            loadOverview();
+        });
 
-        if (isEditable) {
-            // Mode édition
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Mode édition");
-            alert.setHeaderText(null);
-            alert.setContentText("Vous pouvez maintenant modifier vos informations.\nCliquez à nouveau pour sauvegarder.");
-            alert.showAndWait();
-        } else {
-            // Sauvegarder les modifications
-            saveProfileChanges();
-        }
-    }
+        SkillsButton.setOnAction(e->{
+            loadSkills();
+        });
 
-    private void saveProfileChanges() {
-        // TODO: Sauvegarder les modifications dans la base de données
-        String newName = txtFullName.getText();
-        String newEmail = txtEmail.getText();
-        String newPhone = txtPhone.getText();
-        String newDepartment = txtDepartment.getText();
+        ProjetsButton.setOnAction(e->{
+            loadProjets();
+        });
 
-        // Mettre à jour l'affichage
-        lblFullName.setText(newName);
-        lblEmail.setText(newEmail);
-        lblUsername.setText(newName);
+        SettingsButton.setOnAction(e->{
+            loadSettings();
+        });
 
-        System.out.println("Profil mis à jour:");
-        System.out.println("Nom: " + newName);
-        System.out.println("Email: " + newEmail);
-        System.out.println("Téléphone: " + newPhone);
-        System.out.println("Département: " + newDepartment);
+        editButton.setOnAction(e->{
+            try{
+                Popup editProfile = new Popup() ;
+                editProfile.getContent().add(FXMLLoader.load(getClass().getResource("/views/components/EditProfile.fxml"))) ;
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Succès");
-        alert.setHeaderText(null);
-        alert.setContentText("Vos modifications ont été enregistrées avec succès!");
-        alert.showAndWait();
-    }
+                editProfile.show(((Node) e.getSource()).getScene().getWindow()) ;
 
-    @FXML
-    private void handleLogout() {
-        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmAlert.setTitle("Déconnexion");
-        confirmAlert.setHeaderText(null);
-        confirmAlert.setContentText("Êtes-vous sûr de vouloir vous déconnecter?");
+                editProfile.setAutoHide(true);
+                editProfile.setHideOnEscape(true);
 
-        confirmAlert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                System.out.println("Déconnexion...");
-                // TODO: Nettoyer la session
-                // TODO: Rediriger vers la page de connexion
-                navigateToPage("/views/signIn.fxml", "Connexion - ManageX");
+
+            }catch(IOException ex){
+                ex.printStackTrace();
             }
         });
+       
+        User user = UserSession.getInstance().getUser() ;
+        name.setText(user.getFirstName() + " " +user.getLastName());
+        profession.setText(user.getProfession());
+        email.setText(user.getEmail());
+        phone.setText(user.getPhone());
+
+
+
     }
 
-    @FXML
-    private void showInfoTab() {
-        System.out.println("Afficher onglet Informations");
-        vboxInfoTab.setVisible(true);
-        vboxInfoTab.setManaged(true);
-    }
 
-    @FXML
-    private void showActivityTab() {
-        System.out.println("Afficher onglet Activité");
-        // TODO: Créer et afficher le contenu de l'onglet Activité
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Activité");
-        alert.setHeaderText(null);
-        alert.setContentText("Fonctionnalité en cours de développement");
-        alert.showAndWait();
-    }
-
-    @FXML
-    private void showSettingsTab() {
-        System.out.println("Afficher onglet Paramètres");
-        // TODO: Créer et afficher le contenu de l'onglet Paramètres
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Paramètres");
-        alert.setHeaderText(null);
-        alert.setContentText("Fonctionnalité en cours de développement");
-        alert.showAndWait();
-    }
-
-    @FXML
-    private void handleHomeClick() {
-        navigateToPage("/views/home.fxml", "Home - ManageX");
-    }
-
-    @FXML
-    private void handleProjetsClick() {
-        navigateToPage("/views/projets.fxml", "Projets - ManageX");
-    }
-
-    @FXML
-    private void handleTachesClick() {
-        navigateToPage("/views/taches.fxml", "Tâches - ManageX");
-    }
-
-    private void navigateToPage(String fxmlPath, String title) {
+    private void loadOverview(){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-            Stage stage = (Stage) btnHome.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle(title);
+
+            VBox overview = FXMLLoader.load(getClass().getResource("/views/components/Overview.fxml")) ;
+
+            scene.getChildren().clear(); 
+
+            scene.getChildren().add(overview) ;
+            OverviewButton.setStyle(" -fx-border-color: transparent transparent black transparent ; -fx-border-width: 0 0 2 0; ");
+
+            Stream.of(SkillsButton, ProjetsButton, SettingsButton).forEach(button -> button.setStyle("-fx-border-width: 0;"));
         } catch (IOException e) {
             e.printStackTrace();
-            showErrorAlert("Erreur de navigation", "Impossible de charger la page.");
         }
     }
 
-    private void showErrorAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    private void loadSkills(){
+        try {
+
+            VBox Skills = FXMLLoader.load(getClass().getResource("/views/components/Skills.fxml")) ;
+
+            scene.getChildren().clear(); 
+
+            scene.getChildren().add(Skills) ;
+            SkillsButton.setStyle(" -fx-border-color: transparent transparent black transparent ; -fx-border-width: 0 0 2 0; ");
+
+            Stream.of(OverviewButton, ProjetsButton, SettingsButton).forEach(button -> button.setStyle("-fx-border-width: 0;"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
+
+    private void loadProjets(){
+
+        try {
+
+            ScrollPane Projets = FXMLLoader.load(getClass().getResource("/views/components/Projets.fxml")) ;
+
+            scene.getChildren().clear(); 
+
+            scene.getChildren().add(Projets) ;
+            ProjetsButton.setStyle(" -fx-border-color: transparent transparent black transparent ; -fx-border-width: 0 0 2 0; ");
+
+            Stream.of(OverviewButton,SkillsButton, SettingsButton).forEach(button -> button.setStyle("-fx-border-width: 0;"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void loadSettings(){
+        try {
+
+            VBox Settings = FXMLLoader.load(getClass().getResource("/views/components/Settings.fxml")) ;
+
+            scene.getChildren().clear(); 
+
+            scene.getChildren().add(Settings) ;
+            SettingsButton.setStyle(" -fx-border-color: transparent transparent black transparent ; -fx-border-width: 0 0 2 0; ");
+
+            Stream.of(OverviewButton, ProjetsButton, SkillsButton).forEach(button -> button.setStyle("-fx-border-width: 0;"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    private void switchToEditMode() {
+        toggleMode(true);
+        editName.requestFocus(); 
+    }
+
+    @FXML
+    private void switchToViewMode() {
+        toggleMode(false);
+    }
+
+
+    @FXML
+    private void saveProfile() {
+        // Logique de mise à jour des labels
+        name.setText(editName.getText());
+        
+        // Puis on revient à la vue normale
+        toggleMode(false);
+    }
+
+    private void toggleMode(boolean isEditing) {
+        // La vue normale
+        viewMode.setVisible(!isEditing);
+        viewMode.setManaged(!isEditing);
+
+        // La vue édition
+        editMode.setVisible(isEditing);
+        editMode.setManaged(isEditing);
+    }
+
 }

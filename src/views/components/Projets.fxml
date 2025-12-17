@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+
+
+
+<ScrollPane  xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fitToWidth="true" fitToHeight="true"
+            pannable="true" 
+            hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+            fx:controller="controllers.projectController"  
+>
+    <TilePane
+        hgap="10" vgap="10"
+        prefColumns="2"
+        fx:id="root"
+    >
+        <padding>
+            <Insets top="5" right="5" bottom="5" left="5" />
+        </padding>
+
+
+
+
+
+    </TilePane>
+
+</ScrollPane>

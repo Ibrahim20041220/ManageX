@@ -9,7 +9,7 @@ import java.sql.Types;
 
 import database.OracleDB;
 
-public class Project {
+public class ProjectTable {
 
     public static void createTable(){
 

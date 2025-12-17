@@ -1,0 +1,63 @@
+
+.header {
+    -fx-background-color: linear-gradient(to right, #001a33, #cc0000 );
+}
+
+/* Logo Section */
+.logo-container {
+    -fx-spacing: 10;
+}
+
+.logo-circle {
+    -fx-fill: white;
+    -fx-opacity: 0.9;
+}
+
+.logo-text {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+/* Menu Buttons */
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 3 0;
+    -fx-padding: 10 15 10 15;
+    -fx-background-radius: 0;
+}
+
+.menu-button:hover {
+    -fx-border-color: rgba(255, 255, 255, 0.5);
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-button.active {
+    -fx-border-color: white;
+}
+
+
+/* Profile Section */
+.profile-container {
+    -fx-spacing: 10;
+}
+
+.username-label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.profile-button {
+    -fx-background-radius: 50%; 
+    -fx-min-width: 50px;      
+    -fx-min-height: 50px;    
+    -fx-max-width: 50px;
+    -fx-max-height: 50px;
+    -fx-background-color: white; 
+}
+

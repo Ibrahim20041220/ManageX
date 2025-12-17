@@ -24,19 +24,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
+import database.tables.TaskTable;
 
 public class homeController implements Initializable {
 
-    @FXML
-    private Button btnHome;
-
-    @FXML
-    private Button btnProjets;
-
-    @FXML
-    private Button btnTaches;
-
-    @FXML
     private Label lblUsername;
 
     @FXML
@@ -58,6 +49,7 @@ public class homeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        lblUsername = new Label() ;
         // Initialiser le DAO
         projectDAO = new ProjectDAO();
 
@@ -70,11 +62,7 @@ public class homeController implements Initializable {
         // Charger les projets récents
         loadRecentProjects();
 
-        // Ajouter l'événement click sur le cercle de profil
-        if (profileCircle != null) {
-            profileCircle.setOnMouseClicked(e -> handleProfileClick());
-            profileCircle.getStyleClass().add("clickable");
-        }
+        
     }
 
     private void loadUserData() {
@@ -88,7 +76,7 @@ public class homeController implements Initializable {
         lblProjetsCount.setText(String.valueOf(projectCount));
 
         // Récupérer le nombre de tâches depuis la base de données
-        int taskCount = database.tables.Task.count();
+        int taskCount = TaskTable.count();
         lblTachesCount.setText(String.valueOf(taskCount));
 
         // TODO: Récupérer le nombre de membres depuis la base de données
@@ -180,77 +168,16 @@ public class homeController implements Initializable {
         }
     }
 
-    @FXML
-    private void handleHomeClick() {
-        setActiveButton(btnHome);
-        // Déjà sur la page Home, pas besoin de recharger
-        System.out.println("Navigation: Home (déjà sur cette page)");
-    }
-
-    @FXML
-    private void handleProjetsClick() {
-        setActiveButton(btnProjets);
-        navigateToPage("/views/projets.fxml", "Projets - ManageX");
-    }
-
-    @FXML
-    private void handleTachesClick() {
-        setActiveButton(btnTaches);
-        navigateToPage("/views/taches.fxml", "Tâches - ManageX");
-    }
-
-    @FXML
-    private void handleProfileClick() {
-        // Navigation vers la page Profile en cliquant sur le cercle
-        navigateToPage("/views/profile.fxml", "Profile - ManageX");
-    }
-
-    private void setActiveButton(Button activeBtn) {
-        // Retirer la classe active de tous les boutons
-        btnHome.getStyleClass().remove("active");
-        btnProjets.getStyleClass().remove("active");
-        btnTaches.getStyleClass().remove("active");
-
-        // Ajouter la classe active au bouton sélectionné
-        if (activeBtn != null) {
-            activeBtn.getStyleClass().add("active");
-        }
-    }
-
-    private void navigateToPage(String fxmlPath, String title) {
-        try {
-            // Charger la nouvelle page FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-
-            // Obtenir la scène actuelle
-            Stage stage = (Stage) btnHome.getScene().getWindow();
-
-            // Créer une nouvelle scène avec la page chargée
-            Scene scene = new Scene(root);
-
-            // Changer la scène
-            stage.setScene(scene);
-            stage.setTitle(title);
-
-            System.out.println("Navigation réussie vers: " + fxmlPath);
-
-        } catch (IOException e) {
-            System.err.println("Erreur lors de la navigation vers " + fxmlPath);
-            e.printStackTrace();
-
-            // Afficher une alerte à l'utilisateur
-            showErrorAlert("Erreur de navigation",
-                    "Impossible de charger la page demandée.");
-        }
-    }
-
-    private void viewProject(Project project) {
-        System.out.println("Affichage du projet: " + project.getName() + " (ID: " + project.getId() + ")");
-
+    private void viewProject(String projectName) {
         // TODO: Implémenter l'affichage des détails du projet
         // Exemple: passer l'ID du projet au contrôleur de détails
         // navigateToProjectDetails(project.getId());
+    }
+
+    private void viewProject(Project project) {
+
+        System.out.println("Affichage du projet: " + project.getName() + " (ID: " + project.getId() + ")");
+        
     }
 
     private void showErrorAlert(String title, String message) {

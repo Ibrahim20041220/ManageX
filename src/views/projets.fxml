@@ -12,70 +12,12 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.projetsController"
             prefHeight="600.0" prefWidth="800.0"
-            stylesheets="@../styles/projets.css">
-
-    <!-- Header avec gradient -->
-    <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header"
-          prefHeight="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-
-        <HBox alignment="CENTER" spacing="10" styleClass="logo-container">
-            <padding>
-                <Insets left="20"/>
-            </padding>
-            <ImageView fitHeight="80" fitWidth="100" preserveRatio="true">
-                <image>
-                    <Image url="@../icons/ManageX.png"/>
-                </image>
-            </ImageView>
-            <Label text="ManageX" styleClass="logo-text">
-                <font>
-                    <Font name="System Bold" size="20.0"/>
-                </font>
-            </Label>
-        </HBox>
-
-        <!-- Menu au centre -->
-        <HBox alignment="CENTER" spacing="30" HBox.hgrow="ALWAYS">
-            <Button fx:id="btnHome" text="Home" styleClass="menu-button"
-                    onAction="#handleHomeClick">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </Button>
-
-            <Button fx:id="btnProjets" text="Projets" styleClass="menu-button, active"
-                    onAction="#handleProjetsClick">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </Button>
-
-            <Button fx:id="btnTaches" text="Tâches" styleClass="menu-button"
-                    onAction="#handleTachesClick">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </Button>
-        </HBox>
-
-        <!-- Profile à droite -->
-        <HBox alignment="CENTER_RIGHT" spacing="10" styleClass="profile-container">
-            <padding>
-                <Insets right="20"/>
-            </padding>
-            <Label fx:id="lblUsername" text="Utilisateur" styleClass="username-label">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </Label>
-            <Circle fx:id="profileCircle" radius="20" styleClass="profile-circle"/>
-        </HBox>
-    </HBox>
+            stylesheets="@../styles/projets.css">    
 
     <!-- Contenu principal -->
     <VBox spacing="20" styleClass="content-container"
           AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0"
-          AnchorPane.topAnchor="100.0" AnchorPane.bottomAnchor="20.0">
+          AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="20.0">
 
         <!-- Barre d'outils -->
         <HBox spacing="15" alignment="CENTER_LEFT" styleClass="toolbar">

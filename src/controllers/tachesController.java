@@ -24,11 +24,8 @@ import java.util.ResourceBundle;
 
 public class tachesController implements Initializable {
 
-    @FXML private Button btnHome;
-    @FXML private Button btnProjets;
-    @FXML private Button btnTaches;
-    @FXML private Label lblUsername;
-    @FXML private Circle profileCircle;
+
+   
     @FXML private ComboBox<String> cboPriorite;
     @FXML private ComboBox<String> cboProjet;
     @FXML private Button btnAddTask;
@@ -47,12 +44,8 @@ public class tachesController implements Initializable {
         taskDAO = new TaskDAO();
         projectDAO = new ProjectDAO();
 
-        lblUsername.setText("Amine Lamaizi");
 
-        if (profileCircle != null) {
-            profileCircle.setOnMouseClicked(e -> handleProfileClick());
-            profileCircle.getStyleClass().add("clickable");
-        }
+        
 
         // Initialiser les ComboBox
         cboPriorite.getItems().addAll("Toutes", "Haute", "Moyenne", "Basse");
@@ -393,39 +386,7 @@ public class tachesController implements Initializable {
         applyFilters();
     }
 
-    @FXML
-    private void handleHomeClick() {
-        navigateToPage("/views/home.fxml", "Home - ManageX");
-    }
-
-    @FXML
-    private void handleProjetsClick() {
-        navigateToPage("/views/projets.fxml", "Projets - ManageX");
-    }
-
-    @FXML
-    private void handleTachesClick() {
-        // Déjà sur cette page
-    }
-
-    @FXML
-    private void handleProfileClick() {
-        navigateToPage("/views/profile.fxml", "Profile - ManageX");
-    }
-
-    private void navigateToPage(String fxmlPath, String title) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-            Stage stage = (Stage) btnHome.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle(title);
-        } catch (IOException e) {
-            e.printStackTrace();
-            showErrorAlert("Erreur de navigation", "Impossible de charger la page.");
-        }
-    }
+   
 
     private void showErrorAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

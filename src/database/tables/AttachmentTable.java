@@ -8,7 +8,7 @@ import database.OracleDB;
 import java.sql.Statement;
 
 
-public class Attachment {
+public class AttachmentTable {
  
     public static void createTable() {
 

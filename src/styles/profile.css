@@ -1,8 +1,129 @@
+
+.profile-card {
+    -fx-background-color: #d1cccc11;
+    -fx-background-radius: 15px;
+    -fx-border-color: #4a90e2; 
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 2);
+}
+
+
+
+.avatar-container{
+    -fx-border-color: #4a90e2;
+    -fx-border-width: 3;
+    -fx-border-radius: 50;
+}
+
+.camera-icon {
+   
+}
+
+.camera-wrapper{
+    -fx-background-color : white ;
+    -fx-translate-x: -2;
+    -fx-translate-y: -2;
+    -fx-background-radius:50 ;
+
+}
+
+.user-name {
+    -fx-font-family: "Arial Bold", sans-serif;
+    -fx-font-size: 26px;
+    -fx-text-fill: -theme-text-primary;
+}
+
+.user-role {
+    -fx-font-family: "Arial", sans-serif;
+    -fx-font-size: 16px;
+    -fx-text-fill: -theme-text-secondary;
+    -fx-padding: 0 0 10 0;
+}
+
+/* Style pour les informations de contact */
+.contact-info .label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -theme-text-secondary;
+}
+
+.contact-info {
+    -fx-padding: 10 0 15 0;
+}
+
+/* Style commun à tous les boutons */
+.button {
+    -fx-background-radius: 8px;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-padding: 8 15 8 15;
+    -fx-font-weight: bold;
+}
+
+/* Bouton d'action principal */
+.button-primary {
+    -fx-background-color: -theme-primary-blue;
+    -fx-text-fill: -theme-text-primary;
+}
+
+.button-primary:hover {
+    -fx-background-color: -theme-primary-blue-hover;
+}
+
+.editButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: -theme-primary-blue;
+    -fx-border-color: #4a90e2;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-font-size: 13px;
+}
+
+/* .editButton:hover {
+    -fx-background-color: -theme-primary-blue;
+    -fx-text-fill: -theme-text-primary;
+} */
+
+.editOverview{
+    -fx-border-color: #4a90e2;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-font-size: 13px;
+}
+
+.OverviewLabel{
+    -fx-font-size : 20px ;
+    -fx-color-fit : #9b7f4f ;
+    -fx-font-weight : bold ;
+}
+
+
+.overview-card{
+    -fx-background-color: #d1cccc11;
+    -fx-background-radius: 15px;
+    -fx-border-color: #4a90e2; 
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+}
+
+.ButtonSwitch{
+    -fx-background-color : transparent ;
+    -fx-border-width : 0 ;
+}
+
+.Switch-Buttons{
+    -fx-border-color: #1111 ; 
+    -fx-border-width: 1px ;
+    -fx-border-radius: 10 10 0 0 ;
+    -fx-padding : 7px ;
+}
+
+
 /* Importation des styles communs */
-@import "home.css";
+/* @import "home.css"; */
 
 /* ScrollPane */
-.content-scroll {
+/* .content-scroll {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
@@ -11,14 +132,12 @@
     -fx-background-color: transparent;
 }
 
-/* En-tête du profil */
 .profile-header {
     -fx-background-color: white;
     -fx-background-radius: 12;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 10, 0, 0, 3);
 }
 
-/* Photo de profil large */
 .profile-photo-large {
     -fx-fill: linear-gradient(to bottom right, #667eea 0%, #764ba2 100%);
     -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 15, 0, 0, 5);
@@ -37,7 +156,6 @@
     -fx-background-color: #e5e7eb;
 }
 
-/* Informations principales */
 .profile-name {
     -fx-text-fill: #1f2937;
 }
@@ -51,7 +169,6 @@
     -fx-font-weight: 600;
 }
 
-/* Boutons d'action */
 .btn-edit-profile {
     -fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%);
     -fx-text-fill: white;
@@ -82,7 +199,6 @@
     -fx-background-color: #fee2e2;
 }
 
-/* Onglets */
 .tabs-container {
     -fx-background-color: white;
     -fx-background-radius: 10;
@@ -108,7 +224,6 @@
     -fx-text-fill: white;
 }
 
-/* Sections d'information */
 .info-section {
     -fx-background-color: white;
     -fx-background-radius: 12;
@@ -121,7 +236,6 @@
     -fx-font-weight: bold;
 }
 
-/* Grille d'informations */
 .info-grid {
     -fx-padding: 10 0 0 0;
 }
@@ -152,7 +266,6 @@
     -fx-background-color: white;
 }
 
-/* Boîtes de statistiques */
 .stat-box {
     -fx-background-color: #f9fafb;
     -fx-background-radius: 10;
@@ -169,8 +282,71 @@
     -fx-text-fill: #667eea;
 }
 
-/* Profil actif (cercle avec indicateur) */
 .active-profile {
     -fx-cursor: default;
     -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.4), 10, 0, 0, 0);
+} */
+
+
+
+/* La carte principale */
+.profile-card-edit {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #3498db; /* Une bordure bleue fine pour indiquer le mode édition */
+    -fx-border-width: 0.5;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(52, 152, 219, 0.1), 15, 0, 0, 0);
+}
+
+/* Champs de texte élégants (sans bordures épaisses) */
+.edit-field-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 5;
+    -fx-border-color: transparent transparent #dcdde1 transparent;
+}
+
+.edit-field-sub {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7f8c8d;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #dcdde1 transparent;
+}
+
+.edit-field-contact {
+    -fx-font-size: 12px;
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 2 0 2 0;
+}
+
+/* Boutons */
+.btn-save {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+.btn-save:hover { -fx-background-color: #2980b9; }
+
+.btn-cancel {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7f8c8d;
+    -fx-cursor: hand;
+}
+.btn-cancel:hover { -fx-text-fill: #e74c3c; }
+
+/* Overlay caméra sur l'avatar */
+.camera-overlay {
+    -fx-background-color: rgba(0,0,0,0.4);
+    -fx-background-radius: 50;
+    -fx-opacity: 0;
+    -fx-transition: 0.3s;
+}
+.avatar-container-edit:hover .camera-overlay {
+    -fx-opacity: 1;
 }

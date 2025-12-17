@@ -2,10 +2,12 @@ package dao;
 
 import models.Project;
 import database.OracleDB;
+import database.tables.ProjectTable;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import database.tables.ProjectTable;
 
 public class ProjectDAO {
 
@@ -171,7 +173,7 @@ public class ProjectDAO {
             endDate = new java.sql.Date(project.getEndDate().getTime());
         }
 
-        return database.tables.Project.create(
+        return ProjectTable.create(
                 project.getName(),
                 project.getCreatedBy(),
                 project.getDescription(),

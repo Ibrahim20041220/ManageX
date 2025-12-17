@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane prefWidth="720" prefHeight="420"
+            stylesheets="@../../styles/editProfile.css"
+            styleClass="overlay">
+
+    <VBox alignment="TOP_LEFT" spacing="20"
+          styleClass="modal"
+          AnchorPane.topAnchor="40"
+          AnchorPane.bottomAnchor="40"
+          AnchorPane.leftAnchor="40"
+          AnchorPane.rightAnchor="40">
+
+        <!-- Header -->
+        <HBox spacing="16">
+            <!-- Avatar -->
+            <StackPane>
+                <ImageView fitWidth="64" fitHeight="64"
+                           preserveRatio="true"
+                           styleClass="avatar"/>
+
+                <Button text="📷" styleClass="avatar-button"/>
+            </StackPane>
+
+            <VBox spacing="4">
+                <Label text="Edit Profile" styleClass="title"/>
+                <Label text="Update your personal information"
+                       styleClass="subtitle"/>
+            </VBox>
+        </HBox>
+
+        <!-- Form -->
+        <GridPane hgap="20" vgap="14">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <!-- Row 1 -->
+            <VBox spacing="6" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                <Label text="First Name" styleClass="label"/>
+                <TextField promptText="Job Title"/>
+            </VBox>
+
+            <VBox spacing="6" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                <Label text="Last Name" styleClass="label"/>
+                <TextField promptText="Last name"/>
+            </VBox>
+
+            <!-- Row 2 -->
+            <VBox spacing="6" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                <Label text="Email" styleClass="label"/>
+                <TextField promptText="/osbeapse"/>
+            </VBox>
+
+            <VBox spacing="6" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                <Label text="Phone" styleClass="label"/>
+                <TextField promptText="+1 555 123 4567"/>
+            </VBox>
+
+            <!-- Row 3 -->
+            <VBox spacing="6" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                <Label text="Location" styleClass="label"/>
+                <TextField promptText="Location"/>
+            </VBox>
+
+            <VBox spacing="6" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                <Label text="Phone" styleClass="label"/>
+                <TextField text="michael.smith@email.com"
+                           styleClass="focused"/>
+            </VBox>
+        </GridPane>
+
+        <!-- Footer -->
+        <HBox alignment="CENTER_RIGHT" spacing="14">
+            <Button text="Cancel" styleClass="btn-cancel"/>
+            <Button text="Save Changes" styleClass="btn-primary"/>
+        </HBox>
+
+    </VBox>
+</AnchorPane>

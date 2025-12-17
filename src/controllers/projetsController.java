@@ -9,7 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Circle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
@@ -21,11 +20,7 @@ import java.util.ResourceBundle;
 
 public class projetsController implements Initializable {
 
-    @FXML private Button btnHome;
-    @FXML private Button btnProjets;
-    @FXML private Button btnTaches;
-    @FXML private Label lblUsername;
-    @FXML private Circle profileCircle;
+
     @FXML private TextField txtSearch;
     @FXML private Button btnAddProject;
     @FXML private GridPane gridProjets;
@@ -38,13 +33,8 @@ public class projetsController implements Initializable {
         // Initialiser le DAO
         projectDAO = new ProjectDAO();
 
-        lblUsername.setText("Amine Lamaizi");
 
-        if (profileCircle != null) {
-            profileCircle.setOnMouseClicked(e -> handleProfileClick());
-            profileCircle.getStyleClass().add("clickable");
-        }
-
+        
         loadProjects();
 
         // Listener pour la recherche
@@ -286,40 +276,7 @@ public class projetsController implements Initializable {
         // navigateToProjectDetails(project.getId());
     }
 
-    @FXML
-    private void handleHomeClick() {
-        navigateToPage("/views/home.fxml", "Home - ManageX");
-    }
-
-    @FXML
-    private void handleProjetsClick() {
-        // Déjà sur cette page
-    }
-
-    @FXML
-    private void handleTachesClick() {
-        navigateToPage("/views/taches.fxml", "Tâches - ManageX");
-    }
-
-    @FXML
-    private void handleProfileClick() {
-        navigateToPage("/views/profile.fxml", "Profile - ManageX");
-    }
-
-    private void navigateToPage(String fxmlPath, String title) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-            Stage stage = (Stage) btnHome.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle(title);
-        } catch (IOException e) {
-            e.printStackTrace();
-            showErrorAlert("Erreur de navigation", "Impossible de charger la page.");
-        }
-    }
-
+   
     private void showErrorAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
