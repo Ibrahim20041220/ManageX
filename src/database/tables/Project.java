@@ -5,14 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.sql.Types;
 
 import database.OracleDB;
 
 public class Project {
 
-
     public static void createTable(){
-        
+
         try(Connection conn = OracleDB.getConnection()){
             //table project existes ?
             String sql1 = "SELECT TABLE_NAME FROM USER_TABLES WHERE TABLE_NAME='PROJECT' " ;
@@ -40,7 +40,7 @@ public class Project {
                 System.out.println("Table PROJECT créée avec succès !");
 
             }else{
-                 System.out.println("La table 'PROJECT' existe déjà.");
+                System.out.println("La table 'PROJECT' existe déjà.");
 
             }
 
@@ -50,21 +50,26 @@ public class Project {
 
         }
     }
-    
-    public static boolean create(String name,int createdBy,String descrition,String code,Date endDate){
+
+    public static boolean create(String name, int createdBy, String description, String code, Date endDate){
         try(Connection conn = OracleDB.getConnection()){
 
-            String sql =  """
+            String sql = """
                           INSERT INTO PROJECT(name,createdBy,description,code,endDate)
                             VALUES (?,?,?,?,?)
                         """;
 
             PreparedStatement stmt = conn.prepareStatement(sql) ;
-            stmt.setString(1,name);
-            stmt.setInt(2,createdBy);
-            stmt.setString(3,descrition);
-            stmt.setString(4,code);
-            stmt.setDate(5,endDate);
+            stmt.setString(1, name);
+            stmt.setInt(2, createdBy);
+            stmt.setString(3, description);
+            stmt.setString(4, code);
+
+            if(endDate != null) {
+                stmt.setDate(5, endDate);
+            } else {
+                stmt.setNull(5, Types.DATE);
+            }
 
             int rows = stmt.executeUpdate();
 
@@ -78,9 +83,135 @@ public class Project {
 
         }catch(SQLException e){
             e.printStackTrace();
-            System.out.println("erreur lors l'ajout de projet");
+            System.out.println("Erreur lors de l'ajout du projet");
             return false ;
         }
-        
+    }
+
+    public static boolean update(int id, String name, String description, String code, String status, Date endDate){
+        try(Connection conn = OracleDB.getConnection()){
+
+            String sql = """
+                          UPDATE PROJECT 
+                          SET name = ?, description = ?, code = ?, status = ?, endDate = ?, updatedAt = SYSDATE
+                          WHERE id = ?
+                        """;
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, name);
+            stmt.setString(2, description);
+            stmt.setString(3, code);
+            stmt.setString(4, status);
+
+            if(endDate != null) {
+                stmt.setDate(5, endDate);
+            } else {
+                stmt.setNull(5, Types.DATE);
+            }
+
+            stmt.setInt(6, id);
+
+            int rows = stmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Projet mis à jour avec succès !");
+                return true;
+            } else {
+                System.out.println("Aucun projet n'a été mis à jour.");
+                return false;
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            System.out.println("Erreur lors de la mise à jour du projet");
+            return false;
+        }
+    }
+
+    public static boolean delete(int id){
+        try(Connection conn = OracleDB.getConnection()){
+
+            String sql = "DELETE FROM PROJECT WHERE id = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+
+            int rows = stmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Projet supprimé avec succès !");
+                return true;
+            } else {
+                System.out.println("Aucun projet n'a été supprimé.");
+                return false;
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            System.out.println("Erreur lors de la suppression du projet");
+            return false;
+        }
+    }
+
+    public static ResultSet getAll(){
+        try{
+            Connection conn = OracleDB.getConnection();
+            String sql = "SELECT * FROM PROJECT ORDER BY updatedAt DESC";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            return stmt.executeQuery();
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            System.out.println("Erreur lors de la récupération des projets");
+            return null;
+        }
+    }
+
+    public static ResultSet getById(int id){
+        try{
+            Connection conn = OracleDB.getConnection();
+            String sql = "SELECT * FROM PROJECT WHERE id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            return stmt.executeQuery();
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            System.out.println("Erreur lors de la récupération du projet");
+            return null;
+        }
+    }
+
+    public static ResultSet getByStatus(String status){
+        try{
+            Connection conn = OracleDB.getConnection();
+            String sql = "SELECT * FROM PROJECT WHERE status = ? ORDER BY updatedAt DESC";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, status);
+            return stmt.executeQuery();
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            System.out.println("Erreur lors de la récupération des projets par statut");
+            return null;
+        }
+    }
+
+    public static int count(){
+        try(Connection conn = OracleDB.getConnection()){
+            String sql = "SELECT COUNT(*) as total FROM PROJECT";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()){
+                return rs.getInt("total");
+            }
+            return 0;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            System.out.println("Erreur lors du comptage des projets");
+            return 0;
+        }
     }
 }

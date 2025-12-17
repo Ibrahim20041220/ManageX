@@ -23,7 +23,7 @@ public class App extends Application {
         //Parent root = FXMLLoader.load(getClass().getResource("/views/signUp.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("/views/signUpLoginView.fxml"));
         StackPane rooth = new StackPane(root);
-        Scene scene = new Scene(rooth,700,600);
+        Scene scene = new Scene(rooth,800,600);
         scene.getStylesheets().addAll(getClass().getResource("/styles/main.css").toExternalForm(),
                 getClass().getResource("/styles/signUp.css").toExternalForm());
 

@@ -1,0 +1,227 @@
+
+.header {
+    -fx-background-color: linear-gradient(to right, #001a33, #cc0000 );
+}
+
+/* Logo Section */
+.logo-container {
+    -fx-spacing: 10;
+}
+
+.logo-circle {
+    -fx-fill: white;
+    -fx-opacity: 0.9;
+}
+
+.logo-text {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+/* Menu Buttons */
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 3 0;
+    -fx-padding: 10 15 10 15;
+    -fx-background-radius: 0;
+}
+
+.menu-button:hover {
+    -fx-border-color: rgba(255, 255, 255, 0.5);
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-button.active {
+    -fx-border-color: white;
+}
+
+/* Profile Section */
+.profile-container {
+    -fx-spacing: 10;
+}
+
+.username-label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.profile-circle {
+    -fx-fill: white;
+    -fx-opacity: 0.9;
+}
+
+
+.content-container {
+    -fx-background-color: #f5f7fa;
+}
+
+.welcome-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a365d;
+    -fx-padding: 0 0 10 0;
+}
+
+
+.stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+.stat-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 15, 0, 0, 5);
+    -fx-translate-y: -3;
+}
+
+.stat-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666;
+}
+
+.stat-value {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+}
+
+.stat-projets {
+    -fx-text-fill: #DC143C;
+}
+
+.stat-taches {
+    -fx-text-fill: #1a365d;
+}
+
+.stat-membres {
+    -fx-text-fill: #4169E1;
+}
+
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a365d;
+    -fx-padding: 10 0 5 0;
+}
+
+.projects-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.projects-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+.projects-list {
+    -fx-background-color: transparent;
+}
+
+.project-card {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 8, 0, 0, 2);
+    -fx-padding: 15;
+    -fx-cursor: hand;
+}
+
+.project-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 12, 0, 0, 4);
+    -fx-background-color: #fafbfc;
+}
+
+.status-indicator {
+    -fx-background-color: #4CAF50;
+    -fx-background-radius: 50%;
+}
+
+.project-name {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.project-date {
+    -fx-font-size: 12px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.btn-view-project {
+    -fx-background-color: linear-gradient(to right, #DC143C, #1a365d);
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20 8 20;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+}
+
+.btn-view-project:hover {
+    -fx-background-color: linear-gradient(to right, #b81030, #152a4d);
+    -fx-effect: dropshadow(gaussian, rgba(220, 20, 60, 0.3), 8, 0, 0, 2);
+}
+
+.no-projects-label {
+    -fx-text-fill: #999999;
+    -fx-font-style: italic;
+    -fx-padding: 20;
+    -fx-alignment: center;
+}
+
+
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 5;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #c0c0c0;
+    -fx-background-radius: 5;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #a0a0a0;
+}
+
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.stat-card,
+.project-card {
+    -fx-transition: all 0.3s ease;
+}
+
+/* Style pour le cercle de profil cliquable */
+.profile-circle.clickable {
+    -fx-cursor: hand;
+}
+
+.profile-circle.clickable:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+/* Animation de transition pour le hover */
+.profile-circle {
+    -fx-transition: all 0.3s ease;
+}

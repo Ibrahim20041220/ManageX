@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.homeController"
+            prefHeight="600.0" prefWidth="800.0"
+            stylesheets="@../styles/home.css">
+
+    <!-- Header avec gradient -->
+    <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header"
+          prefHeight="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+        <HBox alignment="CENTER" spacing="10" styleClass="logo-container">
+            <padding>
+                <Insets left="20"/>
+            </padding>
+            <ImageView fitHeight="80" fitWidth="100" preserveRatio="true">
+                <image>
+                    <Image url="@../icons/ManageX.png"/>
+                </image>
+            </ImageView>
+            <Label text="ManageX" styleClass="logo-text">
+                <font>
+                    <Font name="System Bold" size="20.0"/>
+                </font>
+            </Label>
+        </HBox>
+
+        <!-- Menu au centre (sans Profile) -->
+        <HBox alignment="CENTER" spacing="30" HBox.hgrow="ALWAYS">
+            <Button fx:id="btnHome" text="Home" styleClass="menu-button, active"
+                    onAction="#handleHomeClick">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Button>
+
+            <Button fx:id="btnProjets" text="Projets" styleClass="menu-button"
+                    onAction="#handleProjetsClick">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Button>
+
+            <Button fx:id="btnTaches" text="Tâches" styleClass="menu-button"
+                    onAction="#handleTachesClick">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Button>
+        </HBox>
+
+        <!-- Profile à droite (cliquable via le controller) -->
+        <HBox alignment="CENTER_RIGHT" spacing="10" styleClass="profile-container">
+            <padding>
+                <Insets right="20"/>
+            </padding>
+            <Label fx:id="lblUsername" text="Utilisateur" styleClass="username-label">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+            <!-- Le clic est géré dans le controller avec setOnMouseClicked -->
+            <Circle fx:id="profileCircle" radius="20" styleClass="profile-circle"/>
+        </HBox>
+    </HBox>
+
+    <!-- Contenu principal -->
+    <VBox spacing="20" styleClass="content-container"
+          AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0"
+          AnchorPane.topAnchor="100.0" AnchorPane.bottomAnchor="20.0">
+
+        <!-- Titre de bienvenue -->
+        <Label text="Bienvenue sur votre espace de gestion de projet" styleClass="welcome-title">
+            <font>
+                <Font name="System Bold" size="24.0"/>
+            </font>
+        </Label>
+
+        <!-- Cartes de statistiques -->
+        <HBox spacing="20" alignment="CENTER">
+            <!-- Carte Projets -->
+            <VBox alignment="CENTER" spacing="10" styleClass="stat-card"
+                  prefWidth="200" prefHeight="150">
+                <padding>
+                    <Insets top="20" bottom="20" left="20" right="20"/>
+                </padding>
+                <Label text="Projets Actifs" styleClass="stat-label">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="lblProjetsCount" text="0" styleClass="stat-value, stat-projets">
+                    <font>
+                        <Font name="System Bold" size="36.0"/>
+                    </font>
+                </Label>
+            </VBox>
+
+            <!-- Carte Tâches -->
+            <VBox alignment="CENTER" spacing="10" styleClass="stat-card"
+                  prefWidth="200" prefHeight="150">
+                <padding>
+                    <Insets top="20" bottom="20" left="20" right="20"/>
+                </padding>
+                <Label text="Tâches En Cours" styleClass="stat-label">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="lblTachesCount" text="0" styleClass="stat-value, stat-taches">
+                    <font>
+                        <Font name="System Bold" size="36.0"/>
+                    </font>
+                </Label>
+            </VBox>
+
+            <!-- Carte Équipe -->
+            <VBox alignment="CENTER" spacing="10" styleClass="stat-card"
+                  prefWidth="200" prefHeight="150">
+                <padding>
+                    <Insets top="20" bottom="20" left="20" right="20"/>
+                </padding>
+                <Label text="Membres Équipe" styleClass="stat-label">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="lblMembresCount" text="0" styleClass="stat-value, stat-membres">
+                    <font>
+                        <Font name="System Bold" size="36.0"/>
+                    </font>
+                </Label>
+            </VBox>
+        </HBox>
+
+        <!-- Section projets récents -->
+        <VBox spacing="15" VBox.vgrow="ALWAYS">
+            <Label text="Projets Récents" styleClass="section-title">
+                <font>
+                    <Font name="System Bold" size="18.0"/>
+                </font>
+            </Label>
+
+            <!-- Liste de projets -->
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="projects-scroll">
+                <VBox fx:id="vboxProjetsRecents" spacing="10" styleClass="projects-list">
+                    <Label text="Aucun projet récent" styleClass="no-projects-label">
+                        <font>
+                            <Font size="14.0"/>
+                        </font>
+                    </Label>
+                </VBox>
+            </ScrollPane>
+        </VBox>
+    </VBox>
+
+</AnchorPane>

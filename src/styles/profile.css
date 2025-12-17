@@ -1,0 +1,176 @@
+/* Importation des styles communs */
+@import "home.css";
+
+/* ScrollPane */
+.content-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.content-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* En-tête du profil */
+.profile-header {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 10, 0, 0, 3);
+}
+
+/* Photo de profil large */
+.profile-photo-large {
+    -fx-fill: linear-gradient(to bottom right, #667eea 0%, #764ba2 100%);
+    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 15, 0, 0, 5);
+}
+
+.btn-change-photo {
+    -fx-background-color: #f3f4f6;
+    -fx-text-fill: #4b5563;
+    -fx-background-radius: 6;
+    -fx-padding: 6 12;
+    -fx-cursor: hand;
+    -fx-font-weight: 600;
+}
+
+.btn-change-photo:hover {
+    -fx-background-color: #e5e7eb;
+}
+
+/* Informations principales */
+.profile-name {
+    -fx-text-fill: #1f2937;
+}
+
+.profile-email {
+    -fx-text-fill: #6b7280;
+}
+
+.profile-role {
+    -fx-text-fill: #667eea;
+    -fx-font-weight: 600;
+}
+
+/* Boutons d'action */
+.btn-edit-profile {
+    -fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%);
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 8, 0, 0, 3);
+}
+
+.btn-edit-profile:hover {
+    -fx-background-color: linear-gradient(to right, #5568d3 0%, #6a3f8f 100%);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.btn-logout {
+    -fx-background-color: white;
+    -fx-text-fill: #dc2626;
+    -fx-border-color: #dc2626;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.btn-logout:hover {
+    -fx-background-color: #fee2e2;
+}
+
+/* Onglets */
+.tabs-container {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 5, 0, 0, 2);
+}
+
+.profile-tab {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6b7280;
+    -fx-background-radius: 6;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-font-weight: 600;
+}
+
+.profile-tab:hover {
+    -fx-background-color: #f3f4f6;
+}
+
+.profile-tab.tab-active {
+    -fx-background-color: #667eea;
+    -fx-text-fill: white;
+}
+
+/* Sections d'information */
+.info-section {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 8, 0, 0, 2);
+}
+
+.section-title {
+    -fx-text-fill: #1f2937;
+    -fx-font-weight: bold;
+}
+
+/* Grille d'informations */
+.info-grid {
+    -fx-padding: 10 0 0 0;
+}
+
+.info-label {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.info-field {
+    -fx-background-color: #f9fafb;
+    -fx-background-radius: 6;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-padding: 10 15;
+    -fx-text-fill: #1f2937;
+}
+
+.info-field:focused {
+    -fx-border-color: #667eea;
+    -fx-border-width: 2;
+    -fx-background-color: white;
+}
+
+.info-field:editable {
+    -fx-background-color: white;
+}
+
+/* Boîtes de statistiques */
+.stat-box {
+    -fx-background-color: #f9fafb;
+    -fx-background-radius: 10;
+    -fx-padding: 20 30;
+    -fx-min-width: 150;
+}
+
+.stat-box-label {
+    -fx-text-fill: #6b7280;
+    -fx-font-weight: 600;
+}
+
+.stat-box-value {
+    -fx-text-fill: #667eea;
+}
+
+/* Profil actif (cercle avec indicateur) */
+.active-profile {
+    -fx-cursor: default;
+    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.4), 10, 0, 0, 0);
+}

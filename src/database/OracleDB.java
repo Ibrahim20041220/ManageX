@@ -9,12 +9,12 @@ import database.tables.Comment;
 import database.tables.MemberPermission;
 import database.tables.Notification;
 import database.tables.Permission;
-import database.tables.Project;
 import database.tables.ProjectMember;
 import database.tables.Role;
 import database.tables.RolePermission;
 import database.tables.Task;
 import database.tables.User;
+import database.tables.Project;
     
 public class OracleDB {
     private static final String URL = Globals.URL_DB;

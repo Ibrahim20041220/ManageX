@@ -1,131 +1,179 @@
+
 .text-field {
-    -fx-border-color: #0078ff;
-    -fx-border-radius: 4px;
-    -fx-background-radius: 4px;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 12 15 12 15;
+    -fx-background-color: rgba(255, 255, 255, 0.95);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 8, 0, 0, 2);
+    -fx-font-size: 14px;
 }
+
+.text-field:focused {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(204, 0, 0, 0.25), 12, 0, 0, 3);
+}
+
 .label {
-    -fx-font-size: 12px;
-    -fx-transition: all 0.2s ease;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: 500;
 }
 
 #Header {
-    -fx-font-size: 25px;
-    -fx-font-weight: bold ;
-    -fx-text-fill: #333333;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(to right, #cc0000, #001a33);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0, 0, 2);
 }
 
 #uploadButton {
-    -fx-background-color: transparent; 
-    -fx-border-color: transparent;  
-    -fx-text-fill: #393333ff;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #cc0000;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
 }
 
 #uploadButton:hover {
-    -fx-underline : true ; 
-    -fx-cursor: hand; 
+    -fx-text-fill: #001a33;
+    -fx-underline: true;
 }
 
 #imageContainer {
-    -fx-border-color: #765e54;
-    -fx-border-width:2;
-    -fx-border-radius:50%;
-    -fx-background-radius:50%;
-    -fx-padding:2;
+    -fx-border-color: linear-gradient(to right, #cc0000, #001a33);
+    -fx-border-width: 3;
+    -fx-border-radius: 60px;
+    -fx-background-radius: 60px;
+    -fx-padding: 3;
+    -fx-effect: dropshadow(gaussian, rgba(204, 0, 0, 0.3), 10, 0, 0, 3);
 }
 
 #profileHBox {
-    -fx-padding:10px;
-    -fx-border-style:dashed; 
-    -fx-border-width:2; 
-    -fx-border-radius:5px;
+    -fx-padding: 20px;
+    -fx-border-color: linear-gradient(to right, rgba(204, 0, 0, 0.3), rgba(0, 26, 51, 0.3));
+    -fx-border-width: 2;
+    -fx-border-radius: 15px;
+    -fx-background-color: rgba(248, 249, 250, 0.5);
+    -fx-background-radius: 15px;
 }
 
 #rootVBox {
+    -fx-padding: 20px;
     -fx-background-color: white;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
-    -fx-padding : 10px ;
 }
 
-
 #okButton {
-    -fx-background-color: #ee9e85;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 15px;
+    -fx-background-color: linear-gradient(to right, #cc0000, #001a33);
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, gray, 10, 0.5, -1, 1);
+    -fx-font-size: 14px;
+    -fx-padding: 12 30 12 30;
+    -fx-effect: dropshadow(gaussian, rgba(204, 0, 0, 0.4), 12, 0, 0, 4);
+    -fx-cursor: hand;
 }
 
 #okButton:hover {
-    -fx-background-color: #ffb69e; 
-    -fx-cursor: hand; 
+    -fx-background-color: linear-gradient(to right, #e60000, #002d5c);
+    -fx-effect: dropshadow(gaussian, rgba(204, 0, 0, 0.6), 15, 0, 0, 6);
+    -fx-scale-y: 1.02;
+    -fx-scale-x: 1.02;
 }
 
 #okButton:pressed {
-    -fx-background-color: #d9735c; 
-    -fx-effect: none;
+    -fx-background-color: linear-gradient(to right, #b30000, #00152b);
+    -fx-effect: dropshadow(gaussian, rgba(204, 0, 0, 0.3), 8, 0, 0, 2);
+    -fx-scale-y: 0.98;
+    -fx-scale-x: 0.98;
 }
 
-
-.field{
-    -fx-border-color: #d0d0d0;
-    -fx-border-width: 1px; 
-    -fx-background-color: transparent; 
-    -fx-padding: 10 5 5 5; 
-    -fx-border-radius: 5px;
+.field {
+    -fx-border-color: linear-gradient(to right, rgba(204, 0, 0, 0.4), rgba(0, 26, 51, 0.4));
+    -fx-border-width: 2px;
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-padding: 12 10 12 10;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 5, 0, 0, 2);
 }
 
-.field_invalid{
+.field:focused {
+    -fx-border-color: linear-gradient(to right, #cc0000, #001a33);
+    -fx-background-color: white;
+}
+
+.field_invalid {
     -fx-border-color: #e32727;
-    -fx-border-width: 1px; 
-    -fx-background-color: transparent; 
-    -fx-padding: 10 5 5 5; 
-    -fx-border-radius: 5px;
+    -fx-border-width: 2px;
+    -fx-background-color: rgba(227, 39, 39, 0.05);
+    -fx-padding: 12 10 12 10;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(227, 39, 39, 0.2), 8, 0, 0, 2);
 }
 
 .error-tooltip {
-    -fx-background-color: #e95e4e; 
-    -fx-text-fill: white;          
-    -fx-font-size: 12px;
-    -fx-padding: 8px;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 0.5, 0, 2);
-}
-
-
-#msgPopUp{
-    -fx-background-color: rgba(255,80,80,0.9); 
+    -fx-background-color: linear-gradient(to right, #e32727, #b31f1f);
     -fx-text-fill: white;
-    -fx-padding: 8; 
-    -fx-background-radius: 6;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-padding: 10px 15px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(227, 39, 39, 0.4), 10, 0, 0, 4);
+}
+
+#msgPopUp {
+    -fx-background-color: linear-gradient(to right, rgba(204, 0, 0, 0.95), rgba(179, 31, 31, 0.95));
+    -fx-text-fill: white;
+    -fx-padding: 15px 20px;
+    -fx-background-radius: 12px;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 0, 5);
 }
 
 
-#login{
-    -fx-background-color: #000000;
+#welcomeLabel {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 3);
 }
 
-#rootStackPane{
-    -fx-background-color : white ;
+#enterDetailsLabel {
+    -fx-font-size: 16px;
+    -fx-text-fill: rgba(255, 255, 255, 0.9);
+    -fx-font-weight: 500;
 }
 
-#welcomeLabel{
-    -fx-font-size : 30px ;
-    -fx-font-weight : bold ;
-    -fx-text-fill : white ;
+#loginButton {
+    -fx-pref-width: 120;
+    -fx-pref-height: 45;
+    -fx-border-radius: 25px;
+    -fx-background-radius: 25px;
+    -fx-background-color: linear-gradient(to right, #cc0000, #001a33);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(204, 0, 0, 0.5), 15, 0, 0, 5);
 }
 
-#enterDetailsLabel{
-    -fx-font-size : 15px ;
-    -fx-text-fill : white ;
+#loginButton:hover {
+    -fx-background-color: linear-gradient(to right, #e60000, #002d5c);
+    -fx-effect: dropshadow(gaussian, rgba(204, 0, 0, 0.7), 20, 0, 0, 7);
+    -fx-scale-y: 1.05;
+    -fx-scale-x: 1.05;
 }
 
-#loginButton{
-    -fx-pref-width: 70;
-    -fx-pref-height: 30;
-    -fx-border-radius : 15px ;
-    -fx-background-color : #cdc6c0 ;
-    -fx-background-radius : 15px ;
+#loginButton:pressed {
+    -fx-background-color: linear-gradient(to right, #b30000, #00152b);
+    -fx-effect: dropshadow(gaussian, rgba(204, 0, 0, 0.4), 10, 0, 0, 3);
+    -fx-scale-y: 0.95;
+    -fx-scale-x: 0.95;
 }
