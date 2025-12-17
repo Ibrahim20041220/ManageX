@@ -19,7 +19,7 @@ import javafx.stage.Popup;
 import models.User;
 import models.UserSession;
 
-public class profileController{
+public class ProfileController{
 
     @FXML private ImageView avatarImage;
     
