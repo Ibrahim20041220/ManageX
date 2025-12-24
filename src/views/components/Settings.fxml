@@ -1,58 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      spacing="20" stylesheets="@/styles/Settings.css" styleClass="root">
-    
-    <padding >
-        <Insets top="10" bottom="10" left ="10" right="10" />
-    </padding>
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.SettingsController"
+            stylesheets="@../../styles/Settings.css"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED">
 
-    <!-- SECTION : Changer mot de passe -->
-    <VBox styleClass="section-box">
-        <Label text="Changer le mot passase" styleClass="section-title"/>
-        <Label text="Mettez à jour votre de pasase régulièrement pour plus de sécurité."
-               styleClass="section-description"/>
+    <content>
+        <VBox spacing="20" styleClass="root">
 
-        <Button text="Changer le passase" styleClass="primary-button"/>
-    </VBox>
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
 
+            <!-- ================= CARTE PASSWORD ================= -->
+            <VBox styleClass="section-box" spacing="12">
+                <!-- ... (Contenu de la section mot de passe - INCHANGÉ) ... -->
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <ImageView fitHeight="16" fitWidth="16">
+                        <image>
+                            <Image url="@/icons/padlock.png"/>
+                        </image>
+                    </ImageView>
+                    <Label text="Sécurité du compte" styleClass="section-title"/>
+                </HBox>
 
-    <!-- SECTION : Visibilité du profil -->
-    <VBox styleClass="section-box">
+                <Label text="Changez votre mot de passe pour sécuriser votre compte."
+                       styleClass="section-description"/>
 
-        <Label text="Visibilité du profil" styleClass="section-title"/>
-        <Label text="Gérez qui peut consulter le informations de voure profil."
-               styleClass="section-description"/>
+                <Button fx:id="togglePasswordFormBtn"
+                        text="Changer le mot de passe"
+                        styleClass="primary-button"
+                        onAction="#togglePasswordFormVisibility"/>
 
-        <HBox alignment="CENTER_LEFT" spacing="10">
-            <Label text="👁 Public" styleClass="toggle-label"/>
-            <ToggleButton selected="true" styleClass="toggle-switch"/>
-        </HBox>
+                <VBox fx:id="passwordForm" spacing="10" visible="false" managed="false" styleClass="password-form">
+                    <Separator/>
+                    <PasswordField fx:id="oldPasswordField" promptText="Ancien mot de passe"/>
+                    <PasswordField fx:id="newPasswordField" promptText="Nouveau mot de passe"/>
+                    <PasswordField fx:id="confirmPasswordField" promptText="Confirmer le mot de passe"/>
+                    <Label fx:id="passwordErrorLabel" styleClass="error-label" managed="false" visible="false"/>
+                    <HBox spacing="10" alignment="CENTER_RIGHT">
+                        <Button fx:id="cancelPasswordBtn" text="Annuler" styleClass="secondary-button" onAction="#hidePasswordForm"/>
+                        <Button fx:id="savePasswordBtn" text="Enregistrer" styleClass="primary-button" onAction="#handleUpdatePassword"/>
+                    </HBox>
+                </VBox>
+            </VBox>
 
-        <HBox alignment="CENTER_LEFT" spacing="10">
-            <Label text="👥 Connexions selelment" styleClass="toggle-label"/>
-            <ToggleButton selected="true" styleClass="toggle-switch"/>
-        </HBox>
+            <!-- ================= SUPPRESSION COMPTE (MODIFIÉ) ================= -->
+            <VBox styleClass="section-box" spacing="12">
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <ImageView fitHeight="16" fitWidth="16">
+                        <image>
+                            <Image url="@/icons/warning.png"/>
+                        </image>
+                    </ImageView>
+                    <Label text="Supprimer le compte" styleClass="section-title"/>
+                </HBox>
 
-        <HBox alignment="CENTER_LEFT" spacing="10">
-            <Label text="👁 Privé" styleClass="toggle-label"/>
-            <ToggleButton styleClass="toggle-switch"/>
-        </HBox>
+                <Label text="Cette action est irréversible."
+                       styleClass="section-description"/>
+                       
+                <!-- ÉTAT INITIAL (Visible par défaut) -->
+                <HBox fx:id="deleteInitialPane" alignment="CENTER_LEFT">
+                    <Button fx:id="deleteAccountButton"
+                            text="Supprimer le compte"
+                            styleClass="danger-button"
+                            onAction="#showDeleteConfirmation"/>
+                </HBox>
 
-    </VBox>
+                <!-- ÉTAT DE CONFIRMATION (Caché par défaut) -->
+                <VBox fx:id="deleteConfirmPane" spacing="10" visible="false" managed="false">
+                    <Separator/>
+                    <Label text="Êtes-vous absolument sûr ? Cette action ne peut pas être annulée."
+                           styleClass="section-description" style="-fx-font-weight: bold;"/>
+                           
+                    <HBox spacing="10" alignment="CENTER_RIGHT">
+                        <Button fx:id="cancelDeleteBtn"
+                                text="Annuler"
+                                styleClass="secondary-button"
+                                onAction="#hideDeleteConfirmation"/>
+                        
+                        <Button fx:id="confirmDeleteBtn"
+                                text="Oui, supprimer mon compte"
+                                styleClass="danger-button"
+                                onAction="#handleConfirmDelete"/>
+                    </HBox>
+                </VBox>
+            </VBox>
 
-
-    <!-- SECTION : Supprimer compte -->
-    <VBox styleClass="section-box">
-        <Label text="Supprimer le comnte" styleClass="section-title"/>
-        <Label text="Cela frinpurirper toutes vous dourées et accès à l'application."
-               styleClass="section-description"/>
-
-        <Button text="🗑  Supprimer le comunte" styleClass="danger-button"/>
-    </VBox>
-
-</VBox>
+        </VBox>
+    </content>
+</ScrollPane>

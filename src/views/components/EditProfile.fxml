@@ -4,12 +4,14 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import utils.FloatingField?>
 
-<AnchorPane prefWidth="720" prefHeight="420"
+<AnchorPane prefWidth="720" prefHeight="420" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.EditProfileController"
             stylesheets="@../../styles/editProfile.css"
-            styleClass="overlay">
+            styleClass="overlay" >
 
-    <VBox alignment="TOP_LEFT" spacing="20"
+    <VBox alignment="CENTER" spacing="20"
           styleClass="modal"
           AnchorPane.topAnchor="40"
           AnchorPane.bottomAnchor="40"
@@ -17,69 +19,50 @@
           AnchorPane.rightAnchor="40">
 
         <!-- Header -->
-        <HBox spacing="16">
+        <!-- <HBox spacing="16"> -->
             <!-- Avatar -->
-            <StackPane>
-                <ImageView fitWidth="64" fitHeight="64"
+            <StackPane fx:id="avatarStackPane" styleClass="avatar-container" minWidth="80" minHeight="80" maxWidth="80" maxHeight="80" onMouseClicked="#onAvatarClick">
+                <ImageView fx:id="avatar" fitWidth="64" fitHeight="64"
                            preserveRatio="true"
                            styleClass="avatar"/>
 
-                <Button text="📷" styleClass="avatar-button"/>
+                <StackPane styleClass="camera-wrapper" minWidth="25" minHeight="25" maxWidth="25" maxHeight="25" StackPane.alignment="BOTTOM_RIGHT">
+                    <ImageView fx:id="cameraIcon" fitHeight="15" fitWidth="15" styleClass="camera-icon" />
+                </StackPane>
             </StackPane>
 
-            <VBox spacing="4">
-                <Label text="Edit Profile" styleClass="title"/>
-                <Label text="Update your personal information"
-                       styleClass="subtitle"/>
-            </VBox>
-        </HBox>
-
-        <!-- Form -->
+           
         <GridPane hgap="20" vgap="14">
             <columnConstraints>
                 <ColumnConstraints percentWidth="50"/>
                 <ColumnConstraints percentWidth="50"/>
             </columnConstraints>
 
-            <!-- Row 1 -->
-            <VBox spacing="6" GridPane.rowIndex="0" GridPane.columnIndex="0">
-                <Label text="First Name" styleClass="label"/>
-                <TextField promptText="Job Title"/>
-            </VBox>
+            <!-- Row 0 -->
+            <FloatingField fx:id="firstName" labelText="First Name"
+                        GridPane.rowIndex="0" GridPane.columnIndex="0"/>
 
-            <VBox spacing="6" GridPane.rowIndex="0" GridPane.columnIndex="1">
-                <Label text="Last Name" styleClass="label"/>
-                <TextField promptText="Last name"/>
-            </VBox>
+            <FloatingField fx:id="lastName" labelText="Last Name"
+                        GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <!-- Row 1 -->
+            <FloatingField fx:id="email" labelText="Email"
+                        GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+
+            <FloatingField fx:id="phone" labelText="Phone number"
+                        GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
             <!-- Row 2 -->
-            <VBox spacing="6" GridPane.rowIndex="1" GridPane.columnIndex="0">
-                <Label text="Email" styleClass="label"/>
-                <TextField promptText="/osbeapse"/>
-            </VBox>
-
-            <VBox spacing="6" GridPane.rowIndex="1" GridPane.columnIndex="1">
-                <Label text="Phone" styleClass="label"/>
-                <TextField promptText="+1 555 123 4567"/>
-            </VBox>
-
-            <!-- Row 3 -->
-            <VBox spacing="6" GridPane.rowIndex="2" GridPane.columnIndex="0">
-                <Label text="Location" styleClass="label"/>
-                <TextField promptText="Location"/>
-            </VBox>
-
-            <VBox spacing="6" GridPane.rowIndex="2" GridPane.columnIndex="1">
-                <Label text="Phone" styleClass="label"/>
-                <TextField text="michael.smith@email.com"
-                           styleClass="focused"/>
-            </VBox>
+            <FloatingField fx:id="profession" labelText="Profession"
+                        GridPane.rowIndex="2" GridPane.columnIndex="0"
+                        GridPane.columnSpan="2"/>
         </GridPane>
+
 
         <!-- Footer -->
         <HBox alignment="CENTER_RIGHT" spacing="14">
-            <Button text="Cancel" styleClass="btn-cancel"/>
-            <Button text="Save Changes" styleClass="btn-primary"/>
+            <Button text="Cancel" onAction="#Cancel" styleClass="btn-cancel"/>
+            <Button text="Save" onAction="#Save" styleClass="btn-primary"/>
         </HBox>
 
     </VBox>

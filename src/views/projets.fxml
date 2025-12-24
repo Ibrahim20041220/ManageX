@@ -84,6 +84,7 @@
                 </padding>
             </GridPane>
         </ScrollPane>
+        
     </VBox>
 
 </AnchorPane>

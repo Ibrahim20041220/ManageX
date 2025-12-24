@@ -4,6 +4,7 @@ import dao.ProjectDAO;
 import dao.TaskDAO;
 import models.Project;
 import models.Task;
+import utils.AnimatedAlert;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
@@ -28,6 +30,9 @@ public class tachesController implements Initializable {
    
     @FXML private ComboBox<String> cboPriorite;
     @FXML private ComboBox<String> cboProjet;
+
+
+
     @FXML private Button btnAddTask;
     @FXML private Label lblTodoCount;
     @FXML private Label lblInProgressCount;
@@ -37,6 +42,17 @@ public class tachesController implements Initializable {
     private TaskDAO taskDAO;
     private ProjectDAO projectDAO;
     private String currentStatusFilter = "Tous"; // Tous, ToDo, InProgress, Done
+
+    @FXML private StackPane rootPane;
+    @FXML private VBox addTaskPopup;
+
+    @FXML private TextField txtTitle;
+    @FXML private TextArea txtDescription;
+    @FXML private ComboBox<String> popupProject;
+    @FXML private ComboBox<String> popupPriority;
+
+    @FXML private Region backgroundRect;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -235,9 +251,22 @@ public class tachesController implements Initializable {
         if (taskDAO.toggleTaskCompletion(taskId, completed)) {
             loadStatistics();
             applyFilters();
-            showSuccessMessage("Statut de la tâche mis à jour !");
+            //showSuccessMessage("Statut de la tâche mis à jour !");
+
+            // AnimatedAlert alert = new AnimatedAlert("Statut de la tâche mis à jour !") ;
+            // alert.show(rootPane);
+            AnimatedAlert alert =
+        new AnimatedAlert("Statut de la tâche mis à jour !",AnimatedAlert.AlertType.SUCCESS);
+
+alert.show(rootPane);
+
+
         } else {
-            showErrorAlert("Erreur", "Impossible de mettre à jour le statut de la tâche.");
+            // showErrorAlert("Erreur", "Impossible de mettre à jour le statut de la tâche.");
+            //AnimatedAlert alert = new AnimatedAlert("Impossible de mettre à jour le statut de la tâche.") ;
+            AnimatedAlert alert = new AnimatedAlert("Impossible de mettre à jour la tâche",AnimatedAlert.AlertType.ERROR);
+
+            alert.show(rootPane);
         }
     }
 
@@ -280,87 +309,44 @@ public class tachesController implements Initializable {
 
     @FXML
     private void handleAddTask() {
-        // Dialogue simple pour ajouter une tâche
-        Dialog<Task> dialog = new Dialog<>();
-        dialog.setTitle("Nouvelle Tâche");
-        dialog.setHeaderText("Créer une nouvelle tâche");
-
-        ButtonType addButtonType = new ButtonType("Ajouter", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(addButtonType, ButtonType.CANCEL);
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
-
-        TextField titleField = new TextField();
-        titleField.setPromptText("Titre");
-
-        TextArea descField = new TextArea();
-        descField.setPromptText("Description");
-        descField.setPrefRowCount(3);
-
-        ComboBox<String> projectCombo = new ComboBox<>();
-        List<Project> projects = projectDAO.getAllProjects();
-        for (Project p : projects) {
-            projectCombo.getItems().add(p.getName());
-        }
-        if (!projects.isEmpty()) {
-            projectCombo.setValue(projects.get(0).getName());
+        popupProject.getItems().clear();
+        for (Project p : projectDAO.getAllProjects()) {
+            popupProject.getItems().add(p.getName());
         }
 
-        ComboBox<String> priorityCombo = new ComboBox<>();
-        priorityCombo.getItems().addAll("Basse (1)", "Moyenne (3)", "Haute (5)");
-        priorityCombo.setValue("Moyenne (3)");
+        popupPriority.getItems().setAll("Basse", "Moyenne", "Haute");
+        popupPriority.setValue("Moyenne");
 
-        grid.add(new Label("Titre:"), 0, 0);
-        grid.add(titleField, 1, 0);
-        grid.add(new Label("Description:"), 0, 1);
-        grid.add(descField, 1, 1);
-        grid.add(new Label("Projet:"), 0, 2);
-        grid.add(projectCombo, 1, 2);
-        grid.add(new Label("Priorité:"), 0, 3);
-        grid.add(priorityCombo, 1, 3);
 
-        dialog.getDialogPane().setContent(grid);
+        backgroundRect.prefWidthProperty().bind(rootPane.widthProperty());
+        backgroundRect.prefHeightProperty().bind(rootPane.heightProperty());
 
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == addButtonType) {
-                Task newTask = new Task();
-                newTask.setTitle(titleField.getText());
-                newTask.setDescription(descField.getText());
-                newTask.setStatus("ToDo");
-
-                // Trouver l'ID du projet
-                String selectedProject = projectCombo.getValue();
-                for (Project p : projects) {
-                    if (p.getName().equals(selectedProject)) {
-                        newTask.setProjectId(p.getId());
-                        break;
-                    }
-                }
-
-                // Convertir la priorité
-                String priorityStr = priorityCombo.getValue();
-                if (priorityStr.contains("5")) newTask.setPriority(5);
-                else if (priorityStr.contains("3")) newTask.setPriority(3);
-                else newTask.setPriority(1);
-
-                return newTask;
-            }
-            return null;
-        });
-
-        dialog.showAndWait().ifPresent(task -> {
-            if (taskDAO.addTask(task)) {
-                showSuccessMessage("Tâche créée avec succès !");
-                loadStatistics();
-                applyFilters();
-            } else {
-                showErrorAlert("Erreur", "Impossible de créer la tâche.");
-            }
-        });
+        addTaskPopup.setVisible(true);
+        addTaskPopup.setManaged(true);
     }
+
+
+    @FXML
+    private void closeAddTaskPopup() {
+        addTaskPopup.setVisible(false);
+        addTaskPopup.setManaged(false);
+    }
+
+    @FXML
+    private void confirmAddTask() {
+        Task task = new Task();
+        task.setTitle(txtTitle.getText());
+        task.setDescription(txtDescription.getText());
+        task.setStatus("ToDo");
+
+        taskDAO.addTask(task);
+
+        closeAddTaskPopup();
+        loadStatistics();
+        applyFilters();
+    }
+
+
 
     @FXML
     private void showAllTasks() {
@@ -404,4 +390,6 @@ public class tachesController implements Initializable {
         alert.setHeaderText(message);
         alert.show();
     }
+
+
 }

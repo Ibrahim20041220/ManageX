@@ -16,7 +16,7 @@ public class App extends Application {
         Connection conn = OracleDB.getConnection();
         if (conn != null) {
             System.out.println("Connexion OK !");
-            OracleDB.createTables();
+            OracleDB.createTables_Procedures();
         }
 
         //Parent root = FXMLLoader.load(getClass().getResource("/views/signUp.fxml"));

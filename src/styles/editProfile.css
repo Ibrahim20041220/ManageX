@@ -54,16 +54,18 @@
     -fx-border-width: 2;
 }
 
-/* Camera button */
-.avatar-button {
-    -fx-background-color: white;
-    -fx-background-radius: 100;
-    -fx-pref-width: 26;
-    -fx-pref-height: 26;
-    -fx-translate-x: 20;
-    -fx-translate-y: 20;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
+.camera-wrapper{
+    -fx-background-color : white ;
+    -fx-translate-x: -2;
+    -fx-translate-y: -2;
+    -fx-background-radius:50 ;
+
+}
+
+.avatar-container{
+    -fx-border-color: #4a90e2;
+    -fx-border-width: 3;
+    -fx-border-radius: 50;
 }
 
 /* Buttons */
