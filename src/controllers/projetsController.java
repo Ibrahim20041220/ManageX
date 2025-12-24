@@ -1,113 +1,122 @@
 package controllers;
 
 import dao.ProjectDAO;
-import models.Project;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import models.Project;
+import java.util.Arrays;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class projetsController implements Initializable {
+public class projetsController {
 
-
+    @FXML private GridPane gridProjets;
     @FXML private TextField txtSearch;
     @FXML private Button btnAddProject;
-    @FXML private GridPane gridProjets;
+    @FXML private Button btnFilterAll;
+    @FXML private Button btnFilterEnCours;
+    @FXML private Button btnFilterTermines;
+    @FXML private Button btnFilterEnPause;
 
     private ProjectDAO projectDAO;
-    private String currentFilter = "ALL"; // ALL, ACTIVE, COMPLETED, ARCHIVED
+    private int currentUserId; // ID de l'utilisateur connecté (à définir selon votre système d'authentification)
+    private List<Project> allProjects;
+    private String currentFilter = "ALL";
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Initialiser le DAO
+    public void initialize() {
         projectDAO = new ProjectDAO();
+        currentUserId = 1; // À remplacer par l'ID de l'utilisateur connecté
 
-
-        
         loadProjects();
-
-        // Listener pour la recherche
-        txtSearch.textProperty().addListener((obs, oldVal, newVal) -> filterProjects(newVal));
+        setupSearchListener();
     }
 
+    /**
+     * Définir l'ID de l'utilisateur connecté
+     */
+    public void setCurrentUserId(int userId) {
+        this.currentUserId = userId;
+    }
+
+    /**
+     * Charger tous les projets
+     */
     private void loadProjects() {
+        allProjects = projectDAO.getAllProjects();
+        displayProjects(allProjects);
+    }
+
+    /**
+     * Afficher les projets dans la grille
+     */
+    private void displayProjects(List<Project> projects) {
         gridProjets.getChildren().clear();
 
-        // Récupérer les projets selon le filtre actuel
-        List<Project> projects;
-
-        switch (currentFilter) {
-            case "ACTIVE":
-                projects = projectDAO.getProjectsByStatus("ACTIVE");
-                break;
-            case "COMPLETED":
-                projects = projectDAO.getProjectsByStatus("COMPLETED");
-                break;
-            case "ARCHIVED":
-                projects = projectDAO.getProjectsByStatus("ARCHIVED");
-                break;
-            default:
-                projects = projectDAO.getAllProjects();
-                break;
-        }
-
-        // Si la recherche est active, filtrer les résultats
-        String searchText = txtSearch.getText();
-        if (searchText != null && !searchText.trim().isEmpty()) {
-            projects = projectDAO.searchProjectsByName(searchText);
-        }
-
         if (projects.isEmpty()) {
-            Label noProjects = new Label("Aucun projet trouvé");
-            noProjects.getStyleClass().add("no-projects-label");
-            GridPane.setColumnIndex(noProjects, 0);
-            GridPane.setRowIndex(noProjects, 0);
-            gridProjets.getChildren().add(noProjects);
+            showEmptyState();
             return;
         }
 
         int col = 0;
         int row = 0;
+        int maxCols = 4; // MODIFIÉ : 3 colonnes au lieu de 2
 
         for (Project project : projects) {
-            VBox card = createProjectCard(project);
-            gridProjets.add(card, col, row);
+            VBox projectCard = createProjectCard(project);
+
+            // On s'assure que la carte prend une largeur raisonnable pour 3 colonnes
+            projectCard.setPrefWidth(250);
+
+            gridProjets.add(projectCard, col, row);
 
             col++;
-            if (col == 3) {
+            if (col >= maxCols) {
                 col = 0;
                 row++;
             }
         }
     }
 
+    /**
+     * Créer une carte de projet
+     */
     private VBox createProjectCard(Project project) {
         VBox card = new VBox(15);
         card.getStyleClass().add("project-card");
-        card.setPrefWidth(220);
-        card.setPrefHeight(180);
         card.setPadding(new Insets(20));
+        card.setPrefWidth(350);
+        card.setMinHeight(200);
 
         // En-tête avec statut
         HBox header = new HBox(10);
         header.setAlignment(Pos.CENTER_LEFT);
 
-        Pane statusDot = new Pane();
+        Circle statusDot = new Circle(6);
         statusDot.getStyleClass().add("status-dot");
-        statusDot.getStyleClass().add(getStatusClass(project.getStatus()));
-        statusDot.setPrefSize(10, 10);
-        statusDot.setMaxSize(10, 10);
+
+        switch (project.getStatus()) {
+            case "ACTIVE":
+                statusDot.getStyleClass().add("status-active");
+                break;
+            case "COMPLETED":
+                statusDot.getStyleClass().add("status-completed");
+                break;
+            case "ARCHIVED":
+                statusDot.getStyleClass().add("status-paused");
+                break;
+        }
 
         Label statusLabel = new Label(project.getStatusDisplay());
         statusLabel.getStyleClass().add("status-label");
@@ -119,177 +128,246 @@ public class projetsController implements Initializable {
         nameLabel.getStyleClass().add("project-name");
         nameLabel.setWrapText(true);
 
-        // Barre de progression
-        VBox progressBox = new VBox(5);
+        // Code du projet
+        Label codeLabel = new Label(project.getCode());
+        codeLabel.getStyleClass().add("tasks-label");
 
+        // Description
+        Label descLabel = new Label(project.getDescription());
+        descLabel.getStyleClass().add("tasks-label");
+        descLabel.setWrapText(true);
+        descLabel.setMaxHeight(40);
+
+        // Progression
         HBox progressHeader = new HBox();
         progressHeader.setAlignment(Pos.CENTER_LEFT);
-        Label progressLabel = new Label("Progression");
-        progressLabel.getStyleClass().add("progress-label");
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        // TODO: Calculer la progression réelle basée sur les tâches
-        double progressValue = calculateProjectProgress(project);
-        Label progressValueLabel = new Label(String.format("%.0f%%", progressValue));
-        progressValueLabel.getStyleClass().add("progress-value");
-        progressHeader.getChildren().addAll(progressLabel, spacer, progressValueLabel);
+        Label progressLabel = new Label("PROGRESSION");
+        progressLabel.getStyleClass().add("progress-label");
 
-        ProgressBar progressBar = new ProgressBar();
-        progressBar.setProgress(progressValue / 100.0);
-        progressBar.setPrefWidth(180);
+        Label progressValue = new Label(String.format("%.0f%%", project.getProgress()));
+        progressValue.getStyleClass().add("progress-value");
+
+        progressHeader.getChildren().addAll(progressLabel, spacer, progressValue);
+
+        ProgressBar progressBar = new ProgressBar(project.getProgress() / 100.0);
         progressBar.getStyleClass().add("project-progress");
+        progressBar.setPrefWidth(Double.MAX_VALUE);
 
-        progressBox.getChildren().addAll(progressHeader, progressBar);
-
-        // Footer avec nombre de tâches
-        HBox footer = new HBox(5);
-        footer.setAlignment(Pos.CENTER_LEFT);
-
-        // TODO: Récupérer le nombre réel de tâches depuis la base de données
-        int taskCount = project.getTaskCount(); // Vous devrez ajouter une méthode dans ProjectDAO
-        Label tasksLabel = new Label(taskCount + " tâches");
+        // Nombre de tâches
+        Label tasksLabel = new Label(project.getTaskCount() + " tâches");
         tasksLabel.getStyleClass().add("tasks-label");
-        footer.getChildren().add(tasksLabel);
 
-        card.getChildren().addAll(header, nameLabel, progressBox, footer);
+        // Ajouter tous les éléments à la carte
+        card.getChildren().addAll(
+                header,
+                nameLabel,
+                codeLabel,
+                descLabel,
+                progressHeader,
+                progressBar,
+                tasksLabel
+        );
 
-        // Événement de clic
-        card.setOnMouseClicked(e -> viewProjectDetails(project));
+        // Rendre la carte cliquable
+        card.setOnMouseClicked(event -> handleProjectClick(project));
         card.getStyleClass().add("clickable");
 
         return card;
     }
 
-    private String getStatusClass(String status) {
-        switch (status) {
-            case "ACTIVE": return "status-active";
-            case "COMPLETED": return "status-completed";
-            case "ARCHIVED": return "status-paused";
-            default: return "status-active";
-        }
+    /**
+     * Afficher un état vide
+     */
+    private void showEmptyState() {
+        VBox emptyState = new VBox(20);
+        emptyState.setAlignment(Pos.CENTER);
+        emptyState.setPadding(new Insets(50));
+
+        Label emptyLabel = new Label("Aucun projet trouvé");
+        emptyLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: #6b7280; -fx-font-weight: bold;");
+
+        Label emptySubLabel = new Label("Créez votre premier projet pour commencer");
+        emptySubLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #9ca3af;");
+
+        emptyState.getChildren().addAll(emptyLabel, emptySubLabel);
+        gridProjets.add(emptyState, 0, 0, 2, 1);
     }
 
-    private double calculateProjectProgress(Project project) {
-        // TODO: Calculer la progression basée sur les tâches complétées
-        // Pour l'instant, retourner 100% si le projet est terminé, sinon un pourcentage basé sur l'état
-        if ("COMPLETED".equals(project.getStatus())) {
-            return 100.0;
-        } else if ("ARCHIVED".equals(project.getStatus())) {
-            return 25.0;
-        } else {
-            return 60.0; // Valeur par défaut pour les projets actifs
-        }
+    /**
+     * Gérer le clic sur un projet
+     */
+    private void handleProjectClick(Project project) {
+        System.out.println("Projet cliqué : " + project.getName());
+        // TODO: Ouvrir la page de détails du projet
     }
 
-    private void filterProjects(String searchText) {
-        if (searchText == null || searchText.trim().isEmpty()) {
-            loadProjects();
-        } else {
-            gridProjets.getChildren().clear();
-            List<Project> projects = projectDAO.searchProjectsByName(searchText);
-
-            if (projects.isEmpty()) {
-                Label noProjects = new Label("Aucun projet trouvé pour \"" + searchText + "\"");
-                noProjects.getStyleClass().add("no-projects-label");
-                GridPane.setColumnIndex(noProjects, 0);
-                GridPane.setRowIndex(noProjects, 0);
-                gridProjets.getChildren().add(noProjects);
-                return;
-            }
-
-            int col = 0;
-            int row = 0;
-            for (Project project : projects) {
-                VBox card = createProjectCard(project);
-                gridProjets.add(card, col, row);
-                col++;
-                if (col == 3) {
-                    col = 0;
-                    row++;
-                }
-            }
-        }
-    }
-
+    /**
+     * Gérer l'ajout d'un nouveau projet
+     */
     @FXML
     private void handleAddProject() {
-        System.out.println("Ajouter un nouveau projet");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/addProject.fxml"));
+            Parent root = loader.load();
 
-        // TODO: Ouvrir un dialogue pour ajouter un projet
-        // Exemple de dialogue simple
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Nouveau Projet");
-        dialog.setHeaderText("Créer un nouveau projet");
-        dialog.setContentText("Nom du projet:");
+            // Récupérer le contrôleur
+            AddProjectController controller = loader.getController();
+            controller.setCurrentUserId(currentUserId);
+            controller.setOnProjectAdded(this::loadProjects);
 
-        dialog.showAndWait().ifPresent(projectName -> {
-            if (!projectName.trim().isEmpty()) {
-                Project newProject = new Project();
-                newProject.setName(projectName);
-                newProject.setDescription(""); // TODO: Demander la description
-                newProject.setCode("PROJ-" + System.currentTimeMillis()); // Code temporaire
-                newProject.setStatus("ACTIVE");
-                newProject.setCreatedBy(1); // TODO: Récupérer l'ID de l'utilisateur connecté
+            // Créer une nouvelle fenêtre modale
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
 
-                if (projectDAO.addProject(newProject)) {
-                    showSuccessAlert("Succès", "Le projet a été créé avec succès!");
-                    loadProjects(); // Recharger la liste
-                } else {
-                    showErrorAlert("Erreur", "Impossible de créer le projet.");
-                }
+            // 1. CHANGER ICI : Passer en style TRANSPARENT pour permettre les arrondis
+            stage.initStyle(StageStyle.TRANSPARENT);
+
+            stage.setTitle("Nouveau Projet");
+
+            // 2. CONFIGURER LA SCÈNE
+            Scene scene = new Scene(root);
+            // Rendre le fond de la scène transparent pour voir les coins arrondis du CSS
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+
+            stage.setScene(scene);
+
+            // Centrer la fenêtre
+            stage.centerOnScreen();
+
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur",
+                    "Impossible d'ouvrir le formulaire d'ajout.");
+        }
+    }
+    /**
+     * Configurer le listener de recherche
+     */
+    private void setupSearchListener() {
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null || newValue.trim().isEmpty()) {
+                applyFilter(currentFilter);
+            } else {
+                searchProjects(newValue.trim());
             }
         });
     }
 
+    /**
+     * Rechercher des projets
+     */
+    private void searchProjects(String searchText) {
+        List<Project> results = projectDAO.searchProjectsByName(searchText);
+        displayProjects(results);
+    }
+
+    /**
+     * Filtrer tous les projets
+     */
     @FXML
     private void filterAll() {
-        System.out.println("Filtre: Tous");
         currentFilter = "ALL";
-        loadProjects();
+        applyFilter("ALL");
+        updateFilterButtons("ALL");
     }
 
+    /**
+     * Filtrer les projets en cours
+     */
     @FXML
     private void filterEnCours() {
-        System.out.println("Filtre: En cours");
         currentFilter = "ACTIVE";
-        loadProjects();
+        applyFilter("ACTIVE");
+        updateFilterButtons("ACTIVE");
     }
 
+    /**
+     * Filtrer les projets terminés
+     */
     @FXML
     private void filterTermines() {
-        System.out.println("Filtre: Terminés");
         currentFilter = "COMPLETED";
-        loadProjects();
+        applyFilter("COMPLETED");
+        updateFilterButtons("COMPLETED");
     }
 
+    /**
+     * Filtrer les projets en pause
+     */
     @FXML
     private void filterEnPause() {
-        System.out.println("Filtre: En pause");
         currentFilter = "ARCHIVED";
-        loadProjects();
+        applyFilter("ARCHIVED");
+        updateFilterButtons("ARCHIVED");
     }
 
-    private void viewProjectDetails(Project project) {
-        System.out.println("Voir détails du projet: " + project.getName() + " (ID: " + project.getId() + ")");
-        // TODO: Navigation vers page de détails avec l'ID du projet
-        // navigateToProjectDetails(project.getId());
+    /**
+     * Appliquer un filtre
+     */
+    private void applyFilter(String status) {
+        List<Project> filteredProjects;
+
+        if ("ALL".equals(status)) {
+            filteredProjects = projectDAO.getAllProjects();
+        } else {
+            filteredProjects = projectDAO.getProjectsByStatus(status);
+        }
+
+        displayProjects(filteredProjects);
     }
 
-   
-    private void showErrorAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    /**
+     * Mettre à jour l'apparence des boutons de filtre
+     */
+    private void updateFilterButtons(String activeFilter) {
+        // Liste de tous les boutons pour simplifier le traitement
+        List<Button> buttons = Arrays.asList(btnFilterAll, btnFilterEnCours, btnFilterTermines, btnFilterEnPause);
+
+        // On retire la classe active de tous les boutons
+        for (Button btn : buttons) {
+            btn.getStyleClass().remove("filter-active");
+        }
+
+        // On ajoute la classe active au bouton correspondant
+        switch (activeFilter) {
+            case "ALL": btnFilterAll.getStyleClass().add("filter-active"); break;
+            case "ACTIVE": btnFilterEnCours.getStyleClass().add("filter-active"); break;
+            case "COMPLETED": btnFilterTermines.getStyleClass().add("filter-active"); break;
+            case "ARCHIVED": btnFilterEnPause.getStyleClass().add("filter-active"); break;
+        }
+    }
+
+    /**
+     * Afficher une alerte
+     */
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(content);
         alert.showAndWait();
     }
+    @FXML
+    private void handleOpenJoinModal() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/joinProject.fxml"));
+            Parent root = loader.load();
 
-    private void showSuccessAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+            JoinProjectController controller = loader.getController();
+            controller.init(currentUserId, this::loadProjects);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.TRANSPARENT);
+            Scene scene = new Scene(root);
+            scene.setFill(Color.TRANSPARENT);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) { e.printStackTrace(); }
     }
 }

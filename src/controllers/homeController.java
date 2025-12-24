@@ -27,71 +27,35 @@ import java.util.concurrent.TimeUnit;
 import database.tables.TaskTable;
 
 public class homeController implements Initializable {
+    @FXML private Label lblProjetsCount, lblTachesCount, lblMembresCount;
+    @FXML private VBox vboxProjetsRecents;
 
-    private Label lblUsername;
-
-    @FXML
-    private Label lblProjetsCount;
-
-    @FXML
-    private Label lblTachesCount;
-
-    @FXML
-    private Label lblMembresCount;
-
-    @FXML
-    private VBox vboxProjetsRecents;
-
-    @FXML
-    private Circle profileCircle;
-
-    private ProjectDAO projectDAO;
+    private ProjectDAO projectDAO = new ProjectDAO();
+    private int currentUserId = 1; // À récupérer depuis votre session réelle
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        lblUsername = new Label() ;
-        // Initialiser le DAO
-        projectDAO = new ProjectDAO();
-
-        // Charger les données de l'utilisateur
-        loadUserData();
-
-        // Charger les statistiques
+    public void initialize(URL url, ResourceBundle rb) {
         loadStatistics();
-
-        // Charger les projets récents
         loadRecentProjects();
-
-        
-    }
-
-    private void loadUserData() {
-        // TODO: Récupérer le nom de l'utilisateur depuis la session
-        lblUsername.setText("Amine Lamaizi");
     }
 
     private void loadStatistics() {
-        // Récupérer le nombre de projets depuis la base de données
-        int projectCount = projectDAO.countProjects();
-        lblProjetsCount.setText(String.valueOf(projectCount));
+        // Stats filtrées pour l'utilisateur
+        int userProjects = projectDAO.countProjectsForUser(currentUserId);
+        lblProjetsCount.setText(String.valueOf(userProjects));
 
-        // Récupérer le nombre de tâches depuis la base de données
-        int taskCount = TaskTable.count();
-        lblTachesCount.setText(String.valueOf(taskCount));
-
-        // TODO: Récupérer le nombre de membres depuis la base de données
-        lblMembresCount.setText("0");
+        // On peut aussi filtrer les tâches ici si nécessaire
+        lblTachesCount.setText(String.valueOf(TaskTable.count()));
+        lblMembresCount.setText(String.valueOf(projectDAO.countTotalMembers()));
     }
 
     private void loadRecentProjects() {
-        // Vider la liste
         vboxProjetsRecents.getChildren().clear();
-
-        // Récupérer les 3 derniers projets depuis la base de données
-        List<Project> projects = projectDAO.getRecentProjects(3);
+        // APPEL DE LA NOUVELLE MÉTHODE FILTRÉE
+        List<Project> projects = projectDAO.getRecentProjectsForUser(currentUserId, 3);
 
         if (projects.isEmpty()) {
-            Label noProjects = new Label("Aucun projet récent");
+            Label noProjects = new Label("Vous n'avez rejoint aucun projet.");
             noProjects.getStyleClass().add("no-projects-label");
             vboxProjetsRecents.getChildren().add(noProjects);
         } else {
@@ -168,16 +132,26 @@ public class homeController implements Initializable {
         }
     }
 
-    private void viewProject(String projectName) {
-        // TODO: Implémenter l'affichage des détails du projet
-        // Exemple: passer l'ID du projet au contrôleur de détails
-        // navigateToProjectDetails(project.getId());
-    }
-
     private void viewProject(Project project) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/projectDetails.fxml"));
+            Parent root = loader.load();
 
-        System.out.println("Affichage du projet: " + project.getName() + " (ID: " + project.getId() + ")");
-        
+            ProjectDetailsController controller = loader.getController();
+            controller.setProjectData(project);
+
+            Stage stage = new Stage();
+            stage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+
+            Scene scene = new Scene(root);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            stage.setScene(scene);
+
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showErrorAlert(String title, String message) {

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="20" prefWidth="500" styleClass="window-border"
+      stylesheets="@../styles/addProject.css" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.ProjectDetailsController" style="-fx-padding: 30; -fx-background-color: white;">
+
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <VBox HBox.hgrow="ALWAYS">
+            <Label fx:id="lblFullProjectName" text="Nom du Projet" styleClass="header-title" style="-fx-text-fill: #1a365d;"/>
+            <Label fx:id="lblProjectCode" text="CODE-123456" style="-fx-text-fill: #b91c1c; -fx-font-weight: bold;"/>
+        </VBox>
+        <Button text="✕" onAction="#handleClose" styleClass="btn-close-circle"/>
+    </HBox>
+
+    <Separator/>
+
+    <VBox spacing="10">
+        <Label text="DESCRIPTION" styleClass="form-label"/>
+        <Label fx:id="lblFullDescription" text="..." wrapText="true" style="-fx-text-fill: #475569; -fx-line-spacing: 5;"/>
+    </VBox>
+
+    <HBox spacing="40">
+        <VBox spacing="5">
+            <Label text="STATUT" styleClass="form-label"/>
+            <Label fx:id="lblDetailStatus" text="ACTIVE" style="-fx-font-weight: bold;"/>
+        </VBox>
+        <VBox spacing="5">
+            <Label text="ÉCHÉANCE" styleClass="form-label"/>
+            <Label fx:id="lblDetailEndDate" text="Non définie"/>
+        </VBox>
+    </HBox>
+
+    <VBox spacing="10">
+        <Label text="MEMBRES DE L'ÉQUIPE" styleClass="form-label"/>
+        <FlowPane fx:id="flowMembers" hgap="10" vgap="10">
+            <!-- Les membres seront ajoutés ici sous forme de badges -->
+        </FlowPane>
+    </VBox>
+
+    <HBox alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+        <Button text="Fermer" onAction="#handleClose" styleClass="btn-save" prefWidth="120"/>
+    </HBox>
+</VBox>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.AddProjectController"
+            prefHeight="520.0" prefWidth="700.0"
+            styleClass="window-border"
+            stylesheets="@../styles/addProject.css">
+
+    <StackPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+
+        <!-- FORMULAIRE PRINCIPAL -->
+        <VBox fx:id="mainForm" spacing="0">
+            <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 30 40;">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Nouveau Projet" styleClass="header-title"/>
+                    <Label text="Remplissez les informations pour votre nouveau projet" styleClass="header-subtitle"/>
+                </VBox>
+                <Button fx:id="btnClose" text="✕" onAction="#handleClose" styleClass="btn-close-circle" prefWidth="35" prefHeight="35"/>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+                <VBox spacing="20" style="-fx-padding: 0 40 30 40;">
+
+                    <!-- Nom -->
+                    <VBox spacing="8">
+                        <Label text="NOM DU PROJET *" styleClass="form-label"/>
+                        <TextField fx:id="txtName" promptText="Ex: Refonte du système" styleClass="form-input"/>
+                        <Label fx:id="lblNameError" managed="false" visible="false" text="⚠ Nom requis" styleClass="error-label"/>
+                    </VBox>
+
+                    <!-- Statut -->
+                    <VBox spacing="8">
+                        <Label text="STATUT" styleClass="form-label"/>
+                        <ComboBox fx:id="cmbStatus" promptText="Sélectionner..." prefWidth="1000.0" styleClass="form-input"/>
+                    </VBox>
+
+                    <!-- Description -->
+                    <VBox spacing="8">
+                        <Label text="DESCRIPTION *" styleClass="form-label"/>
+                        <TextArea fx:id="txtDescription" promptText="Objectifs..." wrapText="true" prefRowCount="3" styleClass="form-input"/>
+                        <Label fx:id="lblDescriptionError" managed="false" visible="false" text="⚠ Description requise" styleClass="error-label"/>
+                    </VBox>
+
+                    <!-- Date -->
+                    <VBox spacing="8">
+                        <Label text="ÉCHÉANCE (Optionnel)" styleClass="form-label"/>
+                        <DatePicker fx:id="dateEndDate" promptText="JJ/MM/AAAA" prefWidth="1000.0" styleClass="form-input"/>
+                        <Label fx:id="lblEndDateError" managed="false" visible="false" text="⚠ Date invalide" styleClass="error-label"/>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+
+            <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 20 40; -fx-background-color: #f8fafc; -fx-background-radius: 0 0 15 15;">
+                <Button fx:id="btnCancel" text="Annuler" onAction="#handleCancel" styleClass="btn-cancel"/>
+                <Button fx:id="btnSave" text="Créer le projet" onAction="#handleSave" styleClass="btn-save"/>
+            </HBox>
+        </VBox>
+
+        <!-- OVERLAY DE SUCCÈS -->
+        <VBox fx:id="successOverlay" visible="false" alignment="CENTER" spacing="25" style="-fx-background-color: rgba(255,255,255,0.96); -fx-background-radius: 15;">
+            <Label text="🎉" style="-fx-font-size: 50px;"/>
+            <Label text="Projet créé avec succès !" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+            <VBox alignment="CENTER" spacing="10" styleClass="code-container">
+                <Label text="CODE DU PROJET" style="-fx-font-size: 11px; -fx-text-fill: #64748b; -fx-font-weight: bold;"/>
+                <Label fx:id="lblGeneratedCode" text="000000" styleClass="code-text"/>
+                <Button onAction="#handleCopyCode" text="📋 Copier le code" styleClass="btn-copy"/>
+            </VBox>
+            <Button text="Continuer" onAction="#handleClose" styleClass="btn-save" prefWidth="150"/>
+        </VBox>
+    </StackPane>
+</AnchorPane>
