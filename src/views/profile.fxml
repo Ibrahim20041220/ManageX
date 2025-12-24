@@ -12,7 +12,7 @@
 
 <!-- AJOUT DE styleClass="profile-root" -->
 <VBox spacing="20" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controllers.ProfileController" 
+      fx:controller="controllers.profileController" 
       stylesheets="@../styles/profile.css"
       styleClass="profile-root">
 

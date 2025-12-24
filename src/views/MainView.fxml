@@ -80,6 +80,7 @@
             </Label>
 
             <Button fx:id="profileButton"
+                    onMouseClicked="#handleProfile"
                     
                     styleClass="profile-button">
 

@@ -22,7 +22,7 @@ import javafx.stage.Popup;
 import models.User;
 import models.UserSession;
 
-public class ProfileController{
+public class profileController{
     
     @FXML private ImageView mapImage;
     @FXML private ImageView emailImage;

@@ -2,6 +2,8 @@ package controllers;
 
 import java.io.IOException;
 
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -15,6 +17,7 @@ import javafx.stage.Popup;
 import models.User;
 import models.UserSession;
 import javafx.scene.image.Image;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 
 public class MainViewController {
@@ -76,21 +79,21 @@ public class MainViewController {
 
     @FXML
     private void handleHomeClick() {
-       navigateToPage("../views/home.fxml");
+       navigateToPage("/views/home.fxml");
        setActiveButton(btnHome);
     }
 
 
     @FXML
     private void handleProjetsClick() {
-       navigateToPage("../views/projets.fxml");
+       navigateToPage("/views/projets.fxml");
        setActiveButton(btnProjets);
     }
 
 
     @FXML
     private void handleTachesClick() {
-       navigateToPage("../views/taches.fxml") ;
+       navigateToPage("/views/taches.fxml") ;
        setActiveButton(btnTaches);
     }
 
@@ -98,7 +101,7 @@ public class MainViewController {
     @FXML
     private void handleProfileClick() throws IOException{
 
-        navigateToPage("../views/Profile.fxml");
+        navigateToPage("/views/profile.fxml");
         setActiveButton(btnProfile);
     }
 
@@ -108,6 +111,8 @@ public class MainViewController {
         btnHome.getStyleClass().remove("active");
         btnProjets.getStyleClass().remove("active");
         btnTaches.getStyleClass().remove("active");
+        btnProfile.getStyleClass().remove("active");
+
 
         // Ajouter la classe active au bouton sélectionné
         activeBtn.getStyleClass().add("active");
@@ -131,6 +136,27 @@ public class MainViewController {
             e.printStackTrace();
 
         }
+    }
+
+    @FXML
+    private void handleProfile(MouseEvent e){
+        try {
+            VBox profilePopup = FXMLLoader.load(getClass().getResource("/views/components/ProfilePopup.fxml")) ;
+
+            Popup Popup = new Popup() ;
+
+            Popup.getContent().add(profilePopup) ;
+
+            Popup.show(
+                        ((Node) e.getSource()).getScene().getWindow(),
+                        e.getScreenX() -80,
+                        e.getScreenY() + 30
+             );            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+           
     }
 
 

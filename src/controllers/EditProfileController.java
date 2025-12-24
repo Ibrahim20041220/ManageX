@@ -31,7 +31,7 @@ public class EditProfileController {
     @FXML
     private StackPane avatarStackPane;
 
-    private ProfileController profileController ;
+    private profileController profileController ;
     private StackPane rootPane;
     private Popup popUp ;
 
@@ -130,7 +130,7 @@ public class EditProfileController {
 
     }
 
-    public void setProfile(ProfileController profileController){
+    public void setProfile(profileController profileController){
         this.profileController = profileController ;
     }
     public void setRootPane(StackPane rootPane) {

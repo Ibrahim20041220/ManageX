@@ -37,6 +37,10 @@
                 </font>
             </TextField>
 
+            <Button fx:id="btnJoinProject" text="Rejoindre"
+                    styleClass="btn-join" onAction="#handleOpenJoinModal"> <!-- btn-cancel car il est plus discret -->
+            </Button>
+
             <!-- Bouton ajouter projet -->
             <Button fx:id="btnAddProject" text="+ Nouveau Projet"
                     styleClass="btn-add-project"
@@ -49,31 +53,19 @@
 
         <!-- Filtres -->
         <HBox spacing="10" alignment="CENTER_LEFT" styleClass="filters-container">
-            <Label text="Filtrer par:" styleClass="filter-label">
-                <font>
-                    <Font size="13.0"/>
-                </font>
-            </Label>
-            <Button text="Tous" styleClass="filter-btn, filter-active" onAction="#filterAll">
-                <font>
-                    <Font size="12.0"/>
-                </font>
-            </Button>
-            <Button text="En cours" styleClass="filter-btn" onAction="#filterEnCours">
-                <font>
-                    <Font size="12.0"/>
-                </font>
-            </Button>
-            <Button text="Terminés" styleClass="filter-btn" onAction="#filterTermines">
-                <font>
-                    <Font size="12.0"/>
-                </font>
-            </Button>
-            <Button text="En pause" styleClass="filter-btn" onAction="#filterEnPause">
-                <font>
-                    <Font size="12.0"/>
-                </font>
-            </Button>
+            <Label text="Filtrer par:" styleClass="filter-label"/>
+
+            <Button fx:id="btnFilterAll" text="Tous"
+                    styleClass="filter-btn, filter-active" onAction="#filterAll"/>
+
+            <Button fx:id="btnFilterEnCours" text="En cours"
+                    styleClass="filter-btn" onAction="#filterEnCours"/>
+
+            <Button fx:id="btnFilterTermines" text="Terminés"
+                    styleClass="filter-btn" onAction="#filterTermines"/>
+
+            <Button fx:id="btnFilterEnPause" text="En pause"
+                    styleClass="filter-btn" onAction="#filterEnPause"/>
         </HBox>
 
         <!-- Liste des projets -->

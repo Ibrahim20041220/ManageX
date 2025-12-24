@@ -6,96 +6,41 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox spacing="20" styleClass="content-container"
-        xmlns="http://javafx.com/javafx"
-        xmlns:fx="http://javafx.com/fxml"
-        fx:controller="controllers.homeController"
-        prefHeight="600.0" prefWidth="800.0"
-        stylesheets="@../styles/home.css" >
 
+<VBox spacing="25"
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.homeController" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/home.css">
 
-    <!-- Titre de bienvenue -->
-    <Label text="Bienvenue sur votre espace de gestion de projet" styleClass="welcome-title">
-        <font>
-            <Font name="System Bold" size="24.0"/>
-        </font>
-    </Label>
+    <padding>
+        <Insets top="20" bottom="20" left="20" right="20" />
+    </padding>
 
-    <!-- Cartes de statistiques -->
+    <Label text="Tableau de Bord" styleClass="welcome-title"/>
+
     <HBox spacing="20" alignment="CENTER">
         <!-- Carte Projets -->
-        <VBox alignment="CENTER" spacing="10" styleClass="stat-card"
-                prefWidth="200" prefHeight="150">
-            <padding>
-                <Insets top="20" bottom="20" left="20" right="20"/>
-            </padding>
-            <Label text="Projets Actifs" styleClass="stat-label">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </Label>
-            <Label fx:id="lblProjetsCount" text="0" styleClass="stat-value, stat-projets">
-                <font>
-                    <Font name="System Bold" size="36.0"/>
-                </font>
-            </Label>
+        <VBox alignment="CENTER_LEFT" spacing="10" styleClass="stat-card" HBox.hgrow="ALWAYS">
+            <Label text="MES PROJETS" styleClass="stat-label"/>
+            <Label fx:id="lblProjetsCount" text="0" styleClass="stat-value, stat-projets"/>
         </VBox>
 
         <!-- Carte Tâches -->
-        <VBox alignment="CENTER" spacing="10" styleClass="stat-card"
-                prefWidth="200" prefHeight="150">
-            <padding>
-                <Insets top="20" bottom="20" left="20" right="20"/>
-            </padding>
-            <Label text="Tâches En Cours" styleClass="stat-label">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </Label>
-            <Label fx:id="lblTachesCount" text="0" styleClass="stat-value, stat-taches">
-                <font>
-                    <Font name="System Bold" size="36.0"/>
-                </font>
-            </Label>
+        <VBox alignment="CENTER_LEFT" spacing="10" styleClass="stat-card" HBox.hgrow="ALWAYS">
+            <Label text="TÂCHES TOTALES" styleClass="stat-label"/>
+            <Label fx:id="lblTachesCount" text="0" styleClass="stat-value, stat-taches"/>
         </VBox>
 
         <!-- Carte Équipe -->
-        <VBox alignment="CENTER" spacing="10" styleClass="stat-card"
-                prefWidth="200" prefHeight="150">
-            <padding>
-                <Insets top="20" bottom="20" left="20" right="20"/>
-            </padding>
-            <Label text="Membres Équipe" styleClass="stat-label">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </Label>
-            <Label fx:id="lblMembresCount" text="0" styleClass="stat-value, stat-membres">
-                <font>
-                    <Font name="System Bold" size="36.0"/>
-                </font>
-            </Label>
+        <VBox alignment="CENTER_LEFT" spacing="10" styleClass="stat-card" HBox.hgrow="ALWAYS">
+            <Label text="COLLABORATEURS" styleClass="stat-label"/>
+            <Label fx:id="lblMembresCount" text="0" styleClass="stat-value, stat-membres"/>
         </VBox>
     </HBox>
 
-    <!-- Section projets récents -->
     <VBox spacing="15" VBox.vgrow="ALWAYS">
-        <Label text="Projets Récents" styleClass="section-title">
-            <font>
-                <Font name="System Bold" size="18.0"/>
-            </font>
-        </Label>
-
-        <!-- Liste de projets -->
-        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="projects-scroll">
-            <VBox fx:id="vboxProjetsRecents" spacing="10" styleClass="projects-list">
-                <Label text="Aucun projet récent" styleClass="no-projects-label">
-                    <font>
-                        <Font size="14.0"/>
-                    </font>
-                </Label>
-            </VBox>
+        <Label text="Activités Récentes" styleClass="section-title"/>
+        <ScrollPane fitToWidth="true" styleClass="projects-scroll" VBox.vgrow="ALWAYS">
+            <VBox fx:id="vboxProjetsRecents" spacing="12" styleClass="projects-list"/>
         </ScrollPane>
     </VBox>
-
 </VBox>

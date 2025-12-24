@@ -18,10 +18,10 @@
       <Insets top="8" bottom="8" left="8" right="8" />
     </padding>
 
-    <HBox spacing="4" alignment="CENTER" styleClass="popup-btn">
+    <!-- <HBox spacing="4" alignment="CENTER" styleClass="popup-btn">
       <ImageView fx:id="profileIcon" fitWidth="35" fitHeight="35" />
       <Button fx:id="btnProfile" onAction="#handleProfile"  text="Profil" />
-    </HBox>
+    </HBox> -->
     <HBox spacing="4" alignment="CENTER" styleClass="popup-btn logout-btn">
       <ImageView fx:id="logoutIcon" fitWidth="25" fitHeight="25" />
       <Button fx:id="btnLogout" text="logout" />

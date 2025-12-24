@@ -3,7 +3,7 @@ package dao;
 import models.Project;
 import database.OracleDB;
 import database.tables.ProjectTable;
-
+import models.ProjectMemberInfo; // Ajoutez cet import en haut
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,26 +32,64 @@ public class ProjectDAO {
     }
 
     // Récupérer les projets récents (3 derniers)
-    public List<Project> getRecentProjects(int limit) {
+    public List<Project> getRecentProjectsForUser(int userId, int limit) {
         List<Project> projects = new ArrayList<>();
-        String query = "SELECT * FROM PROJECT ORDER BY updatedAt DESC FETCH FIRST ? ROWS ONLY";
+        // Jointure entre PROJECT et PROJECTMEMBER
+        String query = "SELECT p.* FROM PROJECT p " +
+                "JOIN PROJECTMEMBER pm ON p.id = pm.projectId " +
+                "WHERE pm.memberId = ? " +
+                "ORDER BY p.updatedAt DESC " +
+                "FETCH FIRST ? ROWS ONLY";
 
         try (Connection conn = OracleDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setInt(1, limit);
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, limit);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                Project project = extractProjectFromResultSet(rs);
-                projects.add(project);
+                projects.add(extractProjectFromResultSet(rs));
             }
         } catch (SQLException e) {
-            System.err.println("Erreur lors de la récupération des projets récents");
             e.printStackTrace();
         }
-
         return projects;
+    }
+
+    public int countTotalMembers() {
+        String query = "SELECT COUNT(DISTINCT memberId) FROM PROJECTMEMBER";
+        try (Connection conn = OracleDB.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<ProjectMemberInfo> getProjectMembersFullDetails(int projectId) {
+        List<ProjectMemberInfo> members = new ArrayList<>();
+        String query = "SELECT U.firstname, U.lastname, R.name as roleName " +
+                "FROM USERS U " +
+                "JOIN PROJECTMEMBER PM ON U.id = PM.memberId " +
+                "JOIN ROLE R ON PM.roleId = R.id " +
+                "WHERE PM.projectId = ?";
+
+        try (Connection conn = OracleDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, projectId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String fullName = rs.getString("firstname") + " " + rs.getString("lastname");
+                String roleName = rs.getString("roleName");
+                members.add(new ProjectMemberInfo(fullName, roleName));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return members;
     }
 
     // Récupérer un projet par ID
@@ -99,21 +137,14 @@ public class ProjectDAO {
     }
 
     // Compter les projets
-    public int countProjects() {
-        String query = "SELECT COUNT(*) FROM PROJECT";
-
+    public int countProjectsForUser(int userId) {
+        String query = "SELECT COUNT(*) FROM PROJECTMEMBER WHERE memberId = ?";
         try (Connection conn = OracleDB.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            System.err.println("Erreur lors du comptage des projets");
-            e.printStackTrace();
-        }
-
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) { e.printStackTrace(); }
         return 0;
     }
 
@@ -167,18 +198,78 @@ public class ProjectDAO {
 
     // Ajouter un nouveau projet (utilise la méthode existante de database.tables.Project)
     public boolean addProject(Project project) {
-        java.sql.Date endDate = null;
-        if (project.getEndDate() != null) {
-            endDate = new java.sql.Date(project.getEndDate().getTime());
-        }
+        // Requêtes SQL
+        String sqlProject = "INSERT INTO PROJECT (name, createdBy, description, code, endDate) VALUES (?, ?, ?, ?, ?)";
+        String sqlRole = "SELECT id FROM ROLE WHERE name = 'ADMIN'";
+        String sqlMember = "INSERT INTO PROJECTMEMBER (projectId, memberId, roleId) VALUES (?, ?, ?)";
 
-        return ProjectTable.create(
-                project.getName(),
-                project.getCreatedBy(),
-                project.getDescription(),
-                project.getCode(),
-                endDate
-        );
+        Connection conn = null;
+        try {
+            conn = OracleDB.getConnection();
+            conn.setAutoCommit(false); // On commence une transaction pour que tout passe ou rien
+
+            // 1. INSÉRER LE PROJET et récupérer l'ID généré
+            int generatedProjectId = -1;
+            String[] generatedColumns = {"ID"};
+            try (PreparedStatement pstmt = conn.prepareStatement(sqlProject, generatedColumns)) {
+                pstmt.setString(1, project.getName());
+                pstmt.setInt(2, project.getCreatedBy());
+                pstmt.setString(3, project.getDescription());
+                pstmt.setString(4, project.getCode());
+
+                if (project.getEndDate() != null) {
+                    pstmt.setDate(5, new java.sql.Date(project.getEndDate().getTime()));
+                } else {
+                    pstmt.setNull(5, Types.DATE);
+                }
+
+                pstmt.executeUpdate();
+
+                // Récupérer l'ID que Oracle vient de générer
+                try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        generatedProjectId = rs.getInt(1);
+                    }
+                }
+            }
+
+            // 2. RÉCUPÉRER L'ID DU RÔLE 'ADMIN'
+            int adminRoleId = -1;
+            try (PreparedStatement pstmt = conn.prepareStatement(sqlRole)) {
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    adminRoleId = rs.getInt("id");
+                }
+            }
+
+            if (adminRoleId == -1) {
+                throw new SQLException("Rôle ADMIN introuvable dans la table ROLE.");
+            }
+
+            // 3. AJOUTER LE CRÉATEUR COMME PREMIER MEMBRE (ADMIN)
+            try (PreparedStatement pstmt = conn.prepareStatement(sqlMember)) {
+                pstmt.setInt(1, generatedProjectId);
+                pstmt.setInt(2, project.getCreatedBy());
+                pstmt.setInt(3, adminRoleId);
+                pstmt.executeUpdate();
+            }
+
+            // Si tout s'est bien passé, on valide la transaction
+            conn.commit();
+            return true;
+
+        } catch (SQLException e) {
+            if (conn != null) {
+                try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+            }
+            System.err.println("Erreur lors de la création du projet et de l'ajout du membre admin");
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (conn != null) {
+                try { conn.setAutoCommit(true); conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
     }
 
     // Mettre à jour un projet
@@ -272,4 +363,19 @@ public class ProjectDAO {
 
         return project;
     }
+    public Project getProjectByCode(String code) {
+        String query = "SELECT * FROM PROJECT WHERE code = ?";
+        try (Connection conn = OracleDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, code);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return extractProjectFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
+

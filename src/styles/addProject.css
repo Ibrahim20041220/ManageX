@@ -1,0 +1,81 @@
+.root { -fx-background-color: white; -fx-font-family: 'Segoe UI', sans-serif; }
+
+.window-border {
+    -fx-background-color: white;
+    -fx-background-radius: 20; /* Arrondi du fond */
+    -fx-border-radius: 20;     /* Arrondi de la bordure */
+    -fx-border-color: linear-gradient(to right, #b91c1c, #0f172a);
+    -fx-border-width: 3;
+}
+
+.header-title { -fx-text-fill: #0f172a; -fx-font-weight: bold; -fx-font-size: 24px; }
+.header-subtitle { -fx-text-fill: #64748b; -fx-font-size: 13px; }
+
+/* CHAMPS DE SAISIE */
+.form-label { -fx-text-fill: #334155; -fx-font-weight: bold; -fx-font-size: 12px; }
+
+.form-input {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 10;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 10;
+    -fx-border-width: 1.5;
+    -fx-text-fill: #0f172a;
+    -fx-padding: 10 15;
+}
+
+.form-input:focused { -fx-border-color: #b91c1c; -fx-background-color: white; }
+
+/* FIX TEXTAREA (Le champ dans le champ) */
+.text-area.form-input { -fx-padding: 0; }
+.text-area.form-input .content {
+    -fx-background-color: transparent;
+    -fx-padding: 10 15;
+}
+
+/* FIX DATEPICKER (Le champ dans le champ) */
+.date-picker.form-input { -fx-padding: 0; }
+.date-picker.form-input > .text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 10 15;
+}
+
+/* BOUTONS */
+.btn-save {
+    -fx-background-color: linear-gradient(to right, #b91c1c, #0f172a);
+    -fx-text-fill: white; -fx-background-radius: 40;
+    -fx-padding: 12 30; -fx-font-weight: bold; -fx-cursor: hand;
+}
+
+.btn-cancel {
+    -fx-background-color: #f1f5f9; -fx-text-fill: #475569;
+    -fx-background-radius: 40; -fx-padding: 12 25; -fx-cursor: hand;
+}
+
+/* SUCCESS OVERLAY */
+.code-container {
+    -fx-background-color: #f8fafc; -fx-padding: 20;
+    -fx-background-radius: 15; -fx-border-color: #e2e8f0;
+    -fx-border-style: dashed; -fx-border-width: 2;
+}
+.code-text { -fx-font-size: 35px; -fx-font-weight: bold; -fx-text-fill: #b91c1c; -fx-letter-spacing: 5; }
+.btn-copy { -fx-background-color: #0f172a; -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 5; }
+.error-label { -fx-text-fill: #ef4444; -fx-font-size: 11px; }
+
+#flowMembers {
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+    -fx-padding: 10 0;
+}
+
+/* On peut aussi définir les styles de rôles ici si on préfère utiliser getStyleClass() */
+.role-admin {
+    -fx-background-color: #fef2f2;
+    -fx-text-fill: #dc2626;
+}
+
+.role-member {
+    -fx-background-color: #f0fdf4;
+    -fx-text-fill: #16a34a;
+}
