@@ -31,8 +31,6 @@ public class SignUpController {
     @FXML private FloatingField firstName;
     @FXML private FloatingField lastName;
     @FXML private FloatingField email;
-    @FXML private FloatingField phone;
-    @FXML private FloatingField profession;
     @FXML private FloatingField password;
     @FXML private FloatingField confirm;
     @FXML private Button okButton;
@@ -65,11 +63,9 @@ public class SignUpController {
 
             toggleInvalid(lastName.getField(),!verify(lastName.getText()),"Last name must contain at least 2 letters and only alphabetic characters.");
 
-            toggleInvalid(profession.getField(),!verify(profession.getText()),"Please enter your profession.");
 
             toggleInvalid(email.getField(),!verifyEmail(),"Please enter a valid email address (e.g., name@example.com).");
 
-            toggleInvalid(phone.getField(),!verifyPhone(),"Please enter a valid phone number starting with 06 or 07 and followed by 8 digits.");
 
             toggleInvalid(password.getField(),!verifyPassword(),"Password must be at least 8 characters long and include uppercase, lowercase letters, and a number.");
 
@@ -94,8 +90,6 @@ public class SignUpController {
                                 firstName.getText(),
                                 lastName.getText(),
                                 email.getText(),
-                                profession.getText(),
-                                phone.getText(),
                                 urlProfilePic,
                                 password.getText()
                         );
@@ -139,9 +133,9 @@ public class SignUpController {
         return email.getText().matches("^[\\w.-_]+@[a-zA-Z0-9.-_]+\\.[a-zA-Z]{2,6}$") ;
     }
 
-    private boolean verifyPhone(){
-        return phone.getText().matches("^0[67]\\d{8}$") ;
-    }
+    // private boolean verifyPhone(){
+    //     return phone.getText().matches("^0[67]\\d{8}$") ;
+    // }
 
     private boolean  verifyPassword(){
         return password.getText().matches( "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$") ;
@@ -152,10 +146,8 @@ public class SignUpController {
 
         return  verify(firstName.getField().getText()) &&
                 verify(lastName.getField().getText()) &&
-                verify(profession.getField().getText()) &&
                 verifyEmail() &&
-                verifyPassword() &&
-                verifyPhone()  ;
+                verifyPassword() ;
     }
 
 
@@ -229,13 +221,8 @@ public class SignUpController {
             toggleInvalid(email.getField(), !verifyEmail());
         });
 
-        profession.getField().textProperty().addListener((obs, oldValue, newValue) -> {
-            toggleInvalid(profession.getField(), !verify(newValue));
-        });
-
-        phone.getField().textProperty().addListener((obs, oldValue, newValue) -> {
-            toggleInvalid(phone.getField(), !verifyPhone());
-        });
+       
+        
 
         password.getField().textProperty().addListener((obs, oldValue, newValue) -> {
             toggleInvalid(password.getField(), !verifyPassword());

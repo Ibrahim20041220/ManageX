@@ -2,18 +2,20 @@ package controllers;
 
 import java.io.IOException;
 
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.Popup;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import models.User;
+import models.UserSession;
 import javafx.scene.image.Image;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -29,6 +31,10 @@ public class MainViewController {
     private Button btnTaches;
 
     @FXML 
+    private Button btnProfile ;
+
+
+    @FXML 
     private StackPane scene ;
 
     @FXML
@@ -40,12 +46,27 @@ public class MainViewController {
 
     private Popup profilePopup;
 
+    @FXML private Label lblUsername ;
 
-
-    
 
     public void initialize(){
-        profileImage.setImage(new Image(getClass().getResource("/icons/user.png").toExternalForm()));
+
+        User userSession = UserSession.getInstance().getUser() ;
+
+        lblUsername.setText(userSession.getFirstName()+" "+userSession.getLastName());
+
+        if(userSession.getProfilePic()!=null){
+            profileImage.setImage(new Image(userSession.getProfilePic()));
+        }else{
+            profileImage.setImage(new Image(getClass().getResource("/icons/user.png").toExternalForm()));
+        }
+        profileImage.setFitWidth(44);
+        profileImage.setFitHeight(44);
+        profileImage.setPreserveRatio(false);
+
+        Circle circle = new Circle(profileImage.getFitWidth()/2, profileImage.getFitHeight()/2, profileImage.getFitWidth()/2);
+        profileImage.setClip(circle);
+
 
         handleHomeClick() ;
 
@@ -58,48 +79,30 @@ public class MainViewController {
 
     @FXML
     private void handleHomeClick() {
-       navigateToPage("../views/home.fxml");
+       navigateToPage("/views/home.fxml");
        setActiveButton(btnHome);
     }
 
 
     @FXML
     private void handleProjetsClick() {
-       navigateToPage("../views/projets.fxml");
+       navigateToPage("/views/projets.fxml");
        setActiveButton(btnProjets);
     }
 
 
     @FXML
     private void handleTachesClick() {
-       navigateToPage("../views/taches.fxml") ;
+       navigateToPage("/views/taches.fxml") ;
        setActiveButton(btnTaches);
     }
 
 
     @FXML
-    private void handleProfileClick(MouseEvent event) throws IOException{
+    private void handleProfileClick() throws IOException{
 
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/components/ProfilePopup.fxml"));
-        VBox popupContent = loader.load();
-        
-    
-        profilePopup = new Popup();
-        profilePopup.getContent().add(popupContent) ;
-
-        profilePopup.setAutoHide(true);
-        profilePopup.setHideOnEscape(true);
-
-        profilePopup.show(((Node) event.getSource()).getScene().getWindow(),
-            event.getScreenX() - 150,
-            event.getScreenY() + 10) ;
-
-        ProfilePopupController popupController = loader.getController();
-
-        popupController.setStackPane(scene)  ;
-
-        System.out.println("Navigation: Profile");
+        navigateToPage("/views/profile.fxml");
+        setActiveButton(btnProfile);
     }
 
     
@@ -108,6 +111,8 @@ public class MainViewController {
         btnHome.getStyleClass().remove("active");
         btnProjets.getStyleClass().remove("active");
         btnTaches.getStyleClass().remove("active");
+        btnProfile.getStyleClass().remove("active");
+
 
         // Ajouter la classe active au bouton sélectionné
         activeBtn.getStyleClass().add("active");
@@ -133,8 +138,28 @@ public class MainViewController {
         }
     }
 
+    @FXML
+    private void handleProfile(MouseEvent e){
+        try {
+            VBox profilePopup = FXMLLoader.load(getClass().getResource("/views/components/ProfilePopup.fxml")) ;
+
+            Popup Popup = new Popup() ;
+
+            Popup.getContent().add(profilePopup) ;
+
+            Popup.show(
+                        ((Node) e.getSource()).getScene().getWindow(),
+                        e.getScreenX() -80,
+                        e.getScreenY() + 30
+             );            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+           
+    }
 
 
-
+    
 
 }

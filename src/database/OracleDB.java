@@ -3,6 +3,7 @@ package database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement ;
 import utils.Globals;
 import database.tables.AttachmentTable;
 import database.tables.CommentTable;
@@ -38,7 +39,50 @@ public class OracleDB {
         return null;
     }
 
-    public static void createTables(){
+ 
+
+    public static void createProcedureToken() {
+        String plSql = """
+            CREATE OR REPLACE FUNCTION save_remember_token(
+                p_userId INTEGER
+            ) RETURN VARCHAR2 IS 
+                v_token  VARCHAR2(250);
+            BEGIN
+                v_token := SYS_GUID();
+
+                UPDATE USERS
+                SET remember_token = v_token
+                WHERE id = p_userId;
+                
+                COMMIT;
+
+                RETURN v_token;
+
+            EXCEPTION
+                WHEN OTHERS THEN
+                    ROLLBACK;
+                    RETURN NULL;
+            
+            END save_remember_token;
+            """;
+
+        try (Connection conn = getConnection();
+            Statement stmt = conn.createStatement()) {
+
+            stmt.execute(plSql);
+
+            System.out.println("Fonction save_remember_token créée avec succès !");
+            
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la création de la fonction save_remember_token !");
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    public static void createTables_Procedures(){
 
         UserTable.createTable();
         ProjectTable.createTable();
@@ -51,6 +95,9 @@ public class OracleDB {
         MemberPermissionTable.createTable();
         CommentTable.createTable();
         AttachmentTable.createTable();
+
+
+        createProcedureToken();
     }
 
 

@@ -3,38 +3,70 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+<VBox fx:id="rootPane" spacing="8"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.OverviewController"
+      stylesheets="@../styles/profile.css">
 
-<VBox spacing="4" xmlns:fx="http://javafx.com/fxml"
-    fx:controller="controllers.OverviewController" stylesheets="@../styles/profile.css"
->   
-    
     <padding>
         <Insets bottom="10" left="10" right="10" top="10"/>
     </padding>
 
-
-    <HBox> 
-        <Label fx:id="OverviewLabel" styleClass="OverviewLabel" text="Overview" />
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT">
+        <Label styleClass="OverviewLabel" text="Overview"/>
 
         <Region HBox.hgrow="ALWAYS"/>
 
-        <Button fx:id="editOverview" styleClass="editOverview" text="Edit overview">
-
+        <Button fx:id="editOverview"
+                text="Edit overview"
+                styleClass="editOverview"
+                onAction="#toggleEdit">
             <graphic>
-
-                <ImageView fx:id="editOverviewIcon" fitHeight="16" fitWidth="16"/>
-
+                <ImageView fx:id="editOverviewIcon"
+                           fitHeight="16"
+                           fitWidth="16"/>
             </graphic>
-
         </Button>
+        <HBox spacing="5">
+            <Button fx:id="saveButton"
+                text="Save"
+                visible="false"
+                managed="false"
+                onAction="#saveOverview"
+                styleClass="editOverview"/>
+        
+            <Button fx:id="cancelButton"
+                text="Cancel"
+                visible="false"
+                managed="false"
+                onAction="#cancelEdit"
+                styleClass="editOverview"/>
+        </HBox>
     </HBox>
 
-    <Label fx:id="overview" />
+    <!-- CONTENT -->
+    <StackPane fx:id="overviewContainer">
+
+        <!-- Mode lecture -->
+        <Label fx:id="overviewLabel"
+               wrapText="true"
+               alignment="TOP_LEFT"
+               styleClass="overview-text"/>
+
+        <!-- Mode édition -->
+        <TextArea fx:id="overviewArea"
+                  wrapText="true"
+                  visible="false"
+                  managed="false"
+                  styleClass="overview-area"/>
+    </StackPane>
 
 </VBox>

@@ -96,14 +96,6 @@
     -fx-effect: dropshadow(gaussian, rgba(227, 39, 39, 0.2), 8, 0, 0, 2);
 }
 
-#Username, #Password {
-    -fx-min-width: 220px;
-    -fx-pref-width: 220px;
-}
-
-#Username:focused, #Password:focused {
-    -fx-border-color: linear-gradient(to right, #cc0000, #001a33);
-}
 
 .fade-in {
     -fx-opacity: 0;
@@ -113,3 +105,7 @@
     -fx-opacity: 1;
 }
 
+.rememberMe{
+    -fx-text-fill: black ;
+    -fx-font-size: 14px ;
+}

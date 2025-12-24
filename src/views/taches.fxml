@@ -1,128 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controllers.tachesController"
-            prefHeight="600.0" prefWidth="800.0"
-            stylesheets="@../styles/taches.css">
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="controllers.tachesController"
+           stylesheets="@../styles/taches.css"
+           fx:id="rootPane">
 
-    <!-- Contenu principal -->
-    <VBox spacing="20" styleClass="content-container"
-          AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0"
-          AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="20.0">
+    <AnchorPane prefHeight="600.0" prefWidth="800.0">
 
-        <!-- Barre d'outils -->
-        <HBox spacing="15" alignment="CENTER_LEFT" styleClass="toolbar">
-            <Label text="Mes Tâches" styleClass="page-title">
-                <font>
-                    <Font name="System Bold" size="24.0"/>
-                </font>
-            </Label>
+        <!-- Contenu principal -->
+        <VBox spacing="20" styleClass="content-container" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="20.0">
+            <!-- Barre d'outils -->
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="toolbar">
+                <Label text="Mes Tâches" styleClass="page-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <ComboBox fx:id="cboPriorite" promptText="Priorité" styleClass="filter-combo" prefWidth="130"/>
+                <ComboBox fx:id="cboProjet" promptText="Tous les projets" styleClass="filter-combo" prefWidth="160"/>
+                <Button fx:id="btnAddTask" text="+ Nouvelle Tâche" styleClass="btn-add-task" onAction="#handleAddTask"/>
+            </HBox>
+            <!-- Statistiques rapides -->
+            <HBox spacing="15" alignment="CENTER">
+                <VBox alignment="CENTER" spacing="5" styleClass="quick-stat">
+                    <Label text="À faire" styleClass="stat-label-small"/>
+                    <Label fx:id="lblTodoCount" text="5" styleClass="stat-value-small stat-todo"/>
+                </VBox>
+                <VBox alignment="CENTER" spacing="5" styleClass="quick-stat">
+                    <Label text="En cours" styleClass="stat-label-small"/>
+                    <Label fx:id="lblInProgressCount" text="7" styleClass="stat-value-small stat-progress"/>
+                </VBox>
+                <VBox alignment="CENTER" spacing="5" styleClass="quick-stat">
+                    <Label text="Terminées" styleClass="stat-label-small"/>
+                    <Label fx:id="lblCompletedCount" text="12" styleClass="stat-value-small stat-completed"/>
+                </VBox>
+            </HBox>
+            <!-- Onglets de statut -->
+            <HBox spacing="10" styleClass="tabs-container">
+                <Button text="Toutes" styleClass="tab-btn, tab-active" onAction="#showAllTasks"/>
+                <Button text="À faire" styleClass="tab-btn" onAction="#showTodoTasks"/>
+                <Button text="En cours" styleClass="tab-btn" onAction="#showInProgressTasks"/>
+                <Button text="Terminées" styleClass="tab-btn" onAction="#showCompletedTasks"/>
+            </HBox>
+            <!-- Liste des tâches -->
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="tasks-scroll">
+                <VBox fx:id="vboxTasks" spacing="12" styleClass="tasks-list">
+                    <padding>
+                        <Insets top="5" bottom="5"/>
+                    </padding>
+                </VBox>
+            </ScrollPane>
+        </VBox>
+    </AnchorPane>
 
-            <Region HBox.hgrow="ALWAYS"/>
+    <!-- Fond grisé pour le popup -->
+    <Region fx:id="backgroundRect" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" managed="false"/>
 
-            <!-- Filtres de priorité -->
-            <ComboBox fx:id="cboPriorite" promptText="Priorité"
-                      styleClass="filter-combo" prefWidth="130">
-            </ComboBox>
+    <!-- POPUP NOUVELLE TÂCHE -->
+    <VBox fx:id="addTaskPopup"
+          visible="false"
+          managed="false"
+          alignment="CENTER"
+          maxWidth="700">
 
-            <!-- Filtres de projet -->
-            <ComboBox fx:id="cboProjet" promptText="Tous les projets"
-                      styleClass="filter-combo" prefWidth="160">
-            </ComboBox>
+        <VBox styleClass="popup-content" spacing="15">
+            <Label text="Nouvelle Tâche" styleClass="popup-title"/>
+            
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints prefWidth="100"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
 
-            <!-- Bouton ajouter tâche -->
-            <Button fx:id="btnAddTask" text="+ Nouvelle Tâche"
-                    styleClass="btn-add-task"
-                    onAction="#handleAddTask">
-                <font>
-                    <Font name="System Bold" size="13.0"/>
-                </font>
-            </Button>
-        </HBox>
+                <Label text="Titre" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtTitle" promptText="Ex: Designer le nouveau logo" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-        <!-- Statistiques rapides -->
-        <HBox spacing="15" alignment="CENTER_LEFT">
-            <VBox alignment="CENTER" spacing="5" styleClass="quick-stat">
-                <Label text="À faire" styleClass="stat-label-small">
-                    <font>
-                        <Font size="11.0"/>
-                    </font>
-                </Label>
-                <Label fx:id="lblTodoCount" text="5" styleClass="stat-value-small stat-todo">
-                    <font>
-                        <Font name="System Bold" size="20.0"/>
-                    </font>
-                </Label>
-            </VBox>
+                <Label text="Projet" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="popupProject" promptText="Sélectionner un projet" maxWidth="Infinity" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-            <VBox alignment="CENTER" spacing="5" styleClass="quick-stat">
-                <Label text="En cours" styleClass="stat-label-small">
-                    <font>
-                        <Font size="11.0"/>
-                    </font>
-                </Label>
-                <Label fx:id="lblInProgressCount" text="7" styleClass="stat-value-small stat-progress">
-                    <font>
-                        <Font name="System Bold" size="20.0"/>
-                    </font>
-                </Label>
-            </VBox>
+                <Label text="Assigner à" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="popupMember" promptText="Sélectionner un membre" maxWidth="Infinity" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                
+                <Label text="Statut" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="popupStatus" maxWidth="Infinity" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
-            <VBox alignment="CENTER" spacing="5" styleClass="quick-stat">
-                <Label text="Terminées" styleClass="stat-label-small">
-                    <font>
-                        <Font size="11.0"/>
-                    </font>
-                </Label>
-                <Label fx:id="lblCompletedCount" text="12" styleClass="stat-value-small stat-completed">
-                    <font>
-                        <Font name="System Bold" size="20.0"/>
-                    </font>
-                </Label>
-            </VBox>
-        </HBox>
+                <Label text="Priorité" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="popupPriority" maxWidth="Infinity" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
 
-        <!-- Onglets de statut -->
-        <HBox spacing="10" styleClass="tabs-container">
-            <Button text="Toutes" styleClass="tab-btn, tab-active" onAction="#showAllTasks">
-                <font>
-                    <Font size="13.0"/>
-                </font>
-            </Button>
-            <Button text="À faire" styleClass="tab-btn" onAction="#showTodoTasks">
-                <font>
-                    <Font size="13.0"/>
-                </font>
-            </Button>
-            <Button text="En cours" styleClass="tab-btn" onAction="#showInProgressTasks">
-                <font>
-                    <Font size="13.0"/>
-                </font>
-            </Button>
-            <Button text="Terminées" styleClass="tab-btn" onAction="#showCompletedTasks">
-                <font>
-                    <Font size="13.0"/>
-                </font>
-            </Button>
-        </HBox>
+                <Label text="Description" alignment="TOP_LEFT" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                <TextArea fx:id="txtDescription" promptText="Ajouter plus de détails..." prefHeight="100" wrapText="true" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
 
-        <!-- Liste des tâches -->
-        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="tasks-scroll">
-            <VBox fx:id="vboxTasks" spacing="12" styleClass="tasks-list">
-                <padding>
-                    <Insets top="5" bottom="5"/>
-                </padding>
-            </VBox>
-        </ScrollPane>
+            </GridPane>
+            
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="Annuler" styleClass="cancel-button" onAction="#closeAddTaskPopup"/>
+                <Button text="Ajouter la tâche" styleClass="confirm-button" onAction="#confirmAddTask"/>
+            </HBox>
+        </VBox>
     </VBox>
-
-</AnchorPane>
+</StackPane>

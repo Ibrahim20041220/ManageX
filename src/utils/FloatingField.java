@@ -18,7 +18,7 @@ public class FloatingField extends StackPane {
         field = new TextField();
 
         label.setStyle("-fx-text-fill: #999; -fx-background-color: white; -fx-padding: 0 5px;");
-        field.getStyleClass().add("field") ;
+        field.setStyle("-fx-border-width:2px;-fx-border-color: #c1bdbdff ;");
         field.setPrefHeight(40);
 
         label.setTranslateY(10);
@@ -29,22 +29,38 @@ public class FloatingField extends StackPane {
         this.getChildren().addAll(field, label);
         this.setPadding(new Insets(5));
 
+        Runnable updateFloatingState = () -> {
+            boolean shouldFloat = field.isFocused()
+                    || (field.getText() != null && !field.getText().isEmpty());
+            floatLabel(shouldFloat);
+        };
+
         field.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal){
-                floatLabel(true);
-                field.setStyle(field.getStyle().replace("#d0d0d0", "#2196f3"));
+            updateFloatingState.run();
+
+            if (newVal) {
+                // Champ focus → appliquer gradient
+                field.setStyle("""
+                    -fx-background-color: white;
+                    -fx-border-radius: 5;
+                    -fx-border-width: 3;
+                    -fx-border-color: linear-gradient(to right, #cc0000, #001a33);
+                """);
+            } else {
+                // Champ blur → style normal
+                field.setStyle("""
+                    -fx-background-color: white;
+                    -fx-border-radius: 5;
+                    -fx-border-width: 2;
+                    -fx-border-color: #d0d0d0;
+                """);
             }
+        });
 
-            else if (field.getText().isEmpty()){
-                floatLabel(false);
-                field.setStyle(field.getStyle().replace("#2196f3", "#d0d0d0"));
-            }
 
-            else {
-                field.setStyle(field.getStyle().replace("#2196f3", "#d0d0d0"));
-
-            }
-
+        // texte
+        field.textProperty().addListener((obs, oldText, newText) -> {
+            updateFloatingState.run();
         });
 
     }

@@ -21,7 +21,21 @@
             <Label text="Bienvenue ManageX" style="-fx-font-size:18px; -fx-text-fill: black;" />
             <FloatingField fx:id="Username" labelText="Nom d'utilisateur" />
             <FloatingField fx:id="Password" labelText="Mot de passe" />
-            <Button text="Se connecter" onAction="#handleLogin"/>
+            <CheckBox fx:id="rememberMe" text="Remember me" styleClass="rememberMe" />
+            <!-- <Button text="Se connecter" onAction="#handleLogin"/> -->
+            <HBox alignment="CENTER" spacing="10">
+                <Button text="Se connecter" onAction="#handleLogin"/>
+
+                <ImageView fx:id="loadingIcon"
+                        fitWidth="20"
+                        fitHeight="20"
+                        visible="false"
+                        managed="false">
+                    <image>
+                        <Image url="@../icons/hourGlass.png"/>
+                    </image>
+                </ImageView>
+            </HBox>
             <Label fx:id="lblMessage" textFill="white"/>
         </VBox>
     </children>

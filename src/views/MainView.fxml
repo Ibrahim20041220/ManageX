@@ -16,7 +16,7 @@
     <!-- navaBar -->
     <HBox alignment="CENTER_LEFT" spacing="20"  styleClass="header"
         prefHeight="80.0" >
-
+                
         <HBox alignment="CENTER" spacing="10" styleClass="logo-container">
             <padding>
                 <Insets left="20"/>
@@ -57,6 +57,14 @@
                 </font>
             </Button>
 
+             <Button fx:id="btnProfile" text="Profile" styleClass="menu-button"
+                    onAction="#handleProfileClick">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Button>
+
+
         </HBox>
 
         <!-- Profile à droite -->
@@ -65,16 +73,26 @@
                 <Insets right="10"/>
             </padding>
 
-            <Label fx:id="lblUsername" text="Utilisateur" styleClass="username-label">
+            <Label fx:id="lblUsername"  styleClass="username-label">
                 <font>
                     <Font size="14.0"/>
                 </font>
             </Label>
 
-            <Button fx:id="profileButton" onMouseClicked="#handleProfileClick" styleClass="profile-button">
+            <Button fx:id="profileButton"
+                    onMouseClicked="#handleProfile"
+                    
+                    styleClass="profile-button">
+
                 <graphic>
-                    <ImageView fx:id="profileImage" fitWidth="40" fitHeight="40" pickOnBounds="true" preserveRatio="true" />
+                    <StackPane prefWidth="43" prefHeight="43">
+                        <ImageView fx:id="profileImage"
+                                fitWidth="44"
+                                fitHeight="44"
+                                preserveRatio="true" />
+                    </StackPane>
                 </graphic>
+
             </Button>
 
         </HBox>

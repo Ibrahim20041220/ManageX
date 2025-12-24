@@ -7,14 +7,13 @@ import models.ProjectMemberInfo; // Ajoutez cet import en haut
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import database.tables.ProjectTable;
 
 public class ProjectDAO {
 
     // Récupérer tous les projets
     public List<Project> getAllProjects() {
         List<Project> projects = new ArrayList<>();
-        String query = "SELECT * FROM PROJECT ORDER BY updatedAt DESC";
+        String query = "SELECT * FROM PROJECT WHERE  ORDER BY updatedAt DESC";
 
         try (Connection conn = OracleDB.getConnection();
              Statement stmt = conn.createStatement();

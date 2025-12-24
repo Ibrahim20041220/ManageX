@@ -8,20 +8,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.Popup;
 import models.User;
 import models.UserSession;
 
 public class profileController{
-
-    @FXML private ImageView avatarImage;
     
     @FXML private ImageView mapImage;
     @FXML private ImageView emailImage;
@@ -31,8 +32,8 @@ public class profileController{
 
 
     @FXML private Button OverviewButton ;
-    @FXML private Button SkillsButton ;
-    @FXML private Button ProjetsButton ;
+    // @FXML private Button SkillsButton ;
+    // @FXML private Button ProjetsButton ;
     @FXML private Button SettingsButton ;
 
     @FXML private Button editButton ;
@@ -44,16 +45,19 @@ public class profileController{
     @FXML private TextField editName;
 
 
-    @FXML private Label name;
+    @FXML private Label firstName;
+    @FXML private Label lastName;
+
     @FXML private Label profession ;
     @FXML private Label localisation ;
     @FXML private Label email ;
     @FXML private Label phone ;
+    @FXML private ImageView avatarImage ;
+
 
     @FXML
     public void initialize()  throws IOException{
 
-        avatarImage.setImage(new Image(getClass().getResource("/icons/user.png").toExternalForm())) ;
         cameraImage.setImage(new Image(getClass().getResource("/icons/camera.png").toExternalForm())) ;
         mapImage.setImage(new Image(getClass().getResource("/icons/localisateur.png").toExternalForm())) ;
         emailImage.setImage(new Image(getClass().getResource("/icons/email.png").toExternalForm())) ;
@@ -67,13 +71,13 @@ public class profileController{
             loadOverview();
         });
 
-        SkillsButton.setOnAction(e->{
-            loadSkills();
-        });
+        // SkillsButton.setOnAction(e->{
+        //     loadSkills();
+        // });
 
-        ProjetsButton.setOnAction(e->{
-            loadProjets();
-        });
+        // ProjetsButton.setOnAction(e->{
+        //     loadProjets();
+        // });
 
         SettingsButton.setOnAction(e->{
             loadSettings();
@@ -81,13 +85,27 @@ public class profileController{
 
         editButton.setOnAction(e->{
             try{
-                Popup editProfile = new Popup() ;
-                editProfile.getContent().add(FXMLLoader.load(getClass().getResource("/views/components/EditProfile.fxml"))) ;
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/components/EditProfile.fxml")) ;
 
-                editProfile.show(((Node) e.getSource()).getScene().getWindow()) ;
+                AnchorPane editProfile = loader.load() ;
 
-                editProfile.setAutoHide(true);
-                editProfile.setHideOnEscape(true);
+                EditProfileController editController = loader.getController() ;
+
+                editController.setProfile(this);
+                editController.setRootPane(scene);
+
+
+                Popup editPopup = new Popup() ;
+
+                editPopup.getContent().add(editProfile) ;
+
+                editPopup.show(((Node) e.getSource()).getScene().getWindow()) ;
+
+                editController.setPopUp(editPopup) ;
+
+
+                //editPopup.setAutoHide(true);
+                //editPopup.setHideOnEscape(true);
 
 
             }catch(IOException ex){
@@ -96,11 +114,19 @@ public class profileController{
         });
        
         User user = UserSession.getInstance().getUser() ;
-        name.setText(user.getFirstName() + " " +user.getLastName());
+        firstName.setText(user.getFirstName());
+        lastName.setText(user.getLastName());
         profession.setText(user.getProfession());
         email.setText(user.getEmail());
         phone.setText(user.getPhone());
 
+        if(user.getProfilePic()==null){
+            avatarImage.setImage(new Image(getClass().getResource("/icons/user.png").toExternalForm())) ;
+        }else{
+            avatarImage.setImage(new Image(user.getProfilePic()));
+        }
+        Circle clip = new Circle(35, 35, 35);
+        avatarImage.setClip(clip);
 
 
     }
@@ -116,58 +142,58 @@ public class profileController{
             scene.getChildren().add(overview) ;
             OverviewButton.setStyle(" -fx-border-color: transparent transparent black transparent ; -fx-border-width: 0 0 2 0; ");
 
-            Stream.of(SkillsButton, ProjetsButton, SettingsButton).forEach(button -> button.setStyle("-fx-border-width: 0;"));
+            Stream.of(SettingsButton).forEach(button -> button.setStyle("-fx-border-width: 0;"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void loadSkills(){
-        try {
+    // private void loadSkills(){
+    //     try {
 
-            VBox Skills = FXMLLoader.load(getClass().getResource("/views/components/Skills.fxml")) ;
+    //         VBox Skills = FXMLLoader.load(getClass().getResource("/views/components/Skills.fxml")) ;
 
-            scene.getChildren().clear(); 
+    //         scene.getChildren().clear(); 
 
-            scene.getChildren().add(Skills) ;
-            SkillsButton.setStyle(" -fx-border-color: transparent transparent black transparent ; -fx-border-width: 0 0 2 0; ");
+    //         scene.getChildren().add(Skills) ;
+    //         SkillsButton.setStyle(" -fx-border-color: transparent transparent black transparent ; -fx-border-width: 0 0 2 0; ");
 
-            Stream.of(OverviewButton, ProjetsButton, SettingsButton).forEach(button -> button.setStyle("-fx-border-width: 0;"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    //         Stream.of(OverviewButton, ProjetsButton, SettingsButton).forEach(button -> button.setStyle("-fx-border-width: 0;"));
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
 
-    }
+    // }
 
-    private void loadProjets(){
+    // private void loadProjets(){
 
-        try {
+    //     try {
 
-            ScrollPane Projets = FXMLLoader.load(getClass().getResource("/views/components/Projets.fxml")) ;
+    //         ScrollPane Projets = FXMLLoader.load(getClass().getResource("/views/components/Projets.fxml")) ;
 
-            scene.getChildren().clear(); 
+    //         scene.getChildren().clear(); 
 
-            scene.getChildren().add(Projets) ;
-            ProjetsButton.setStyle(" -fx-border-color: transparent transparent black transparent ; -fx-border-width: 0 0 2 0; ");
+    //         scene.getChildren().add(Projets) ;
+    //         ProjetsButton.setStyle(" -fx-border-color: transparent transparent black transparent ; -fx-border-width: 0 0 2 0; ");
 
-            Stream.of(OverviewButton,SkillsButton, SettingsButton).forEach(button -> button.setStyle("-fx-border-width: 0;"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    //         Stream.of(OverviewButton,SettingsButton).forEach(button -> button.setStyle("-fx-border-width: 0;"));
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
 
-    }
+    // }
 
     private void loadSettings(){
         try {
 
-            VBox Settings = FXMLLoader.load(getClass().getResource("/views/components/Settings.fxml")) ;
+            ScrollPane Settings = FXMLLoader.load(getClass().getResource("/views/components/Settings.fxml")) ;
 
             scene.getChildren().clear(); 
 
             scene.getChildren().add(Settings) ;
             SettingsButton.setStyle(" -fx-border-color: transparent transparent black transparent ; -fx-border-width: 0 0 2 0; ");
 
-            Stream.of(OverviewButton, ProjetsButton, SkillsButton).forEach(button -> button.setStyle("-fx-border-width: 0;"));
+            Stream.of(OverviewButton).forEach(button -> button.setStyle("-fx-border-width: 0;"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -186,13 +212,17 @@ public class profileController{
     }
 
 
-    @FXML
-    private void saveProfile() {
-        // Logique de mise à jour des labels
-        name.setText(editName.getText());
-        
-        // Puis on revient à la vue normale
-        toggleMode(false);
+    public void saveProfile(String firstName,String lastName,String email,String phone,String profession,String avatar) {
+
+        this.firstName.setText(firstName);
+        this.lastName.setText(lastName);
+        this.email.setText(email);
+        this.phone.setText(phone);
+        this.profession.setText(profession);
+        this.avatarImage.setImage(new Image(avatar)) ;
+
+
+        // toggleMode(false);
     }
 
     private void toggleMode(boolean isEditing) {

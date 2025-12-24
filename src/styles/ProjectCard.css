@@ -1,75 +1,63 @@
-.card {
-    -fx-background-color: linear-gradient(to bottom right, #121314, #94dc89);
-    -fx-background-radius: 15;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 15, 0, 0, 5);
-    -fx-pref-width: 350px;
-    -fx-pref-height: 180px;
-    -fx-text-fill: white;
-    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.title {
-    -fx-font-size: 22px;
-    -fx-font-weight: bold;
-    -fx-text-fill: white;
-}
-
-.subtitle {
-    -fx-font-size: 22px;
-    -fx-font-weight: bold;
-    -fx-text-fill: white;
-    -fx-padding: 0 0 0 5px;
-}
-
-.icon-phone {
-    -fx-shape: "M6 2.5a.5.5 0 0 1 .5.5v.8a.5.5 0 0 1-.5.5 5.43 5.43 0 0 0-3 2.6 9.49 9.49 0 0 0 0 5.2 5.43 5.43 0 0 0 3 2.6.5.5 0 0 1 .5.5v.8a.5.5 0 0 1-.5.5 12.5 12.5 0 0 1-7-3.7 12.5 12.5 0 0 1 0-9.6 12.5 12.5 0 0 1 7-3.7z";
-    -fx-fill: #4a90e2;
-    -fx-min-width: 25;
-    -fx-min-height: 25;
-}
-
-.btn-active {
-    -fx-background-color: #4ade80; /* vert */
-    -fx-text-fill: black;
-    -fx-font-weight: bold;
-    -fx-padding: 5 15 5 15;
-    -fx-background-radius: 10;
+.project-card {
+    -fx-background-color: white;
+    -fx-background-radius: 18;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 6);
     -fx-cursor: hand;
-    -fx-alignment: center;
-    -fx-min-width: 80;
-    -fx-max-width: 80;
-    -fx-font-size: 16px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 2,0,0,1);
+    -fx-transition: all 0.2s ease;
 }
 
-.dates-row {
-    -fx-opacity: 0.75;
+.project-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 20, 0, 0, 10);
+    -fx-translate-y: -4;
 }
 
-.dates-text {
+.status-text {
+    -fx-text-fill: #6b7280;
     -fx-font-size: 14px;
-    -fx-text-fill: white;
+    -fx-font-weight: 600;
 }
 
-.progress-bar-bg {
-    -fx-background-color: linear-gradient(to right, #3b82f6, #60a5fa);
-    -fx-background-radius: 15;
-    -fx-pref-height: 40;
-    -fx-max-width: 300;
-    -fx-min-width: 300;
-    -fx-alignment: center;
-    -fx-padding: 0;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 6,0,0,2);
-}
-
-.progress-bar-fill {
-    -fx-fill: white;
-    -fx-opacity: 0; /* Rectangle sert juste pour la forme, mais visible par le bg */
-}
-
-.progress-label {
-    -fx-font-size: 28px;
+.project-title {
+    -fx-font-size: 22px;
     -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.progress-text {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 14px;
+}
+
+.progress-percent {
+    -fx-text-fill: #6366f1;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.custom-progress {
+    -fx-accent: linear-gradient(to right, #6366f1, #8b5cf6);
+    -fx-background-radius: 10;
+}
+
+.custom-progress .track {
+    -fx-background-color: #e5e7eb;
+    -fx-background-radius: 10;
+}
+
+/* Tasks */
+.tasks-text {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 13px;
+}
+
+.date-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #9ca3af;
+}
+
+.date-value {
+    -fx-font-size: 13px;
     -fx-text-fill: white;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 4,0,0,1);
+    -fx-font-weight: bold;
 }

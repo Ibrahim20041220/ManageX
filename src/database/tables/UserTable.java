@@ -1,13 +1,16 @@
 package database.tables;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import database.OracleDB;
 import java.sql.Statement;
+import  java.sql.Types ;
 
 import models.User;
+import models.UserSession;
 
 
 public class UserTable {
@@ -38,7 +41,9 @@ public class UserTable {
                         connectedAt DATE,
                         status VARCHAR2(10) CHECK (status IN ('ON','OFF')),
                         profilePic VARCHAR2(200),
-                        createdAt DATE DEFAULT SYSDATE
+                        overview VARCHAR2(1500),
+                        createdAt DATE DEFAULT SYSDATE,
+                        remember_token VARCHAR2(250)
                     )
                 """;
 
@@ -61,10 +66,10 @@ public class UserTable {
     }
 
 
-    public static boolean create(String firstName, String lastName, String email,String profession, String phone,String profilePic, String password) {
+    public static boolean create(String firstName, String lastName, String email,String profilePic, String password) {
 
-        String sql = "INSERT INTO USERS (firstName, lastName, email,profession,phone,profilePic,password, status, createdAt) " +
-                 "VALUES (?, ?, ?, ?, ?, ?, ?, 'OFF', SYSDATE)";
+        String sql = "INSERT INTO USERS (firstName, lastName, email,profilePic,password, status, createdAt) " +
+                 "VALUES (?, ?, ?, ?, ?, 'OFF', SYSDATE)";
 
         try (Connection conn = OracleDB.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -72,10 +77,8 @@ public class UserTable {
             stmt.setString(1, firstName);
             stmt.setString(2, lastName);
             stmt.setString(3, email);
-            stmt.setString(4, profession);
-            stmt.setString(5, phone);
-            stmt.setString(6, profilePic);
-            stmt.setString(7, password);
+            stmt.setString(4, profilePic);
+            stmt.setString(5, password);
 
             stmt.executeUpdate();
 
@@ -125,5 +128,354 @@ public class UserTable {
         }
  
     }
+
+    public static boolean update(
+            int id,
+            String firstName,
+            String lastName,
+            String email,
+            String profession,
+            String phone,
+            String profilePic
+    ) {
+
+        String sql = """
+            UPDATE USERS
+            SET firstName = ?,
+                lastName = ?,
+                email = ?,
+                profession = ?,
+                phone = ?,
+                profilePic = ?
+            WHERE id = ?
+        """;
+
+        try (Connection conn = OracleDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, firstName);
+            stmt.setString(2, lastName);
+            stmt.setString(3, email);
+            stmt.setString(4, profession);
+            stmt.setString(5, phone);
+            stmt.setString(6, profilePic);
+            stmt.setInt(7, id);
+
+            int rowsUpdated = stmt.executeUpdate();
+
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static String getOverview() {
+
+        String sql = """
+            SELECT overview
+            FROM USERS
+            WHERE id = ?
+            """;
+
+        try (Connection conn = OracleDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, UserSession.getInstance().getUser().getId());
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("overview");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ""; 
+    }
+
+
+
+    public static boolean updateOverview(String overview){
+
+        String sql = """
+                UPDATE USERS
+                SET overview=?
+                WHERE id=?
+                """;
+
+        try (Connection conn = OracleDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, overview);
+                stmt.setInt(2, UserSession.getInstance().getUser().getId());
+
+                int rowsUpdated = stmt.executeUpdate();
+                return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+ 
+    }
+
+    public static String haveRememberToken() {
+
+        String sql = "{ ? = call save_remember_token(?) }"; 
+
+        try (Connection conn = OracleDB.getConnection();
+            CallableStatement stmt = conn.prepareCall(sql)) {
+
+            stmt.registerOutParameter(1,Types.VARCHAR);
+            stmt.setInt(2, UserSession.getInstance().getUser().getId());
+
+            stmt.execute();
+
+            String token = stmt.getString(1);
+
+            if (token != null) {
+                System.out.println("Remember token saved via PL/SQL for user :" + token);
+            } else {
+                System.err.println("Failed to save remember token via PL/SQL");
+            }
+
+            return token;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static User loginWithToken(String token) {
+
+        String sql = """
+            SELECT id,
+                firstName,
+                lastName,
+                email,
+                profession,
+                phone,
+                profilePic
+            FROM USERS
+            WHERE remember_token = ?
+        """;
+
+        try (Connection conn = OracleDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, token);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new User(
+                    rs.getInt("id"),
+                    rs.getString("firstName"),
+                    rs.getString("lastName"),
+                    rs.getString("email"),
+                    rs.getString("phone"),
+                    rs.getString("profession"),
+                    rs.getString("profilePic")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    // public static boolean updatePassword(int userId, String newPassword) {
+    //     String sql = """
+    //         UPDATE USERS
+    //         SET password = ?
+    //         WHERE id = ?
+    //     """;
+
+    //     try (Connection conn = OracleDB.getConnection();
+    //         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+    //         stmt.setString(1, newPassword);
+    //         stmt.setInt(2, userId);
+
+    //         int rowsUpdated = stmt.executeUpdate();
+    //         return rowsUpdated > 0;
+
+    //     } catch (SQLException e) {
+    //         e.printStackTrace();
+    //         return false;
+    //     }
+    // }
+
+    public static boolean verifyPassword(int userId, String password) {
+        // NOTE : Le mot de passe devrait être haché avant la comparaison.
+        // Ici, nous supposons un hachage simple pour l'exemple.
+        // Remplacez 'hashPassword(password)' par votre propre fonction de hachage.
+
+        String sql = "SELECT password FROM USERS WHERE id = ?";
+
+        try (Connection conn = OracleDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String dbPassword = rs.getString("password");
+                    return password.equals(dbPassword);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Met à jour le mot de passe de l'utilisateur.
+     * @param userId L'ID de l'utilisateur.
+     * @param newPassword Le nouveau mot de passe (non haché).
+     * @return true si la mise à jour a réussi, sinon false.
+     */
+    public static boolean updatePassword(int userId, String newPassword) {
+        // NOTE : Le nouveau mot de passe DOIT être haché avant d'être stocké.
+    
+
+        String sql = "UPDATE USERS SET password = ? WHERE id = ?";
+
+        try (Connection conn = OracleDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, newPassword);
+            stmt.setInt(2, userId);
+
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean deleteUser(int userId) {
+    Connection conn = null;
+    try {
+        conn = OracleDB.getConnection();
+        // --- DÉBUT DE LA TRANSACTION ---
+        conn.setAutoCommit(false);
+
+        // Ordre de suppression : Des dépendances les plus lointaines aux plus proches.
+        
+        // 1. Supprimer les pièces jointes (ATTACHMENT) uploadées par l'utilisateur
+        try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM ATTACHMENT WHERE uploadedBy = ?")) {
+            stmt.setInt(1, userId);
+            stmt.executeUpdate();
+        }
+
+        // 2. Supprimer les commentaires (COMMENTS) créés par l'utilisateur
+        try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM COMMENTS WHERE authorId = ?")) {
+            stmt.setInt(1, userId);
+            stmt.executeUpdate();
+        }
+
+        // 3. Supprimer les permissions de membre (MEMBERPERMISSION)
+        try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM MEMBERPERMISSION WHERE memberId = ?")) {
+            stmt.setInt(1, userId);
+            stmt.executeUpdate();
+        }
+        
+        // 4. Supprimer les notifications (NOTIFICATION) où l'utilisateur est l'expéditeur OU le destinataire
+        try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM NOTIFICATION WHERE senderId = ? OR receiverId = ?")) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        }
+
+        // 5. Supprimer l'utilisateur des projets où il est membre (PROJECTMEMBER)
+        // NOTE: Je suppose l'existence de la table PROJECTMEMBER avec une colonne memberId
+        try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM PROJECTMEMBER WHERE memberId = ?")) {
+            stmt.setInt(1, userId);
+            stmt.executeUpdate();
+        }
+
+        // 6. Gérer les projets créés par l'utilisateur (PROJECT)
+        // OPTION A : Supprimer les projets. C'est l'option la plus simple.
+        // ATTENTION : Ceci supprimera les projets et toutes les tâches associées !
+        // Il faut donc d'abord supprimer les tâches des projets que l'on va supprimer.
+        String findProjectsSQL = "SELECT id FROM PROJECT WHERE createdBy = ?";
+        String deleteTasksSQL = "DELETE FROM TASK WHERE projectId = ?";
+        String deleteProjectSQL = "DELETE FROM PROJECT WHERE id = ?";
+        
+        try (PreparedStatement findStmt = conn.prepareStatement(findProjectsSQL)) {
+            findStmt.setInt(1, userId);
+            ResultSet rs = findStmt.executeQuery();
+            
+            while (rs.next()) {
+                int projectId = rs.getInt("id");
+                // Supprimer les tâches du projet avant de supprimer le projet
+                try (PreparedStatement deleteTasksStmt = conn.prepareStatement(deleteTasksSQL)) {
+                    deleteTasksStmt.setInt(1, projectId);
+                    deleteTasksStmt.executeUpdate();
+                }
+                // Supprimer le projet lui-même
+                try (PreparedStatement deleteProjectStmt = conn.prepareStatement(deleteProjectSQL)) {
+                    deleteProjectStmt.setInt(1, projectId);
+                    deleteProjectStmt.executeUpdate();
+                }
+            }
+        }
+        // OPTION B (plus complexe) : Ne pas supprimer les projets, mais assigner 'createdBy' à NULL
+        // ou à un utilisateur "système". Cela dépend de vos règles de gestion.
+        // Pour cet exemple, nous choisissons l'option A (suppression).
+
+        // 7. FINALEMENT, supprimer l'utilisateur lui-même (USERS)
+        int rowsDeleted;
+        try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM USERS WHERE id = ?")) {
+            stmt.setInt(1, userId);
+            rowsDeleted = stmt.executeUpdate();
+        }
+
+        // --- VALIDATION DE LA TRANSACTION ---
+        // Si tout s'est bien passé jusqu'ici, on rend les changements permanents.
+        conn.commit();
+        
+        System.out.println("Utilisateur " + userId + " et toutes ses données associées ont été supprimés.");
+        return rowsDeleted > 0;
+
+    } catch (SQLException e) {
+        System.err.println("Erreur SQL lors de la suppression en cascade de l'utilisateur ID " + userId);
+        e.printStackTrace();
+        
+        // --- ANNULATION DE LA TRANSACTION ---
+        if (conn != null) {
+            try {
+                System.err.println("La transaction est annulée (rollback).");
+                conn.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Erreur lors du rollback.");
+                ex.printStackTrace();
+            }
+        }
+        return false;
+        
+    } finally {
+        // --- FIN DE LA TRANSACTION ---
+        if (conn != null) {
+            try {
+                conn.setAutoCommit(true); // Restaurer le mode par défaut
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+}
 
 }

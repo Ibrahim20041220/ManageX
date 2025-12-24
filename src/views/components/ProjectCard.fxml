@@ -1,40 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      spacing="15"
-      stylesheets="@/styles/ProjectCard.css"
-      styleClass="card" 
+      fx:controller="controllers.projectCardController"
+      stylesheets="@../../styles/ProjectCard.css"
+      spacing="5"
+      styleClass="project-card"
+      prefWidth="300">
 
->
-
-    <!-- Ligne du titre + bouton actif -->
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label styleClass="icon-phone" /> <!-- icône téléphone -->
-        <VBox>
-            <Label text="Application Mobile" styleClass="title"/>
-            <Label text="E-commerce" styleClass="subtitle"/>
-        </VBox>
-
-        <Label text="Actif" styleClass="btn-active" />
+    <!-- Status -->
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <Circle fx:id="statusDot" radius="6"/>
+        <Label fx:id="statusLabel" styleClass="status-text"/>
     </HBox>
 
-    <!-- Ligne dates -->
-    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="dates-row">
-        <Label text=" Début : 01/03/2023 | Fin prevue : 30/09/2023" styleClass="dates-text"/>
-    </HBox>
+    <!-- Project title -->
+    <Label fx:id="projectTitle" styleClass="project-title"/>
 
-    <!-- Barre de progression -->
-    <StackPane styleClass="progress-bar-bg" prefHeight="40" maxWidth="300" minWidth="300" alignment="CENTER">
-        <Rectangle styleClass="progress-bar-fill" width="225" height="40" />
-        <Label text="75%" styleClass="progress-label" />
-    </StackPane>
+    <!-- Dates row -->
+    <Label text="Created at:" styleClass="date-label"/>
+    <Label fx:id="createdAtLabel" styleClass="date-value"/>
+
+
+    <Label text="End date:" styleClass="date-label"/>
+    <Label fx:id="endDateLabel" styleClass="date-value"/>
+
+    <!-- Tasks -->
+    <Label fx:id="taskCount" styleClass="tasks-text"/>
 
 </VBox>

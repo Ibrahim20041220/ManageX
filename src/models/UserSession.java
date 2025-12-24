@@ -3,7 +3,7 @@ package models;
 public class UserSession {
 
     private static UserSession instance;
-    
+
     private User user;
 
     private UserSession(User user) {
@@ -14,7 +14,13 @@ public class UserSession {
         instance = new UserSession(user);
     }
 
+    private UserSession(){}
+
     public static UserSession getInstance() {
+        if (instance == null) {
+            instance = new UserSession();
+        }
+
         return instance;
     }
 
@@ -24,5 +30,9 @@ public class UserSession {
 
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
